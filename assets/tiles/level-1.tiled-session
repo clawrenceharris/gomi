@@ -1,0 +1,44 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level-1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "gomi.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "level-1.tmx": {
+            "scale": 0.6333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 504.5002368545713,
+                "y": 414.4954997631455
+            }
+        }
+    },
+    "last.imagePath": "/Users/pkninja/code/current/gomi/assets/images",
+    "map.height": 30,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 18,
+    "map.tileWidth": 18,
+    "map.width": 50,
+    "openFiles": [
+        "gomi.tsx",
+        "level-1.tmx"
+    ],
+    "project": "level-1.tiled-project",
+    "recentFiles": [
+        "gomi.tsx",
+        "level-1.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 18,
+        "width": 18
+    }
+}
