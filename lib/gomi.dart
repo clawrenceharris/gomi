@@ -2,25 +2,21 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/constants/globals.dart';
 import 'package:gomi/levels/level.dart';
-import 'package:logger/logger.dart';
 
 class Gomi extends FlameGame {
   late final CameraComponent cam;
+  Level level = Level();
 
   @override
   FutureOr<void> onLoad() async {
-    final Logger logger = Logger();
-    logger.d("Loading started");
+    cam = CameraComponent.withFixedResolution(
+        world: level, width: 900, height: 540)
+      ..viewfinder.anchor = Anchor.topLeft
+      ..viewfinder.zoom = 1.0
+      ..viewfinder.position = Vector2(0, 0);
 
-    late TiledComponent map;
-    map =
-        await TiledComponent.load(Globals.lv_1, Vector2.all(Globals.tileSize));
-
-    add(map);
-
+    addAll([level, cam]);
     return super.onLoad();
   }
 }
