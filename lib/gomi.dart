@@ -17,7 +17,7 @@ class Gomi extends FlameGame {
 
     late TiledComponent map;
     map =
-        await TiledComponent.load(Globals.lv_1f, Vector2.all(Globals.tileSize));
+        await TiledComponent.load(Globals.lv_1, Vector2.all(Globals.tileSize));
 
     add(map);
 
