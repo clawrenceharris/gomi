@@ -8,17 +8,32 @@
         "."
     ],
     "fileStates": {
+        "Sky.tsx": {
+            "scaleInDock": 1
+        },
+        "color switchers.tsx": {
+            "scaleInDock": 1
+        },
         "gomi.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "level-1.tmx": {
-            "scale": 0.6333,
+            "scale": 0.8172,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 504.5002368545713,
-                "y": 414.4954997631455
+                "x": 457.0484581497797,
+                "y": 305.3108174253548
             }
+        },
+        "light bulb.tsx": {
+            "scaleInDock": 1
+        },
+        "tomato.tsx": {
+            "scaleInDock": 1
+        },
+        "water bottle.tsx": {
+            "scaleInDock": 1
         }
     },
     "last.imagePath": "/Users/pkninja/code/current/gomi/assets/images",

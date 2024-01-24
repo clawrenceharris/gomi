@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/constants/globals.dart';
 import 'package:gomi/level.dart';
 
 class Gomi extends FlameGame {
@@ -13,6 +12,9 @@ class Gomi extends FlameGame {
   final World world = Level();
   @override
   FutureOr<void> onLoad() async {
+    //Load all images into cache
+    await images.loadAllImages();
+
     cam = CameraComponent.withFixedResolution(
         world: world, width: 900, height: 540)
       ..viewfinder.anchor = Anchor.topLeft
