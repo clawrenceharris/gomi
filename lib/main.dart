@@ -1,15 +1,16 @@
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/gomi.dart';
-import 'package:flame/flame.dart';
 
-void main() {
-  //wait for flutter to be initialized
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Flame.device.setLandscape();
+  await Flame.device.fullScreen();
+  await Flame.device.setLandscape();
 
   Gomi game = Gomi();
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false, home: GameWidget(game: game)));
+  runApp(
+    GameWidget(game: kDebugMode ? Gomi() : game),
+  );
 }
