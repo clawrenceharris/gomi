@@ -3,12 +3,15 @@ import 'dart:async';
 
 import 'package:gomi/gomi.dart';
 
-enum EnemyState { idle, attacking }
+enum EnemyState {
+  idle,
+  attacking;
+}
 
-class Enemy extends SpriteAnimationGroupComponent with HasGameRef<Gomi> {
+abstract class Enemy extends SpriteAnimationGroupComponent
+    with HasGameRef<Gomi> {
   Enemy({position}) : super(position: position);
   late final SpriteAnimation idleAnimation;
-  final double stepTime = 0.05;
 
   @override
   FutureOr<void> onLoad() {
@@ -17,14 +20,13 @@ class Enemy extends SpriteAnimationGroupComponent with HasGameRef<Gomi> {
   }
 
   void _loadAllAnimations() {
-    idleAnimation = SpriteAnimation.fromFrameData(
-        game.images.fromCache('light-bulb.png'),
-        SpriteAnimationData.sequenced(
-            amount: 1, stepTime: stepTime, textureSize: Vector2(24, 40)));
+    idleAnimation = spriteAnimation("Idle");
     //list of all animations
     animations = {EnemyState.idle: idleAnimation};
 
     //set current animation
     current = EnemyState.idle;
   }
+
+  SpriteAnimation spriteAnimation(String state);
 }
