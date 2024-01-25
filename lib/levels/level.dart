@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:gomi/actors/bottle_enemy.dart';
 import 'package:gomi/actors/bulb_enemy.dart';
 import 'package:gomi/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
@@ -36,6 +37,10 @@ class Level extends World {
       switch (obj.class_) {
         case 'Bulb Enemy':
           final enemy = BulbEnemy(position: Vector2(obj.x, obj.y));
+          add(enemy);
+          break;
+        case 'Bottle Enemy':
+          final enemy = BottleEnemy(position: Vector2(obj.x, obj.y));
           add(enemy);
           break;
       }
