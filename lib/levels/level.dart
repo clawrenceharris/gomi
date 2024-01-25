@@ -3,12 +3,14 @@ import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/actors/bulb_enemy.dart';
 import 'package:gomi/actors/player.dart';
+import 'package:gomi/actors/syringe_enemy.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/levels/level_option.dart';
 
 class Level extends World {
   late TiledComponent level;
   final LevelOption levelOption;
+
   Player player = Player(character: 'Green Gomi');
   Level(this.levelOption) : super();
 
@@ -38,6 +40,10 @@ class Level extends World {
           final enemy = BulbEnemy(position: Vector2(obj.x, obj.y));
           add(enemy);
           break;
+        case 'Syringe Enemy':
+          final enemy = SyringeEnemy(position: Vector2(obj.x, obj.y));
+          add(enemy);
+          break;
       }
     }
   }
@@ -54,20 +60,24 @@ class Level extends World {
           player =
               Player(character: 'Green Gomi', position: Vector2(obj.x, obj.y));
           add(player);
+          break;
 
         case "Red Gomi":
           player =
               Player(character: 'Red Gomi', position: Vector2(obj.x, obj.y));
           add(player);
+          break;
         case "Blue Gomi":
           player =
               Player(character: 'Blue Gomi', position: Vector2(obj.x, obj.y));
           add(player);
+          break;
 
         case "Black Gomi":
           player =
               Player(character: 'Black Gomi', position: Vector2(obj.x, obj.y));
           add(player);
+          break;
       }
     }
   }
