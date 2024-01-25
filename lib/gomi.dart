@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/levels/level.dart';
-import 'package:gomi/levels/level_option.dart';
+import 'package:gomi/components/levels/level.dart';
+import 'package:gomi/components/levels/level_option.dart';
 
-class Gomi extends FlameGame {
+class Gomi extends FlameGame with HasKeyboardHandlerComponents {
   late final CameraComponent cam;
   late TiledComponent level;
   @override
