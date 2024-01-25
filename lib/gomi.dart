@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/level.dart';
+import 'package:gomi/levels/level.dart';
+import 'package:gomi/levels/level_option.dart';
 
 class Gomi extends FlameGame {
   late final CameraComponent cam;
   late TiledComponent level;
   @override
-  final World world = Level();
+  final World world = Level(LevelOption.level_1);
   @override
   FutureOr<void> onLoad() async {
     //Load all images into cache
