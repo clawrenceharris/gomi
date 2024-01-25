@@ -10,8 +10,8 @@ class BulbEnemy extends Enemy {
     return SpriteAnimation.fromFrameData(
         game.images.fromCache('Enemies/Light Bulb/$state.png'),
         SpriteAnimationData.sequenced(
-            amount: 1,
+            amount: 7,
             stepTime: Globals.animationStepTime,
-            textureSize: Vector2(24, 40)));
+            textureSize: Vector2(17, 32)));
   }
 }
