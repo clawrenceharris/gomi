@@ -52,7 +52,7 @@ class Level extends World {
       switch (obj.class_) {
         case "Green Gomi":
           player =
-              Player(character: 'Red Gomi', position: Vector2(obj.x, obj.y));
+              Player(character: 'Green Gomi', position: Vector2(obj.x, obj.y));
           add(player);
 
         case "Red Gomi":
