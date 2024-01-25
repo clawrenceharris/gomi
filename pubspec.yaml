@@ -64,7 +64,14 @@ flutter:
   assets:
     - assets/tiles/
     - assets/images/
-    - assets/images/light-bulb.png
+    - assets/images/Main Characters/Green Gomi/Idle.png
+    - assets/images/Main Characters/Red Gomi/Idle.png
+    - assets/images/Main Characters/Blue Gomi/Idle.png
+    - assets/images/Main Characters/Black Gomi/Idle.png
+    - assets/images/Enemies/Light Bulb/Idle.png
+    - assets/images/Enemies/Tomato/Idle.png
+    - assets/images/Enemies/Water Bottle/Idle.png
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
