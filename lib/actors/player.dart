@@ -22,7 +22,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   }
 
   void _loadAnimation() {
-    idleAnimation = _spriteAnimation("Idle", 7);
+    idleAnimation = _spriteAnimation("Idle", 13);
 
     //List of all animations
     animations = {
