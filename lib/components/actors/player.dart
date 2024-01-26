@@ -10,8 +10,6 @@ enum PlayerState {
   running,
 }
 
-enum PlayerDirection { left, right, idle }
-
 class Player extends SpriteAnimationGroupComponent<PlayerState>
     with HasGameRef<Gomi>, KeyboardHandler {
   late final SpriteAnimation idleAnimation;
@@ -22,9 +20,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   double moveSpeed = 100;
   Vector2 direction = Vector2.zero();
   final double _gravity = 9.8;
-  final double _jumpForce = 460;
+  final double _jumpForce = 300;
   final double maxVelocity = 300;
   bool isOnGround = false;
+  bool hasJumped = false;
+
   @override
   FutureOr<void> onLoad() {
     _loadAnimation();
@@ -47,19 +47,28 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
         keysPressed.contains(LogicalKeyboardKey.arrowRight);
+
     direction.x += isLeftKeyPressed ? -1 : 0;
     direction.x += isRightKeyPressed ? 1 : 0;
+
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
   }
 
   void _updatePlayerX(dt) {
+    if (hasJumped && isOnGround) _jump(dt);
+    if (velocity.y > _gravity) isOnGround = false;
+
     velocity.x = direction.x * moveSpeed;
     position.x += velocity.x * dt;
   }
 
-  void jump() {
-    position.y -= 50; // Jump height
+  void _jump(double dt) {
+    velocity.y = -_jumpForce;
+    position.y += velocity.y * dt;
+    isOnGround = false;
+    hasJumped = false;
   }
 
   void _loadAnimation() {

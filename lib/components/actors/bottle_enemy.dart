@@ -1,10 +1,9 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/components/actors/enemy.dart';
-import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
 
-class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
+class BottleEnemy extends Enemy {
   BottleEnemy({position}) : super(position: position);
 
   @override
@@ -59,24 +58,5 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
     isAttacking = true;
     elapsedTime = 0.0; // Reset the elapsed time for the new state
     current = EnemyState.attacking;
-  }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player) {
-      // interact with player
-      switch (current) {
-        case EnemyState.attacking:
-          // attack the player
-          break;
-        case EnemyState.idle:
-          // remove enemy from game
-          super.remove(this);
-          break;
-        default:
-          break;
-      }
-    }
-    super.onCollision(intersectionPoints, other);
   }
 }
