@@ -1,6 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flame/src/sprite_animation.dart';
-import 'package:gomi/actors/enemy.dart';
+import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/constants/globals.dart';
 
 class SyringeEnemy extends Enemy {

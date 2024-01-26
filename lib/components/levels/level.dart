@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/actors/bottle_enemy.dart';
-import 'package:gomi/actors/bulb_enemy.dart';
-import 'package:gomi/actors/enemy.dart';
-import 'package:gomi/actors/gomi_clone.dart';
-import 'package:gomi/actors/player.dart';
-import 'package:gomi/actors/syringe_enemy.dart';
+import 'package:gomi/components/actors/bottle_enemy.dart';
+import 'package:gomi/components/actors/bulb_enemy.dart';
+import 'package:gomi/components/actors/gomi_clone.dart';
+import 'package:gomi/components/actors/player.dart';
+import 'package:gomi/components/actors/syringe_enemy.dart';
 import 'package:gomi/constants/globals.dart';
-import 'package:gomi/levels/level_option.dart';
+import 'package:gomi/components/levels/level_option.dart';
 
 class Level extends World {
   late TiledComponent level;

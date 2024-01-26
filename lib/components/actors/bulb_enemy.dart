@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:gomi/actors/enemy.dart';
+import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/constants/globals.dart';
 
 class BulbEnemy extends Enemy {
