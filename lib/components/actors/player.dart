@@ -32,7 +32,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void update(double dt) {
     _updatePlayerX(dt);
-    _updatePlayerState()
+    _updatePlayerState();
     super.update(dt);
   }
 
