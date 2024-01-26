@@ -15,6 +15,7 @@ class Level extends World {
   late TiledComponent level;
   final LevelOption levelOption;
   late CollisionHandler collisionHandler;
+  late final Player player;
   Level(this.levelOption) : super();
 
   @override
@@ -23,12 +24,19 @@ class Level extends World {
         levelOption.pathname, Vector2.all(Globals.tileSize));
 
     add(level);
-    collisionHandler = CollisionHandler(level: level);
     _createPlayer();
     _createEnemies();
     _createGomiClones();
+    collisionHandler = CollisionHandler(level: level, player: player);
 
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    collisionHandler.checkHorizontalCollisions();
+    collisionHandler.checkVerticalCollisions();
+    super.update(dt);
   }
 
   void _createEnemies() {
@@ -98,18 +106,18 @@ class Level extends World {
     for (final TiledObject obj in actorsLayer.objects) {
       switch (obj.class_) {
         case "Green Player":
-          final player =
+          player =
               Player(character: 'Green Gomi', position: Vector2(obj.x, obj.y));
           add(player);
           break;
 
         case "Red Player":
-          final player =
+          player =
               Player(character: 'Red Gomi', position: Vector2(obj.x, obj.y));
           add(player);
           break;
         case "Blue Player":
-          final player =
+          player =
               Player(character: 'Blue Gomi', position: Vector2(obj.x, obj.y));
           add(player);
           break;

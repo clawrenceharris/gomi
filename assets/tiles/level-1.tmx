@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="18" tileheight="18" infinite="0" nextlayerid="10" nextobjectid="21">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="18" tileheight="18" infinite="0" nextlayerid="11" nextobjectid="25">
  <tileset firstgid="1" source="gomi.tsx"/>
  <tileset firstgid="181" source="Sky.tsx"/>
  <tileset firstgid="201" source="water bottle.tsx"/>
@@ -50,10 +50,16 @@
   <object id="20" name="Bottle Enemy" type="Bottle Enemy" x="761.149" y="98.3558" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="9" name="main characters">
-  <object id="14" name="Green Gomi" type="Green Player" x="34.8432" y="496" width="22" height="26"/>
+  <object id="14" name="Green Player" type="Green Player" x="34.8432" y="495.035" width="22" height="26"/>
   <object id="15" name="Black Gomi" type="Black Gomi" x="414" y="460" width="22" height="26"/>
   <object id="17" name="Green Gomi" type="Green Gomi" x="649" y="225" width="22" height="26"/>
   <object id="16" name="Blue Gomi" type="Blue Gomi" x="540" y="315" width="22" height="26"/>
+ </objectgroup>
+ <objectgroup id="10" name="collisions">
+  <object id="21" x="10.8894" y="529.006" width="334.399" height="15.9872"/>
+  <object id="22" x="343.725" y="450.306" width="15.9872" height="86.5974"/>
+  <object id="23" x="291.767" y="432.987" width="49.2939" height="17.3195"/>
+  <object id="24" x="31.9744" y="362.377" width="163.869" height="13.3227"/>
  </objectgroup>
  <layer id="5" name="coins" width="50" height="30">
   <data encoding="csv">

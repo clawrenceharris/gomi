@@ -10,6 +10,7 @@ import 'package:gomi/components/levels/level_option.dart';
 class Gomi extends FlameGame with HasKeyboardHandlerComponents {
   late final CameraComponent cam;
   late TiledComponent level;
+
   @override
   final World world = Level(LevelOption.level_1);
   @override
