@@ -16,13 +16,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     with HasGameRef<Gomi>, KeyboardHandler {
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
-
   Player({position, required this.character}) : super(position: position);
   String character;
   Vector2 velocity = Vector2.zero();
   double moveSpeed = 100;
   Vector2 direction = Vector2.zero();
-
+  final double _gravity = 9.8;
+  final double _jumpForce = 460;
+  final double maxVelocity = 300;
+  bool isOnGround = false;
   @override
   FutureOr<void> onLoad() {
     _loadAnimation();
@@ -33,7 +35,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void update(double dt) {
     _updatePlayerX(dt);
     _updatePlayerState();
-
+    _applyGravity(dt);
     super.update(dt);
   }
 
@@ -100,5 +102,11 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       playerState = PlayerState.running;
     }
     current = playerState;
+  }
+
+  void _applyGravity(double dt) {
+    velocity.y += _gravity;
+    velocity.y = velocity.y.clamp(-_jumpForce, maxVelocity);
+    position.y += velocity.y * dt;
   }
 }
