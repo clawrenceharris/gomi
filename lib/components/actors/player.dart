@@ -32,12 +32,14 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void update(double dt) {
     _updatePlayerX(dt);
-    _updatePlayerState()
+    _updatePlayerState();
+
     super.update(dt);
   }
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    direction.x = 0;
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
 
@@ -55,7 +57,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   }
 
   void jump() {
-    y -= 50; // Jump height
+    position.y -= 50; // Jump height
   }
 
   void _loadAnimation() {

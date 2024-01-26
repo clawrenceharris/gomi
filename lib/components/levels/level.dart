@@ -1,19 +1,20 @@
 import 'dart:async';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/actors/bottle_enemy.dart';
-import 'package:gomi/actors/bulb_enemy.dart';
-import 'package:gomi/actors/enemy.dart';
-import 'package:gomi/actors/gomi_clone.dart';
-import 'package:gomi/actors/player.dart';
-import 'package:gomi/actors/syringe_enemy.dart';
+import 'package:gomi/components/actors/bottle_enemy.dart';
+import 'package:gomi/components/actors/bulb_enemy.dart';
+import 'package:gomi/components/actors/gomi_clone.dart';
+import 'package:gomi/components/actors/player.dart';
+import 'package:gomi/components/actors/syringe_enemy.dart';
+import 'package:gomi/components/collisions/collision_handler.dart';
 import 'package:gomi/constants/globals.dart';
-import 'package:gomi/levels/level_option.dart';
+import 'package:gomi/components/levels/level_option.dart';
 
 class Level extends World {
   late TiledComponent level;
   final LevelOption levelOption;
-
+  late CollisionHandler collisionHandler;
   Level(this.levelOption) : super();
 
   @override
@@ -22,16 +23,17 @@ class Level extends World {
         levelOption.pathname, Vector2.all(Globals.tileSize));
 
     add(level);
-
+    collisionHandler = CollisionHandler(level: level);
     _createPlayer();
     _createEnemies();
     _createGomiClones();
+
     return super.onLoad();
   }
 
   void _createEnemies() {
     // Get the enemies layer
-    ObjectGroup? enemiesLayer = level.tileMap.getLayer('enemies');
+    final ObjectGroup? enemiesLayer = level.tileMap.getLayer('enemies');
     if (enemiesLayer == null) {
       throw Exception("enemies layer not found");
     }
@@ -56,9 +58,9 @@ class Level extends World {
 
   //creates the trash bin clones
   void _createGomiClones() {
-    ObjectGroup? actorsLayer = level.tileMap.getLayer("main characters");
+    final ObjectGroup? actorsLayer = level.tileMap.getLayer("main characters");
     if (actorsLayer == null) {
-      throw Exception("main characters Layer not found");
+      throw Exception("main characters layer not found");
     }
     for (final TiledObject obj in actorsLayer.objects) {
       switch (obj.class_) {
@@ -89,9 +91,9 @@ class Level extends World {
   }
 
   void _createPlayer() {
-    ObjectGroup? actorsLayer = level.tileMap.getLayer("main characters");
+    final ObjectGroup? actorsLayer = level.tileMap.getLayer("main characters");
     if (actorsLayer == null) {
-      throw Exception("main characters Layer not found");
+      throw Exception("main characters layer not found");
     }
     for (final TiledObject obj in actorsLayer.objects) {
       switch (obj.class_) {
