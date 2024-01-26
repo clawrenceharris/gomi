@@ -3,8 +3,8 @@
  <tileset firstgid="1" source="gomi.tsx"/>
  <tileset firstgid="181" source="Sky.tsx"/>
  <tileset firstgid="201" source="water bottle.tsx"/>
- <tileset firstgid="209" source="tomato.tsx"/>
- <tileset firstgid="210" source="light bulb.tsx"/>
+ <tileset firstgid="214" source="tomato.tsx"/>
+ <tileset firstgid="215" source="light bulb.tsx"/>
  <layer id="4" name="sky" width="50" height="30">
   <data encoding="csv">
 183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,
@@ -50,7 +50,7 @@
   <object id="20" name="Bottle Enemy" type="Bottle Enemy" x="761.149" y="98.3558" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="9" name="main characters">
-  <object id="14" name="Green Gomi" type="Green Gomi" x="34.8432" y="496" width="22" height="26"/>
+  <object id="14" name="Green Gomi" type="Green Player" x="34.8432" y="496" width="22" height="26"/>
   <object id="15" name="Black Gomi" type="Black Gomi" x="414" y="460" width="22" height="26"/>
   <object id="17" name="Green Gomi" type="Green Gomi" x="649" y="225" width="22" height="26"/>
   <object id="16" name="Blue Gomi" type="Blue Gomi" x="540" y="315" width="22" height="26"/>
