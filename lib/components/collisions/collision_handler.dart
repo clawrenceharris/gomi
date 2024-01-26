@@ -27,11 +27,18 @@ class CollisionHandler {
 
   void checkHorizontalCollisions() {
     for (CollisionBlock block in collisionBlocks) {
-      if (checkCollision(block)) {
-        if (player.velocity.x > 0) {
-          player.velocity.x = 0;
-          player.position.x = block.x - player.width;
-          break;
+      if (!block.isPlatform) {
+        if (checkCollision(block)) {
+          if (player.velocity.x > 0) {
+            player.velocity.x = 0;
+            player.position.x = block.x - player.width;
+            break;
+          }
+          if (player.velocity.x < 0) {
+            player.velocity.x = 0;
+            player.position.x = block.x + player.width;
+            break;
+          }
         }
       }
     }
@@ -39,16 +46,33 @@ class CollisionHandler {
 
   void checkVerticalCollisions() {
     for (CollisionBlock block in collisionBlocks) {
-      if (checkCollision(block)) {
-        if (player.velocity.y > 0) {
-          player.velocity.y = 0;
-          player.position.y = block.y - player.width;
-          player.isOnGround = true;
-          break;
+      if (block.isPlatform) {
+        if (checkCollision(block)) {
+          if (player.velocity.y > 0) {
+            player.velocity.y = 0;
+            player.position.y = block.y - player.width;
+            player.isOnGround = true;
+            break;
+          }
+          if (player.velocity.y < 0) {
+            player.velocity.y = 0;
+            player.position.y = block.y + block.height;
+            break;
+          }
         }
-        if (player.velocity.y < 0) {
-          player.velocity.y = 0;
-          player.position.y = block.y + block.height;
+      } else {
+        if (checkCollision(block)) {
+          if (player.velocity.y > 0) {
+            player.velocity.y = 0;
+            player.position.y = block.y - player.width;
+            player.isOnGround = true;
+            break;
+          }
+          if (player.velocity.y < 0) {
+            player.velocity.y = 0;
+            player.position.y = block.y + block.height;
+            break;
+          }
         }
       }
     }
@@ -65,8 +89,9 @@ class CollisionHandler {
     final blockWidth = block.width;
     final blockHeight = block.height;
     final fixedX = player.scale.x < 0 ? playerX - playerWidth : playerX;
+    final fixedY = block.isPlatform ? playerY + playerHeight : playerY;
 
-    return (playerY < block.y + blockHeight &&
+    return (fixedY < block.y + blockHeight &&
         playerY + playerHeight > blockY &&
         fixedX < blockX + blockWidth &&
         fixedX + playerWidth > block.x);

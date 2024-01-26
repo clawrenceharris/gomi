@@ -6,6 +6,7 @@ import 'package:gomi/components/actors/bulb_enemy.dart';
 import 'package:gomi/components/actors/gomi_clone.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/components/actors/syringe_enemy.dart';
+import 'package:gomi/components/collisions/collision_block.dart';
 import 'package:gomi/components/collisions/collision_handler.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
@@ -16,6 +17,7 @@ class Level extends World {
   late CollisionHandler collisionHandler;
   late final Player player;
   Level(this.levelOption) : super();
+  List<CollisionBlock> collisionBlocks = [];
 
   @override
   FutureOr<void> onLoad() async {
@@ -28,6 +30,40 @@ class Level extends World {
     _createGomiClones();
     collisionHandler = CollisionHandler(level: level, player: player);
 
+    final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('collisions');
+
+    if (collisionsLayer != null) {
+      for (final collision in collisionsLayer.objects) {
+        switch (collision.class_) {
+          case 'Platform':
+            final platform = CollisionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+              isPlatform: true,
+            );
+            collisionBlocks.add(platform);
+            add(platform);
+            break;
+          case 'Hazard':
+            final hazard = CollisionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+              isHazard: true,
+            );
+            collisionBlocks.add(hazard);
+            add(hazard);
+            break;
+          default:
+            final obj = CollisionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+            );
+            collisionBlocks.add(obj);
+            add(obj);
+            break;
+        }
+      }
+    }
     return super.onLoad();
   }
 
