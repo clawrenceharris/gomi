@@ -1,121 +1,233 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/constants/globals.dart';
+import 'package:gomi/components/collision%20blocks/collision_block.dart';
+import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
+import 'package:gomi/components/collisions/custom_hitbox.dart';
 import 'package:gomi/gomi.dart';
 
 enum PlayerState {
   idle,
-  running,
 }
 
-class Player extends SpriteAnimationGroupComponent<PlayerState>
-    with HasGameRef<Gomi>, KeyboardHandler {
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation runningAnimation;
-  Player({position, required this.character}) : super(position: position);
+class Player extends SpriteAnimationGroupComponent
+    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
-  Vector2 velocity = Vector2.zero();
-  double moveSpeed = 100;
-  Vector2 direction = Vector2.zero();
+  Player({
+    position,
+    required this.collisionBlocks,
+    this.character = 'Green Gomi',
+  }) : super(position: position);
+
+  final double stepTime = 0.05;
+  late final SpriteAnimation idleAnimation;
+
   final double _gravity = 9.8;
-  final double _jumpForce = 300;
-  final double maxVelocity = 300;
-  bool isOnGround = false;
+  final double _jumpForce = 260;
+  final double _terminalVelocity = 300;
   bool hasJumped = false;
+
+  double directionX = 0;
+  double moveSpeed = 100;
+  Vector2 startingPosition = Vector2.zero();
+  Vector2 velocity = Vector2.zero();
+  bool isGrounded = false;
+  bool reachedCheckpoint = false;
+  List<CollisionBlock> collisionBlocks;
+  CustomHitbox hitbox = CustomHitbox(
+    offsetX: 10,
+    offsetY: 0,
+    width: 14,
+    height: 28,
+  );
+  double fixedDeltaTime = 1 / 60;
+  double accumulatedTime = 0;
 
   @override
   FutureOr<void> onLoad() {
-    _loadAnimation();
+    _loadAllAnimations();
+    debugMode = true;
+
+    startingPosition = Vector2(position.x, position.y);
+
+    add(RectangleHitbox(
+      position: Vector2(hitbox.offsetX, hitbox.offsetY),
+      size: Vector2(hitbox.width, hitbox.height),
+    ));
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    _updatePlayerX(dt);
-    _updatePlayerState();
-    _applyGravity(dt);
+    accumulatedTime += dt;
+
+    while (accumulatedTime >= fixedDeltaTime) {
+      _updatePlayerState();
+      _updatePlayerMovement(fixedDeltaTime);
+      _checkHorizontalCollisions();
+      _applyGravity(fixedDeltaTime);
+      _checkVerticalCollisions();
+
+      accumulatedTime -= fixedDeltaTime;
+    }
+
     super.update(dt);
   }
 
   @override
   bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    direction.x = 0;
+    directionX = 0;
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-
     final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
         keysPressed.contains(LogicalKeyboardKey.arrowRight);
 
-    direction.x += isLeftKeyPressed ? -1 : 0;
-    direction.x += isRightKeyPressed ? 1 : 0;
+    directionX += isLeftKeyPressed ? -1 : 0;
+    directionX += isRightKeyPressed ? 1 : 0;
 
     hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
   }
 
-  void _updatePlayerX(dt) {
-    if (hasJumped && isOnGround) _jump(dt);
-    if (velocity.y > _gravity) isOnGround = false;
-
-    velocity.x = direction.x * moveSpeed;
-    position.x += velocity.x * dt;
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    //TODO: handle collisions with enemies, collectables, etc
+    super.onCollisionStart(intersectionPoints, other);
   }
 
-  void _jump(double dt) {
-    velocity.y = -_jumpForce;
-    position.y += velocity.y * dt;
-    isOnGround = false;
-    hasJumped = false;
-  }
+  void _loadAllAnimations() {
+    idleAnimation = _spriteAnimation('Idle', 13);
 
-  void _loadAnimation() {
-    idleAnimation = _spriteAnimation("Idle", 13, Vector2(22, 26));
-    runningAnimation = _spriteAnimation("Run", 3, Vector2(22, 26));
-
-    //List of all animations
+    // List of all animations
     animations = {
       PlayerState.idle: idleAnimation,
-      PlayerState.running: runningAnimation,
     };
 
-    //Set current animation
+    // Set current animation
     current = PlayerState.idle;
   }
 
-  SpriteAnimation _spriteAnimation(
-      String state, int amount, Vector2 textureSize) {
+  SpriteAnimation _spriteAnimation(String state, int amount) {
     return SpriteAnimation.fromFrameData(
-        gameRef.images.fromCache('Main Characters/Blue Gomi/$state.png'),
-        SpriteAnimationData.sequenced(
-          amount: amount,
-          stepTime: Globals.animationStepTime,
-          textureSize: textureSize,
-        ));
+      game.images.fromCache('Main Characters/Green Gomi/$state.png'),
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: stepTime,
+        textureSize: Vector2(22, 26),
+      ),
+    );
+  }
+
+  SpriteAnimation _specialSpriteAnimation(String state, int amount) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache('Main Characters/$state.png'),
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: stepTime,
+        textureSize: Vector2.all(96),
+        loop: false,
+      ),
+    );
   }
 
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
-    //flip sprite based on direction
     if (velocity.x < 0 && scale.x > 0) {
       flipHorizontallyAroundCenter();
     } else if (velocity.x > 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();
     }
 
-    //Check if moving, set running
-    if (velocity.x != 0) {
-      playerState = PlayerState.running;
-    }
+    //TODO: Check if moving, set running
+
+    //TODO: Check if Falling set to falling
+    // if (velocity.y > 0) playerState = PlayerState.falling;
+
+    //TODO: Check if jumping, set to jumping
+    // if (velocity.y < 0) playerState = PlayerState.jumping;
+
     current = playerState;
+  }
+
+  void _updatePlayerMovement(double dt) {
+    if (hasJumped && isGrounded) _playerJump(dt);
+
+    // if (velocity.y > _gravity) isOnGround = false; // optional
+
+    velocity.x = directionX * moveSpeed;
+    position.x += velocity.x * dt;
+  }
+
+  void _playerJump(double dt) {
+    velocity.y = -_jumpForce;
+    position.y += velocity.y * dt;
+    isGrounded = false;
+    hasJumped = false;
   }
 
   void _applyGravity(double dt) {
     velocity.y += _gravity;
-    velocity.y = velocity.y.clamp(-_jumpForce, maxVelocity);
+    velocity.y = velocity.y.clamp(-_jumpForce, _terminalVelocity);
     position.y += velocity.y * dt;
+  }
+
+  void _checkHorizontalCollisions() {
+    for (final block in collisionBlocks) {
+      if (checkCollision(block)) {
+        if (velocity.x > 0) {
+          velocity.x = 0;
+          position.x = block.x - hitbox.offsetX - hitbox.width;
+          break;
+        }
+        if (velocity.x < 0) {
+          velocity.x = 0;
+          position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
+          break;
+        }
+      }
+    }
+  }
+
+  void _checkVerticalCollisions() {
+    for (final block in collisionBlocks) {
+      if (checkCollision(block)) {
+        if (velocity.y > 0) {
+          velocity.y = 0;
+          position.y = block.y - hitbox.height - hitbox.offsetY;
+          isGrounded = true;
+          break;
+        }
+        if (velocity.y < 0) {
+          velocity.y = 0;
+          position.y = block.y + block.height - hitbox.offsetY;
+        }
+      }
+    }
+  }
+
+  bool checkCollision(CollisionBlock block) {
+    final playerX = position.x + hitbox.offsetX;
+    final playerY = position.y + hitbox.offsetY;
+    final playerWidth = hitbox.width;
+    final playerHeight = hitbox.height;
+
+    final blockX = block.x;
+    final blockY = block.y;
+    final blockWidth = block.width;
+    final blockHeight = block.height;
+
+    final fixedX =
+        scale.x < 0 ? playerX - (hitbox.offsetX * 2) - playerWidth : playerX;
+    final fixedY = block is OneWayPlatform ? playerY + playerHeight : playerY;
+
+    return (fixedY < blockY + blockHeight &&
+        playerY + playerHeight > blockY &&
+        fixedX < blockX + blockWidth &&
+        fixedX + playerWidth > blockX);
   }
 }

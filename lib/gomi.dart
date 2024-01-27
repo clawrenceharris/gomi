@@ -7,7 +7,8 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/components/levels/level.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
-class Gomi extends FlameGame with HasKeyboardHandlerComponents {
+class Gomi extends FlameGame
+    with HasKeyboardHandlerComponents, HasCollisionDetection {
   late final CameraComponent cam;
   late TiledComponent level;
 

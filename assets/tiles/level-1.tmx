@@ -3,8 +3,8 @@
  <tileset firstgid="1" source="gomi.tsx"/>
  <tileset firstgid="181" source="Sky.tsx"/>
  <tileset firstgid="201" source="water bottle.tsx"/>
- <tileset firstgid="201" source="tomato.tsx"/>
- <tileset firstgid="202" source="light bulb.tsx"/>
+ <tileset firstgid="214" source="tomato.tsx"/>
+ <tileset firstgid="215" source="light bulb.tsx"/>
  <layer id="4" name="sky" width="50" height="30">
   <data encoding="csv">
 183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,
@@ -84,7 +84,7 @@
   <object id="20" name="Bottle Enemy" type="Bottle Enemy" x="761.149" y="98.3558" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="9" name="main characters">
-  <object id="14" name="Green Player" type="Green Player" x="264.174" y="60.4692" width="22" height="26"/>
+  <object id="14" name="Green Player" type="Green Player" x="75.9556" y="20.2393" width="22" height="26"/>
   <object id="15" name="Black Gomi" type="Black Gomi" x="414" y="460" width="22" height="26"/>
   <object id="17" name="Green Gomi" type="Green Gomi" x="649" y="225" width="22" height="26"/>
   <object id="16" name="Blue Gomi" type="Blue Gomi" x="540" y="315" width="22" height="26"/>
@@ -164,8 +164,8 @@
   <object id="82" x="1.66182" y="343.997" width="212.713" height="14.9564"/>
   <object id="83" x="39.0528" y="361.446" width="157.042" height="14.1255"/>
   <object id="84" x="0.83091" y="362.277" width="34.0673" height="33.2364"/>
-  <object id="85" x="1.66182" y="399.668" width="14.9564" height="117.158"/>
-  <object id="87" x="2.49273" y="523.473" width="443.706" height="14.1255"/>
+  <object id="85" x="1.66182" y="399.668" width="14.9564" height="138.028"/>
+  <object id="87" x="-0.802525" y="523.473" width="447.001" height="14.1255"/>
   <object id="90" x="398.006" y="329.871" width="68.9655" height="44.8691"/>
   <object id="92" x="467.802" y="342.335" width="180.307" height="18.28"/>
   <object id="93" x="467.802" y="361.446" width="144.578" height="17.4491"/>
