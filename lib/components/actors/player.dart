@@ -66,9 +66,8 @@ class Player extends SpriteAnimationGroupComponent
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
       _updatePlayerMovement(fixedDeltaTime);
-      _checkHorizontalCollisions();
       _applyGravity(fixedDeltaTime);
-      _checkVerticalCollisions();
+      _checkCollisions();
 
       accumulatedTime -= fixedDeltaTime;
     }
@@ -87,7 +86,8 @@ class Player extends SpriteAnimationGroupComponent
     directionX += isLeftKeyPressed ? -1 : 0;
     directionX += isRightKeyPressed ? 1 : 0;
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowUp);
 
     return super.onKeyEvent(event, keysPressed);
   }
@@ -162,36 +162,10 @@ class Player extends SpriteAnimationGroupComponent
     position.y += velocity.y * dt;
   }
 
-  void _checkHorizontalCollisions() {
+  void _checkCollisions() {
     for (final block in collisionBlocks) {
       if (_checkCollision(block)) {
-        if (velocity.x > 0) {
-          velocity.x = 0;
-          position.x = block.x - hitbox.offsetX - hitbox.width;
-          break;
-        }
-        if (velocity.x < 0) {
-          velocity.x = 0;
-          position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
-          break;
-        }
-      }
-    }
-  }
-
-  void _checkVerticalCollisions() {
-    for (final block in collisionBlocks) {
-      if (_checkCollision(block)) {
-        if (velocity.y > 0) {
-          velocity.y = 0;
-          position.y = block.y - hitbox.height - hitbox.offsetY;
-          isGrounded = true;
-          break;
-        }
-        if (velocity.y < 0) {
-          velocity.y = 0;
-          position.y = block.y + block.height - hitbox.offsetY;
-        }
+        block.onPlayerCollision(this);
       }
     }
   }

@@ -6,7 +6,10 @@ import 'package:gomi/components/actors/bulb_enemy.dart';
 import 'package:gomi/components/actors/gomi_clone.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/components/actors/syringe_enemy.dart';
+import 'package:gomi/components/collision%20blocks/Water.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
+import 'package:gomi/components/collision%20blocks/normal_platform.dart';
+import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
@@ -33,14 +36,29 @@ class Level extends World {
 
   void _addCollisionBlocks() {
     final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('collisions');
-
-    if (collisionsLayer != null) {
-      for (final collision in collisionsLayer.objects) {
-        final platform = CollisionBlock(
-          position: Vector2(collision.x, collision.y),
-          size: Vector2(collision.width, collision.height),
-        );
-        collisionBlocks.add(platform);
+    if (collisionsLayer == null) {
+      throw Exception("collisions leyer not found");
+    }
+    for (TiledObject collision in collisionsLayer.objects) {
+      switch (collision.class_) {
+        case "One Way Platform":
+          final platform = OneWayPlatform(
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height),
+          );
+          collisionBlocks.add(platform);
+        case "Water":
+          final platform = Water(
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height),
+          );
+          collisionBlocks.add(platform);
+        default:
+          final platform = NormalPlatform(
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height),
+          );
+          collisionBlocks.add(platform);
       }
     }
   }
