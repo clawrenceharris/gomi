@@ -7,14 +7,12 @@ import 'package:gomi/components/actors/gomi_clone.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/components/actors/syringe_enemy.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
-import 'package:gomi/components/collisions/collision_handler.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
 class Level extends World {
   late TiledComponent level;
   final LevelOption levelOption;
-  late CollisionHandler collisionHandler;
   late final Player player;
   Level(this.levelOption) : super();
   List<CollisionBlock> collisionBlocks = [];
