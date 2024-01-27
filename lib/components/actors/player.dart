@@ -25,7 +25,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation idleAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 260;
+  final double _jumpForce = 300;
   final double _terminalVelocity = 300;
   bool hasJumped = false;
 
