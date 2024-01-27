@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:gomi/components/actors/seed.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/components/collisions/custom_hitbox.dart';
@@ -48,7 +49,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    debugMode = true;
 
     startingPosition = Vector2(position.x, position.y);
 
@@ -96,6 +96,9 @@ class Player extends SpriteAnimationGroupComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     //TODO: handle collisions with enemies, collectables, etc
+    if (other is Seed) {
+      other.collidedWithPlayer();
+    }
     super.onCollisionStart(intersectionPoints, other);
   }
 

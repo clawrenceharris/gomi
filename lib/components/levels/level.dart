@@ -5,6 +5,7 @@ import 'package:gomi/components/actors/bottle_enemy.dart';
 import 'package:gomi/components/actors/bulb_enemy.dart';
 import 'package:gomi/components/actors/gomi_clone.dart';
 import 'package:gomi/components/actors/player.dart';
+import 'package:gomi/components/actors/seed.dart';
 import 'package:gomi/components/actors/syringe_enemy.dart';
 import 'package:gomi/components/collision%20blocks/Water.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
@@ -29,6 +30,7 @@ class Level extends World {
     _createEnemies();
     _createGomiClones();
     _addCollisionBlocks();
+    _spawnCollectibles();
     _createPlayer();
 
     return super.onLoad();
@@ -158,6 +160,25 @@ class Level extends World {
               position: Vector2(obj.x, obj.y),
               collisionBlocks: collisionBlocks);
           add(player);
+          break;
+      }
+    }
+  }
+
+  void _spawnCollectibles() {
+    final ObjectGroup? collectiblesLayer =
+        level.tileMap.getLayer("collectibles");
+    if (collectiblesLayer == null) {
+      throw Exception("main characters layer not found");
+    }
+
+    for (final collectible in collectiblesLayer.objects) {
+      switch (collectible.class_) {
+        case 'Seed':
+          final seed = Seed(
+              position: Vector2(collectible.x, collectible.y),
+              size: Vector2(collectible.width, collectible.height));
+          add(seed);
           break;
       }
     }
