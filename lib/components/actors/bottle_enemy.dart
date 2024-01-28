@@ -1,11 +1,21 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
+import 'package:flame/extensions.dart';
+import 'package:flutter/material.dart';
 import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
 
+enum Direction { left, right }
+
 class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
-  BottleEnemy({position}) : super(position: position);
+  var velocity = Vector2.zero();
+  var direction = Direction.right;
+
+  BottleEnemy({
+    super.position,
+  });
   @override
   Future<void> onLoad() async {
     add(RectangleHitbox()..collisionType = CollisionType.passive);
@@ -43,8 +53,14 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
     // Check if it's time to switch states
     if (isAttacking && elapsedTime >= attackTime) {
       switchToIdle();
+      _swapDirection();
     } else if (!isAttacking && elapsedTime >= idleTime) {
       switchToAttack();
+    }
+
+    // Check if enemy is attacking
+    if (isAttacking && elapsedTime <= attackTime) {
+      _bottleSpinAttack();
     }
   }
 
@@ -77,5 +93,20 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
       }
     }
     super.onCollision(intersectionPoints, other);
+  }
+
+  void _bottleSpinAttack() {
+    if (direction == Direction.right) {
+      super.position += Vector2(.15, 0);
+    }
+    if (direction == Direction.left) {
+      super.position += Vector2(-.15, 0);
+    }
+  }
+
+  void _swapDirection() {
+    direction =
+        (direction == Direction.left) ? Direction.right : Direction.left;
+    flipHorizontallyAroundCenter();
   }
 }
