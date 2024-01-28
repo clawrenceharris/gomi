@@ -8,16 +8,16 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   BottleEnemy({
     position,
     required double attackWidth,
-  })  : _attackWidth = attackWidth,
-        super(position: position) {
+  }) : super(position: position) {
     _attackWidth = attackWidth;
   }
-  double _attackWidth;
+  double _attackWidth = 0;
   late double _startX;
   late double _endX;
   double _direction = 1;
 
   final double _speed = 90;
+
   @override
   Future<void> onLoad() async {
     _startX = position.x;
