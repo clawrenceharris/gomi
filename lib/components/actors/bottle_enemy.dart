@@ -50,13 +50,16 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   }
 
   void _attack(dt) {
-    // Update the position based on speed and direction
     // Check if the enemy has reached the end or start position
     if (_direction == 1 && position.x >= _endX) {
       _direction = -1; // Change direction to left
+      flipHorizontallyAroundCenter();
     } else if (_direction == -1 && position.x <= _startX) {
+      flipHorizontallyAroundCenter();
       _direction = 1; // Change direction to right
     }
+
+    // Update the position based on speed and direction
     position.x += _speed * _direction * dt;
   }
 
@@ -85,7 +88,6 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   }
 
   void switchToAttack() {
-    _swapDirection();
     isAttacking = true;
     elapsedTime = 0.0; // Reset the elapsed time for the new state
     current = EnemyState.attacking;
@@ -109,10 +111,5 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
       }
     }
     super.onCollision(intersectionPoints, other);
-  }
-
-  void _swapDirection() {
-    _direction *= -1;
-    flipHorizontallyAroundCenter();
   }
 }
