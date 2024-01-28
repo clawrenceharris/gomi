@@ -5,12 +5,14 @@ import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
 
 class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
-  BottleEnemy({position}) : super(position: position);
+  BottleEnemy({position, size}) : super(position: position);
+  Vector2 startingPosition = Vector2.zero();
 
   @override
   Future<void> onLoad() async {
     add(RectangleHitbox()..collisionType = CollisionType.passive);
-    debugMode = true;
+    startingPosition = Vector2(position.x, position.y);
+
     return super.onLoad();
   }
 

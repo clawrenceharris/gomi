@@ -2,12 +2,11 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/components/actors/player.dart';
 
-class CollisionBlock extends PositionComponent with CollisionCallbacks {
+abstract class CollisionBlock extends PositionComponent
+    with CollisionCallbacks {
   CollisionBlock({position, size}) : super(position: position, size: size);
-  @override
-  FutureOr<void> onLoad() {
-    debugMode = true;
-    return super.onLoad();
-  }
+
+  void collideWithPlayer(Player player);
 }

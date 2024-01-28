@@ -5,16 +5,18 @@ import 'package:gomi/components/actors/bottle_enemy.dart';
 import 'package:gomi/components/actors/bulb_enemy.dart';
 import 'package:gomi/components/actors/gomi_clone.dart';
 import 'package:gomi/components/actors/player.dart';
+import 'package:gomi/components/actors/seed.dart';
 import 'package:gomi/components/actors/syringe_enemy.dart';
+import 'package:gomi/components/collision%20blocks/Water.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
-import 'package:gomi/components/collisions/collision_handler.dart';
+import 'package:gomi/components/collision%20blocks/normal_platform.dart';
+import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
 class Level extends World {
   late TiledComponent level;
   final LevelOption levelOption;
-  late CollisionHandler collisionHandler;
   late final Player player;
   Level(this.levelOption) : super();
   List<CollisionBlock> collisionBlocks = [];
@@ -28,6 +30,7 @@ class Level extends World {
     _createEnemies();
     _createGomiClones();
     _addCollisionBlocks();
+    _spawnCollectibles();
     _createPlayer();
 
     return super.onLoad();
@@ -35,14 +38,33 @@ class Level extends World {
 
   void _addCollisionBlocks() {
     final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('collisions');
+    if (collisionsLayer == null) {
+      throw Exception("collisions layer not found");
+    }
+    for (TiledObject collision in collisionsLayer.objects) {
+      switch (collision.class_) {
+        case "One Way Platform":
+          final platform = OneWayPlatform(
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height),
+          );
+          collisionBlocks.add(platform);
+          add(platform);
+        case "Water":
+          final platform = Water(
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height),
+          );
+          collisionBlocks.add(platform);
+          add(platform);
 
-    if (collisionsLayer != null) {
-      for (final collision in collisionsLayer.objects) {
-        final platform = CollisionBlock(
-          position: Vector2(collision.x, collision.y),
-          size: Vector2(collision.width, collision.height),
-        );
-        collisionBlocks.add(platform);
+        default:
+          final platform = NormalPlatform(
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height),
+          );
+          collisionBlocks.add(platform);
+          add(platform);
       }
     }
   }
@@ -74,74 +96,94 @@ class Level extends World {
 
   //creates the trash bin clones
   void _createGomiClones() {
-    final ObjectGroup? actorsLayer = level.tileMap.getLayer("main characters");
-    if (actorsLayer == null) {
-      throw Exception("main characters layer not found");
-    }
-    for (final TiledObject obj in actorsLayer.objects) {
-      switch (obj.class_) {
-        case "Green Gomi":
-          final clone = GomiClone(
-              character: 'Green Gomi', position: Vector2(obj.x, obj.y));
-          add(clone);
-          break;
+    final ObjectGroup? charactersLayer =
+        level.tileMap.getLayer("main characters");
+    if (charactersLayer != null) {
+      for (final TiledObject obj in charactersLayer.objects) {
+        switch (obj.class_) {
+          case "Green Gomi":
+            final clone = GomiClone(
+                character: 'Green Gomi', position: Vector2(obj.x, obj.y));
+            add(clone);
+            break;
 
-        case "Red Gomi":
-          final clone =
-              GomiClone(character: 'Red Gomi', position: Vector2(obj.x, obj.y));
-          add(clone);
-          break;
-        case "Blue Gomi":
-          final clone = GomiClone(
-              character: 'Blue Gomi', position: Vector2(obj.x, obj.y));
-          add(clone);
-          break;
+          case "Red Gomi":
+            final clone = GomiClone(
+                character: 'Red Gomi', position: Vector2(obj.x, obj.y));
+            add(clone);
+            break;
+          case "Blue Gomi":
+            final clone = GomiClone(
+                character: 'Blue Gomi', position: Vector2(obj.x, obj.y));
+            add(clone);
+            break;
 
-        case "Black Gomi":
-          final clone = GomiClone(
-              character: 'Black Gomi', position: Vector2(obj.x, obj.y));
-          add(clone);
-          break;
+          case "Black Gomi":
+            final clone = GomiClone(
+                character: 'Black Gomi', position: Vector2(obj.x, obj.y));
+            add(clone);
+            break;
+        }
       }
     }
   }
 
   void _createPlayer() {
-    final ObjectGroup? actorsLayer = level.tileMap.getLayer("main characters");
-    if (actorsLayer == null) {
-      throw Exception("main characters layer not found");
+    final ObjectGroup? charactersLayer =
+        level.tileMap.getLayer("main characters");
+
+    if (charactersLayer != null) {
+      for (final TiledObject obj in charactersLayer.objects) {
+        switch (obj.class_) {
+          case "Green Player":
+            player = Player(
+                character: 'Green Gomi',
+                position: Vector2(obj.x, obj.y),
+                collisionBlocks: collisionBlocks);
+            add(player);
+            break;
+
+          case "Red Player":
+            player = Player(
+                character: 'Red Gomi',
+                position: Vector2(obj.x, obj.y),
+                collisionBlocks: collisionBlocks);
+            add(player);
+            break;
+          case "Blue Player":
+            player = Player(
+                character: 'Blue Gomi',
+                position: Vector2(obj.x, obj.y),
+                collisionBlocks: collisionBlocks);
+            add(player);
+            break;
+
+          case "Black Player":
+            final player = Player(
+                character: 'Black Gomi',
+                position: Vector2(obj.x, obj.y),
+                collisionBlocks: collisionBlocks);
+            add(player);
+            break;
+        }
+      }
     }
-    for (final TiledObject obj in actorsLayer.objects) {
-      switch (obj.class_) {
-        case "Green Player":
-          player = Player(
-              character: 'Green Gomi',
-              position: Vector2(obj.x, obj.y),
-              collisionBlocks: collisionBlocks);
-          add(player);
-          break;
+  }
 
-        case "Red Player":
-          player = Player(
-              character: 'Red Gomi',
-              position: Vector2(obj.x, obj.y),
-              collisionBlocks: collisionBlocks);
-          add(player);
-          break;
-        case "Blue Player":
-          player = Player(
-              character: 'Blue Gomi',
-              position: Vector2(obj.x, obj.y),
-              collisionBlocks: collisionBlocks);
-          add(player);
-          break;
+  void _spawnCollectibles() {
+    final ObjectGroup? collectiblesLayer =
+        level.tileMap.getLayer("collectibles");
+    if (collectiblesLayer == null) {
+      throw Exception("collectibles layer not found");
+    }
 
-        case "Black Player":
-          final player = Player(
-              character: 'Black Gomi',
-              position: Vector2(obj.x, obj.y),
-              collisionBlocks: collisionBlocks);
-          add(player);
+    for (final collectible in collectiblesLayer.objects) {
+      switch (collectible.class_) {
+        case 'Seed':
+          final seed = Seed(
+              position: Vector2(collectible.x, collectible.y),
+              size: Vector2(collectible.width, collectible.height));
+          add(seed);
           break;
       }
     }
