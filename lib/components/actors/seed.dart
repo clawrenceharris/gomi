@@ -42,7 +42,6 @@ class Seed extends SpriteAnimationComponent
   @override
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
-    //TODO: handle collisions with enemies, collectables, etc
     if (other is Player) {
       collidedWithPlayer();
     }

@@ -27,7 +27,7 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation idleAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 260;
+  final double _jumpForce = 300;
   final double _terminalVelocity = 300;
   bool hasJumped = false;
 
@@ -49,7 +49,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    debugMode = true;
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
@@ -65,8 +64,8 @@ class Player extends SpriteAnimationGroupComponent
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
       _updatePlayerMovement(fixedDeltaTime);
-      _checkHorizontalCollisions();
       _applyGravity(fixedDeltaTime);
+      _checkHorizontalCollisions();
       _checkVerticalCollisions();
 
       accumulatedTime -= fixedDeltaTime;
@@ -86,7 +85,8 @@ class Player extends SpriteAnimationGroupComponent
     directionX += isLeftKeyPressed ? -1 : 0;
     directionX += isRightKeyPressed ? 1 : 0;
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowUp);
 
     return super.onKeyEvent(event, keysPressed);
   }

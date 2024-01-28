@@ -11,8 +11,11 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   @override
   Future<void> onLoad() async {
     add(RectangleHitbox()..collisionType = CollisionType.passive);
+<<<<<<< HEAD
     startingPosition = Vector2(position.x, position.y);
 
+=======
+>>>>>>> 99a7294faf99539cb0b30615ccfb36954fb3d6ec
     return super.onLoad();
   }
 
