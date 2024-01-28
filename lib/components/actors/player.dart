@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/components/collisions/custom_hitbox.dart';
+import 'package:gomi/constants/globals.dart';
 import 'package:gomi/gomi.dart';
 
 enum PlayerState {
@@ -18,10 +19,9 @@ class Player extends SpriteAnimationGroupComponent
   Player({
     position,
     required this.collisionBlocks,
-    this.character = 'Green Gomi',
+    required this.character,
   }) : super(position: position);
 
-  final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
 
   final double _gravity = 9.8;
@@ -34,8 +34,6 @@ class Player extends SpriteAnimationGroupComponent
   Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-  bool gotHit = false;
-  bool reachedCheckpoint = false;
   List<CollisionBlock> collisionBlocks;
   CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
@@ -95,14 +93,6 @@ class Player extends SpriteAnimationGroupComponent
     return super.onKeyEvent(event, keysPressed);
   }
 
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    //TODO: handle collisions with enemies, collectables, etc
-
-    super.onCollisionStart(intersectionPoints, other);
-  }
-
   void _loadAllAnimations() {
     idleAnimation = _spriteAnimation('Idle', 13);
 
@@ -120,7 +110,7 @@ class Player extends SpriteAnimationGroupComponent
       game.images.fromCache('Main Characters/Green Gomi/$state.png'),
       SpriteAnimationData.sequenced(
         amount: amount,
-        stepTime: stepTime,
+        stepTime: Globals.animationStepTime,
         textureSize: Vector2(22, 26),
       ),
     );
