@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
 import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
@@ -65,15 +64,17 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   void update(double dt) {
     super.update(dt);
     elapsedTime += dt;
-    if (isAttacking) {
-      _attack(dt);
-    }
 
     // Check if it's time to switch states
     if (isAttacking && elapsedTime >= attackTime) {
       switchToIdle();
     } else if (!isAttacking && elapsedTime >= idleTime) {
       switchToAttack();
+    }
+
+    // Check if enemy is attacking
+    if (isAttacking) {
+      _attack(dt);
     }
   }
 
@@ -84,6 +85,7 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   }
 
   void switchToAttack() {
+    _swapDirection();
     isAttacking = true;
     elapsedTime = 0.0; // Reset the elapsed time for the new state
     current = EnemyState.attacking;
@@ -107,5 +109,10 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
       }
     }
     super.onCollision(intersectionPoints, other);
+  }
+
+  void _swapDirection() {
+    _direction *= -1;
+    flipHorizontallyAroundCenter();
   }
 }

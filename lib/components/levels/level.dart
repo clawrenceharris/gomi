@@ -80,7 +80,9 @@ class Level extends World {
     for (TiledObject obj in enemiesLayer.objects) {
       switch (obj.class_) {
         case 'Bulb Enemy':
-          final enemy = BulbEnemy(position: Vector2(obj.x, obj.y));
+          final enemy = BulbEnemy(
+            position: Vector2(obj.x, obj.y),
+          );
           add(enemy);
           break;
         case 'Syringe Enemy':
