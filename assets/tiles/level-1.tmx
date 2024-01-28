@@ -3,8 +3,8 @@
  <tileset firstgid="1" source="gomi.tsx"/>
  <tileset firstgid="181" source="Sky.tsx"/>
  <tileset firstgid="201" source="water bottle.tsx"/>
- <tileset firstgid="214" source="tomato.tsx"/>
- <tileset firstgid="215" source="light bulb.tsx"/>
+ <tileset firstgid="201" source="tomato.tsx"/>
+ <tileset firstgid="202" source="light bulb.tsx"/>
  <layer id="4" name="sky" width="50" height="30">
   <data encoding="csv">
 183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,183,
@@ -80,8 +80,8 @@
   <object id="10" name="Bulb Enemy" type="Bulb Enemy" x="791.965" y="186.804" width="24" height="40"/>
   <object id="11" name="Bulb Enemy" type="Bulb Enemy" x="833.57" y="365.463" width="24" height="40"/>
   <object id="12" name="Tomato Enemy" type="Tomato Enemy" x="298.246" y="390.981" width="24" height="40"/>
-  <object id="18" name="Bottle Enemy" type="Bottle Enemy" x="175.76" y="498.29" width="161.368" height="26"/>
-  <object id="20" name="Bottle Enemy" type="Bottle Enemy" x="501.905" y="499.685" width="22" height="26"/>
+  <object id="18" name="Bottle Enemy" type="Bottle Enemy" x="190.66" y="494" width="130" height="26"/>
+  <object id="20" name="Bottle Enemy" type="Bottle Enemy" x="454" y="500" width="112" height="26"/>
  </objectgroup>
  <objectgroup id="9" name="main characters">
   <object id="14" name="Green Player" type="Green Player" x="41.0574" y="493.858" width="22" height="26"/>

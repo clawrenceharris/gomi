@@ -87,7 +87,8 @@ class Level extends World {
           final enemy = SyringeEnemy(position: Vector2(obj.x, obj.y));
           add(enemy);
         case 'Bottle Enemy':
-          final enemy = BottleEnemy(position: Vector2(obj.x, obj.y));
+          final enemy = BottleEnemy(
+              position: Vector2(obj.x, obj.y), attackWidth: obj.width);
           add(enemy);
           break;
       }

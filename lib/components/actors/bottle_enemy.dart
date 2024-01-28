@@ -1,14 +1,29 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
 
 class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
-  BottleEnemy({position}) : super(position: position);
+  BottleEnemy({
+    position,
+    required double attackWidth,
+  })  : _attackWidth = attackWidth,
+        super(position: position) {
+    _attackWidth = attackWidth;
+  }
+  double _attackWidth;
+  late double _startX;
+  late double _endX;
+  double _direction = 1;
+
+  final double _speed = 90;
   @override
   Future<void> onLoad() async {
-    add(RectangleHitbox()..collisionType = CollisionType.passive);
+    _startX = position.x;
+    _endX = position.x + _attackWidth;
+    position.x = position.x + _attackWidth / 2;
     return super.onLoad();
   }
 
@@ -35,10 +50,24 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
             textureSize: textureSize));
   }
 
+  void _attack(dt) {
+    // Update the position based on speed and direction
+    // Check if the enemy has reached the end or start position
+    if (_direction == 1 && position.x >= _endX) {
+      _direction = -1; // Change direction to left
+    } else if (_direction == -1 && position.x <= _startX) {
+      _direction = 1; // Change direction to right
+    }
+    position.x += _speed * _direction * dt;
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
     elapsedTime += dt;
+    if (isAttacking) {
+      _attack(dt);
+    }
 
     // Check if it's time to switch states
     if (isAttacking && elapsedTime >= attackTime) {
@@ -58,6 +87,7 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
     isAttacking = true;
     elapsedTime = 0.0; // Reset the elapsed time for the new state
     current = EnemyState.attacking;
+    _direction *= -1;
   }
 
   @override
