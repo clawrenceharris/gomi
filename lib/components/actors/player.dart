@@ -1,11 +1,11 @@
 import 'dart:async';
+
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/components/collisions/custom_hitbox.dart';
-import 'package:gomi/constants/globals.dart';
 import 'package:gomi/gomi.dart';
 
 enum PlayerState {
@@ -16,24 +16,27 @@ class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
-    required this.collisionBlocks,
     position,
+    required this.collisionBlocks,
     this.character = 'Green Gomi',
   }) : super(position: position);
 
+  final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 300;
+  final double _jumpForce = 260;
   final double _terminalVelocity = 300;
   bool hasJumped = false;
 
   double directionX = 0;
   double moveSpeed = 100;
+  Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-
-  List<CollisionBlock> collisionBlocks = [];
+  bool gotHit = false;
+  bool reachedCheckpoint = false;
+  List<CollisionBlock> collisionBlocks;
   CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
     offsetY: 0,
@@ -46,6 +49,9 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+    // debugMode = true;
+
+    startingPosition = Vector2(position.x, position.y);
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
@@ -59,11 +65,13 @@ class Player extends SpriteAnimationGroupComponent
     accumulatedTime += dt;
 
     while (accumulatedTime >= fixedDeltaTime) {
-      _updatePlayerState();
-      _updatePlayerMovement(fixedDeltaTime);
-      _applyGravity(fixedDeltaTime);
-      _checkHorizontalCollisions();
-      _checkVerticalCollisions();
+      if (!gotHit && !reachedCheckpoint) {
+        _updatePlayerState();
+        _updatePlayerMovement(fixedDeltaTime);
+        _checkHorizontalCollisions();
+        _applyGravity(fixedDeltaTime);
+        _checkVerticalCollisions();
+      }
 
       accumulatedTime -= fixedDeltaTime;
     }
@@ -82,10 +90,17 @@ class Player extends SpriteAnimationGroupComponent
     directionX += isLeftKeyPressed ? -1 : 0;
     directionX += isRightKeyPressed ? 1 : 0;
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    //TODO: handle collisions with enemies, collectables, etc
+
+    super.onCollisionStart(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -105,7 +120,7 @@ class Player extends SpriteAnimationGroupComponent
       game.images.fromCache('Main Characters/Green Gomi/$state.png'),
       SpriteAnimationData.sequenced(
         amount: amount,
-        stepTime: Globals.animationStepTime,
+        stepTime: stepTime,
         textureSize: Vector2(22, 26),
       ),
     );
