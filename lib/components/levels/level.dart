@@ -23,8 +23,8 @@ class Level extends World {
 
   @override
   FutureOr<void> onLoad() async {
-    level = await TiledComponent.load(
-        levelOption.pathname, Vector2.all(Globals.tileSize));
+    level =
+        await TiledComponent.load("level-1.tmx", Vector2.all(Globals.tileSize));
 
     add(level);
     _createEnemies();

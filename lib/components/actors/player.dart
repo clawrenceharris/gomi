@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/components/actors/seed.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/components/collisions/custom_hitbox.dart';
@@ -19,24 +17,24 @@ class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
-    required this.collisionBlocks,
     position,
-    this.character = 'Green Gomi',
+    required this.collisionBlocks,
+    required this.character,
   }) : super(position: position);
 
   late final SpriteAnimation idleAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 300;
+  final double _jumpForce = 260;
   final double _terminalVelocity = 300;
   bool hasJumped = false;
 
   double directionX = 0;
   double moveSpeed = 100;
+  Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-
-  List<CollisionBlock> collisionBlocks = [];
+  List<CollisionBlock> collisionBlocks;
   CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
     offsetY: 0,
@@ -49,6 +47,9 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+    // debugMode = true;
+
+    startingPosition = Vector2(position.x, position.y);
 
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
@@ -64,8 +65,8 @@ class Player extends SpriteAnimationGroupComponent
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
       _updatePlayerMovement(fixedDeltaTime);
-      _applyGravity(fixedDeltaTime);
       _checkHorizontalCollisions();
+      _applyGravity(fixedDeltaTime);
       _checkVerticalCollisions();
 
       accumulatedTime -= fixedDeltaTime;
@@ -85,8 +86,7 @@ class Player extends SpriteAnimationGroupComponent
     directionX += isLeftKeyPressed ? -1 : 0;
     directionX += isRightKeyPressed ? 1 : 0;
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowUp);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
 
     return super.onKeyEvent(event, keysPressed);
   }
