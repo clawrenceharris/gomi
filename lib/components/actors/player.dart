@@ -1,10 +1,7 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/components/actors/seed.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/components/collisions/custom_hitbox.dart';
