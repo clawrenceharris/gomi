@@ -63,13 +63,11 @@ class Player extends SpriteAnimationGroupComponent
     accumulatedTime += dt;
 
     while (accumulatedTime >= fixedDeltaTime) {
-      if (!gotHit && !reachedCheckpoint) {
-        _updatePlayerState();
-        _updatePlayerMovement(fixedDeltaTime);
-        _checkHorizontalCollisions();
-        _applyGravity(fixedDeltaTime);
-        _checkVerticalCollisions();
-      }
+      _updatePlayerState();
+      _updatePlayerMovement(fixedDeltaTime);
+      _checkHorizontalCollisions();
+      _applyGravity(fixedDeltaTime);
+      _checkVerticalCollisions();
 
       accumulatedTime -= fixedDeltaTime;
     }
