@@ -12,7 +12,6 @@ import 'package:gomi/components/collision%20blocks/Water.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/normal_platform.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
-import 'package:gomi/components/custom_camera.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
@@ -22,7 +21,6 @@ class Level extends World with HasGameRef {
   late final Player player;
   Level(this.levelOption) : super();
   List<CollisionBlock> collisionBlocks = [];
-  static final _cameraViewport = Vector2(500, 540);
 
   @override
   FutureOr<void> onLoad() async {
