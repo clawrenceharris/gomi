@@ -17,10 +17,10 @@ class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
-    position,
+    super.position,
     required this.collisionBlocks,
     required this.character,
-  }) : super(position: position);
+  });
 
   late final SpriteAnimation idleAnimation;
 
@@ -47,7 +47,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    // debugMode = true;
 
     startingPosition = Vector2(position.x, position.y);
 
