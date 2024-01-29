@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:math';
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/components/actors/bottle_enemy.dart';
 import 'package:gomi/components/actors/bulb_enemy.dart';
@@ -14,25 +17,39 @@ import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
-class Level extends World {
+class Level extends World with HasGameRef {
   late TiledComponent level;
   final LevelOption levelOption;
   late final Player player;
   Level(this.levelOption) : super();
   List<CollisionBlock> collisionBlocks = [];
+  late final CameraComponent camera;
 
   @override
   FutureOr<void> onLoad() async {
     level =
         await TiledComponent.load("level-1.tmx", Vector2.all(Globals.tileSize));
-
     add(level);
+
     _createEnemies();
     _createGomiClones();
     _addCollisionBlocks();
     _spawnCollectibles();
     _createPlayer();
 
+    double maxSide = min(gameRef.size.x, gameRef.size.y);
+    camera = CameraComponent(
+      viewport: FixedAspectRatioViewport(aspectRatio: 0.5),
+      world: this,
+    )
+      ..viewfinder.anchor = Anchor.topLeft
+      ..viewport.size = Vector2(level.width, level.height)
+      ..viewfinder.visibleGameSize = Vector2(400, 400)
+      ..viewfinder.position = Vector2(level.width - 100, level.height - 100)
+      ..viewport.position = Vector2(0, 0);
+    camera.setBounds(Rectangle.fromPoints(Vector2(0, 0), Vector2(0, 200)));
+    gameRef.camera.follow(player, snap: false, maxSpeed: 100);
+    gameRef.add(camera);
     return super.onLoad();
   }
 

@@ -9,8 +9,13 @@ void main() async {
   await Flame.device.fullScreen();
   await Flame.device.setLandscape();
 
-  Gomi game = Gomi();
   runApp(
-    GameWidget(game: kDebugMode ? Gomi() : game),
+    MaterialApp(
+      home: Scaffold(
+        body: GameWidget(
+          game: Gomi(),
+        ),
+      ),
+    ),
   );
 }

@@ -1,10 +1,22 @@
+import 'dart:async';
+
 import 'package:flame/game.dart';
 import 'package:flame/src/sprite_animation.dart';
 import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/constants/globals.dart';
 
 class SyringeEnemy extends Enemy {
-  SyringeEnemy({position}) : super(position: position);
+  final double offNeg;
+  final double offPos;
+
+  SyringeEnemy({super.position, this.offNeg = 0, this.offPos = 0});
+
+  @override
+  FutureOr<void> onLoad() {
+    debugMode = true;
+    return super.onLoad();
+  }
+
   @override
   void loadAllAnimations() {
     idleAnimation = spriteAnimation("Idle", 12, Vector2(51, 22));

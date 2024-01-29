@@ -5,26 +5,24 @@ import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
 
 class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
+  final double offNeg;
+  final double offPos;
+  final double attackWidth;
   BottleEnemy({
-    position,
-    required double attackWidth,
-  }) : super(position: position) {
-    _attackWidth = attackWidth;
+    super.position,
+    this.offNeg = 0,
+    this.offPos = 0,
+    this.attackWidth = 0,
+  }) {
+    _startX = position.x;
+    _endX = position.x + attackWidth;
+    position.x = position.x + attackWidth / 2;
   }
-  double _attackWidth = 0;
   late double _startX;
   late double _endX;
   double _direction = 1;
 
   final double _speed = 90;
-
-  @override
-  Future<void> onLoad() async {
-    _startX = position.x;
-    _endX = position.x + _attackWidth;
-    position.x = position.x + _attackWidth / 2;
-    return super.onLoad();
-  }
 
   @override
   void loadAllAnimations() {
