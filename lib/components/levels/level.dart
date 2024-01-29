@@ -8,6 +8,7 @@ import 'package:gomi/components/actors/gomi_clone.dart';
 import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/components/actors/seed.dart';
 import 'package:gomi/components/actors/syringe_enemy.dart';
+import 'package:gomi/components/actors/tomato_enemy.dart';
 import 'package:gomi/components/collision%20blocks/Water.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/normal_platform.dart';
@@ -100,6 +101,13 @@ class Level extends World with HasGameRef {
           final enemy = BottleEnemy(
               position: Vector2(obj.x, obj.y), attackWidth: obj.width);
           add(enemy);
+          break;
+        case 'Tomato Enemy':
+          final enemy = TomatoEnemy(
+              position: Vector2(obj.x, obj.y), attackHeight: obj.height);
+          add(enemy);
+          break;
+        default:
           break;
       }
     }
