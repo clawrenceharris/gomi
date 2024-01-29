@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/components/actors/bottle_enemy.dart';
@@ -13,8 +14,9 @@ import 'package:gomi/components/collision%20blocks/normal_platform.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/components/levels/level_option.dart';
+import 'package:gomi/gomi.dart';
 
-class Level extends World {
+class Level extends World with HasGameRef<Gomi> {
   late TiledComponent level;
   final LevelOption levelOption;
   late final Player player;
@@ -32,6 +34,7 @@ class Level extends World {
     _addCollisionBlocks();
     _spawnCollectibles();
     _createPlayer();
+    gameRef.cam.follow(player, maxSpeed: 100, snap: true);
 
     return super.onLoad();
   }

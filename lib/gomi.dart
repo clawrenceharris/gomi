@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gomi/components/levels/level.dart';
 import 'package:gomi/components/levels/level_option.dart';
 
@@ -11,6 +12,7 @@ class Gomi extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   late final CameraComponent cam;
   late TiledComponent level;
+
   @override
   final World world = Level(LevelOption.level_1);
   @override
@@ -19,11 +21,12 @@ class Gomi extends FlameGame
     await images.loadAllImages();
 
     cam = CameraComponent.withFixedResolution(
-        world: world, width: 900, height: 540)
-      ..viewfinder.anchor = Anchor.topLeft
-      ..viewfinder.position = Vector2(0, 0);
+        world: world, width: 450, height: 285)
+      ..viewport.anchor = Anchor.topCenter;
 
     addAll([cam, world]);
     return super.onLoad();
   }
 }
+
+// Safety Paste
