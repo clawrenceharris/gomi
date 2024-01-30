@@ -5,7 +5,6 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
-import 'package:gomi/components/collisions/custom_hitbox.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/gomi.dart';
 
@@ -16,44 +15,32 @@ enum PlayerState {
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
-  Player({
-    super.position,
-    required this.collisionBlocks,
-    required this.character,
-  });
+  Player({position, required this.character, required this.collisionBlocks})
+      : super(position: position);
 
   late final SpriteAnimation idleAnimation;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 360;
-  final double _terminalVelocity = 300;
+  final double _jumpForce = 200;
+  final double _maxVelocity = 300;
   bool hasJumped = false;
 
   double directionX = 0;
   double moveSpeed = 100;
-  Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
   List<CollisionBlock> collisionBlocks;
-  CustomHitbox hitbox = CustomHitbox(
-    offsetX: 10,
-    offsetY: 0,
-    width: 14,
-    height: 28,
-  );
+
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
-
+  final hitbox = RectangleHitbox();
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+    // debugMode = true;
 
-    startingPosition = Vector2(position.x, position.y);
-
-    add(RectangleHitbox(
-      position: Vector2(hitbox.offsetX, hitbox.offsetY),
-      size: Vector2(hitbox.width, hitbox.height),
-    ));
+    debugMode = true;
+    add(hitbox);
     return super.onLoad();
   }
 
@@ -116,17 +103,11 @@ class Player extends SpriteAnimationGroupComponent
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
-    if (velocity.x < 0 && scale.x > 0) {
-      flipHorizontallyAroundCenter();
-    } else if (velocity.x > 0 && scale.x < 0) {
-      flipHorizontallyAroundCenter();
-    }
+    //TODO: Check if moving, set running state
 
-    //TODO: Check if moving, set running
+    //TODO: Check if Falling set to falling state
 
-    //TODO: Check if Falling set to falling
-
-    //TODO: Check if jumping, set to jumping
+    //TODO: Check if jumping, set to jumping state
 
     current = playerState;
   }
@@ -135,19 +116,18 @@ class Player extends SpriteAnimationGroupComponent
     if (hasJumped && isGrounded) _jump(dt);
 
     velocity.x = directionX * moveSpeed;
-    position.x += velocity.x * dt;
+    position += velocity * dt;
   }
 
   void _jump(double dt) {
     velocity.y = -_jumpForce;
-    position.y += velocity.y * dt;
     isGrounded = false;
-    hasJumped = false;
+    hasJumped = true;
   }
 
   void _applyGravity(double dt) {
     velocity.y += _gravity;
-    velocity.y = velocity.y.clamp(-_jumpForce, _terminalVelocity);
+    velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
     position.y += velocity.y * dt;
   }
 
@@ -157,12 +137,12 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.x > 0) {
             velocity.x = 0;
-            position.x = block.x - hitbox.offsetX - hitbox.width;
+            position.x = block.x - width;
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
-            position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
+            position.x = block.x + block.width;
             break;
           }
         }
@@ -176,7 +156,7 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - hitbox.height - hitbox.offsetY;
+            position.y = block.y - height;
             isGrounded = true;
             break;
           }
@@ -185,13 +165,13 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - hitbox.height - hitbox.offsetY;
+            position.y = block.y - height;
             isGrounded = true;
             break;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
-            position.y = block.y + block.height - hitbox.offsetY;
+            position.y = block.y + block.height;
           }
         }
       }
@@ -199,18 +179,17 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   bool _checkCollision(CollisionBlock block) {
-    final playerX = position.x + hitbox.offsetX;
-    final playerY = position.y + hitbox.offsetY;
-    final playerWidth = hitbox.width;
-    final playerHeight = hitbox.height;
+    final playerX = position.x;
+    final playerY = position.y;
+    final playerWidth = width;
+    final playerHeight = height;
 
     final blockX = block.x;
     final blockY = block.y;
     final blockWidth = block.width;
     final blockHeight = block.height;
 
-    final fixedX =
-        scale.x < 0 ? playerX - (hitbox.offsetX * 2) - playerWidth : playerX;
+    final fixedX = playerX;
     final fixedY = block is OneWayPlatform ? playerY + playerHeight : playerY;
 
     return (fixedY < blockY + blockHeight &&
