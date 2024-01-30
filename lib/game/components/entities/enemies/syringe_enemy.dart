@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flame/game.dart';
-import 'package:flame/src/sprite_animation.dart';
+import 'package:flame/components.dart';
 import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/constants/globals.dart';
 

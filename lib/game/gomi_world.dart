@@ -2,33 +2,30 @@ import 'dart:async';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/components/actors/bottle_enemy.dart';
-import 'package:gomi/components/actors/bulb_enemy.dart';
-import 'package:gomi/components/actors/gomi_clone.dart';
-import 'package:gomi/components/actors/player.dart';
-import 'package:gomi/components/actors/seed.dart';
-import 'package:gomi/components/actors/syringe_enemy.dart';
-import 'package:gomi/components/actors/tomato_enemy.dart';
-import 'package:gomi/components/collision%20blocks/Water.dart';
-import 'package:gomi/components/collision%20blocks/collision_block.dart';
-import 'package:gomi/components/collision%20blocks/normal_platform.dart';
-import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
+import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
+import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
+import 'package:gomi/game/components/entities/collectibles/gomi_clone.dart';
+import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/components/entities/collectibles/seed.dart';
+import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
+import 'package:gomi/game/components/entities/enemies/tomato_enemy.dart';
 import 'package:gomi/constants/globals.dart';
-import 'package:gomi/components/levels/level_option.dart';
+import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
+import 'package:gomi/game/components/collision%20blocks/normal_platform.dart';
+import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
+import 'package:gomi/game/components/collision%20blocks/water.dart';
 
-class Level extends World with HasGameRef {
+class GomiWorld extends World with HasGameRef {
   late TiledComponent level;
-  final LevelOption levelOption;
-  late final Player player;
-  Level(this.levelOption) : super();
-  List<CollisionBlock> collisionBlocks = [];
+  late final Player _player;
+  GomiWorld() : super();
+  final List<CollisionBlock> collisionBlocks = [];
 
   @override
   FutureOr<void> onLoad() async {
     level =
-        await TiledComponent.load("level-1.tmx", Vector2.all(Globals.tileSize));
+        await TiledComponent.load("level-2.tmx", Vector2.all(Globals.tileSize));
     add(level);
-
     _createEnemies();
     _createGomiClones();
     _addCollisionBlocks();
@@ -41,7 +38,7 @@ class Level extends World with HasGameRef {
       ..viewfinder.anchor = Anchor.center
       ..viewport.size = gameRef.size
       ..viewfinder.visibleGameSize = Vector2(300, 300);
-    gameRef.camera.follow(player, snap: false);
+    gameRef.camera.follow(_player, snap: true);
     return super.onLoad();
   }
 
@@ -57,23 +54,24 @@ class Level extends World with HasGameRef {
             position: Vector2(collision.x, collision.y),
             size: Vector2(collision.width, collision.height),
           );
-          collisionBlocks.add(platform);
           add(platform);
+          collisionBlocks.add(platform);
+
         case "Water":
           final platform = Water(
             position: Vector2(collision.x, collision.y),
             size: Vector2(collision.width, collision.height),
           );
-          collisionBlocks.add(platform);
           add(platform);
+          collisionBlocks.add(platform);
 
         default:
           final platform = NormalPlatform(
             position: Vector2(collision.x, collision.y),
             size: Vector2(collision.width, collision.height),
           );
-          collisionBlocks.add(platform);
           add(platform);
+          collisionBlocks.add(platform);
       }
     }
   }
@@ -115,8 +113,7 @@ class Level extends World with HasGameRef {
 
   //creates the trash bin clones
   void _createGomiClones() {
-    final ObjectGroup? charactersLayer =
-        level.tileMap.getLayer("main characters");
+    final ObjectGroup? charactersLayer = level.tileMap.getLayer("gomi clones");
     if (charactersLayer != null) {
       for (final TiledObject obj in charactersLayer.objects) {
         switch (obj.class_) {
@@ -148,33 +145,32 @@ class Level extends World with HasGameRef {
   }
 
   void _createPlayer() {
-    final ObjectGroup? charactersLayer =
-        level.tileMap.getLayer("main characters");
+    final ObjectGroup? charactersLayer = level.tileMap.getLayer("player");
 
     if (charactersLayer != null) {
       for (final TiledObject obj in charactersLayer.objects) {
         switch (obj.class_) {
-          case "Green Player":
-            player = Player(
+          case "Green Gomi":
+            _player = Player(
                 character: 'Green Gomi',
                 position: Vector2(obj.x, obj.y),
                 collisionBlocks: collisionBlocks);
-            add(player);
+            add(_player);
             break;
 
-          case "Red Player":
-            player = Player(
+          case "Red Gomi":
+            _player = Player(
                 character: 'Red Gomi',
                 position: Vector2(obj.x, obj.y),
                 collisionBlocks: collisionBlocks);
-            add(player);
+            add(_player);
             break;
           case "Blue Player":
-            player = Player(
+            _player = Player(
                 character: 'Blue Gomi',
                 position: Vector2(obj.x, obj.y),
                 collisionBlocks: collisionBlocks);
-            add(player);
+            add(_player);
             break;
 
           case "Black Player":

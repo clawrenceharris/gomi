@@ -2,13 +2,12 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:gomi/components/levels/level.dart';
-import 'package:gomi/components/levels/level_option.dart';
+import 'package:gomi/game/gomi_world.dart';
 
 class Gomi extends FlameGame
     with HasKeyboardHandlerComponents, HasCollisionDetection {
   @override
-  final World world = Level(LevelOption.level_1);
+  final World world = GomiWorld();
 
   @override
   FutureOr<void> onLoad() async {

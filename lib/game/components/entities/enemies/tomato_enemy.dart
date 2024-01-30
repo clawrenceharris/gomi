@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/components/actors/enemy.dart';
-import 'package:gomi/components/actors/player.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/actors/enemy.dart';
+import 'package:gomi/game/components/actors/player.dart';
 
 class TomatoEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   final double attackHeight;
