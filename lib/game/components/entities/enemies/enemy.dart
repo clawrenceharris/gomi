@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'dart:async';
 
-import 'package:gomi/gomi.dart';
+import 'package:gomi/game/gomi_game.dart';
 
 enum EnemyState {
   idle,

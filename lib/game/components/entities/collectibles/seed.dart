@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/components/actors/player.dart';
-import 'package:gomi/components/collisions/custom_hitbox.dart';
-import 'package:gomi/gomi.dart';
+import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/components/collisions/custom_hitbox.dart';
+import 'package:gomi/game/gomi_game.dart';
 
 class Seed extends SpriteAnimationComponent
     with HasGameRef<Gomi>, CollisionCallbacks {
