@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/components/collision%20blocks/collision_block.dart';
-import 'package:gomi/components/collision%20blocks/one_way_platform.dart';
+import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
+import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/constants/globals.dart';
-import 'package:gomi/gomi.dart';
+import 'package:gomi/game/gomi_game.dart';
 
 enum PlayerState {
   idle,
@@ -15,11 +15,18 @@ enum PlayerState {
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
-  Player({position, required this.character, required this.collisionBlocks})
-      : super(position: position);
+  Player({
+    position,
+    required this.character,
+    required this.collisionBlocks,
+    required this.addScore,
+    required this.resetScore,
+  }) : super(position: position);
 
   late final SpriteAnimation idleAnimation;
 
+  final void Function({int amount}) addScore;
+  final VoidCallback resetScore;
   final double _gravity = 9.8;
   final double _jumpForce = 200;
   final double _maxVelocity = 300;
@@ -54,6 +61,7 @@ class Player extends SpriteAnimationGroupComponent
       _checkHorizontalCollisions();
       _applyGravity(fixedDeltaTime);
       _checkVerticalCollisions();
+      position += velocity * dt;
 
       accumulatedTime -= fixedDeltaTime;
     }
@@ -68,7 +76,6 @@ class Player extends SpriteAnimationGroupComponent
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
     final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
         keysPressed.contains(LogicalKeyboardKey.arrowRight);
-
     directionX += isLeftKeyPressed ? -1 : 0;
     directionX += isRightKeyPressed ? 1 : 0;
 
@@ -91,7 +98,7 @@ class Player extends SpriteAnimationGroupComponent
 
   SpriteAnimation _spriteAnimation(String state, int amount) {
     return SpriteAnimation.fromFrameData(
-      game.images.fromCache('Main Characters/Green Gomi/$state.png'),
+      game.images.fromCache('main_characters/$character/$state.png'),
       SpriteAnimationData.sequenced(
         amount: amount,
         stepTime: Globals.animationStepTime,
@@ -113,13 +120,12 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _updatePlayerMovement(double dt) {
-    if (hasJumped && isGrounded) _jump(dt);
+    if (hasJumped && isGrounded) jump(dt);
 
     velocity.x = directionX * moveSpeed;
-    position += velocity * dt;
   }
 
-  void _jump(double dt) {
+  void jump(double dt) {
     velocity.y = -_jumpForce;
     isGrounded = false;
     hasJumped = true;

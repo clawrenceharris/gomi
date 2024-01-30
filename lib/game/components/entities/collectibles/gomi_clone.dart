@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:gomi/constants/globals.dart';
-import 'package:gomi/gomi.dart';
+import 'package:gomi/game/gomi_game.dart';
 
 enum PlayerState {
   idle,

@@ -71,7 +71,7 @@
  <objectgroup id="6" name="collectibles"/>
  <objectgroup id="2" name="enemies"/>
  <objectgroup id="3" name="player">
-  <object id="1" name="Green Gomi" type="Green Gomi" x="316.422" y="540.197" width="22" height="26"/>
+  <object id="1" name="Green Gomi" type="green_gomi" x="316.422" y="540.197" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="4" name="gomi clones"/>
 </map>

@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
-import 'package:gomi/components/actors/enemy.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/entities/enemies/enemy.dart';
 
 class BulbEnemy extends Enemy {
   BulbEnemy({position}) : super(position: position);
