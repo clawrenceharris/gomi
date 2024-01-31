@@ -54,7 +54,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    // debugMode = true;
 
     debugMode = true;
     add(hitbox);
