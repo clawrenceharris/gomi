@@ -2,9 +2,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/input.dart';
-import 'package:flame_audio/flame_audio.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
