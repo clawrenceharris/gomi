@@ -31,6 +31,7 @@ class Gomi extends FlameGame<GomiWorld>
   Future<void> onLoad() async {
     //Load all images into cache
     await images.loadAllImages();
+
     // With the `TextPaint` we define what properties the text that we are going
     // to render will have, like font family, size and color in this instance.
     final textRenderer = TextPaint(
@@ -51,13 +52,9 @@ class Gomi extends FlameGame<GomiWorld>
       textRenderer: textRenderer,
     );
 
-    // The scoreComponent is added to the viewport, which means that even if the
-    // camera's viewfinder move around and looks at different positions in the
-    // world, the score is always static to the viewport.
     camera.viewport.add(scoreComponent);
-    // Here we add a listener to the notifier that is updated when the player
-    // gets a new point, in the callback we update the text of the
-    // `scoreComponent`.
+
+    // add a listener to the points notifier and update the text
     world.scoreNotifier.addListener(() {
       scoreComponent.text =
           scoreText.replaceFirst('0', '${world.scoreNotifier.value}');
@@ -75,7 +72,9 @@ class Gomi extends FlameGame<GomiWorld>
     world.player.directionX += isLeftKeyPressed ? -1 : 0;
     world.player.directionX += isRightKeyPressed ? 1 : 0;
 
-    world.player.hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
+    if (keysPressed.contains(LogicalKeyboardKey.space)) {
+      world.player.jump();
+    }
 
     return super.onKeyEvent(event, keysPressed);
   }

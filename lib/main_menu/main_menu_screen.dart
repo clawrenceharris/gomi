@@ -25,10 +25,10 @@ class MainMenuScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/main_characters/blue_gomi/run.png',
-                filterQuality: FilterQuality.none,
-              ),
+              // Image.asset(
+              //   '',
+              //   filterQuality: FilterQuality.none,
+              // ),
               _gap,
               Transform.rotate(
                 angle: -0.1,
