@@ -22,13 +22,12 @@ mixin HasPlayerRef {
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, CollisionCallbacks {
   String character;
-  Player({
-    position,
-    required this.character,
-    required this.collisionBlocks,
-    required this.addScore,
-    required this.resetScore,
-  }) : super(position: position);
+  Player(
+      {required this.character,
+      required this.collisionBlocks,
+      required this.addScore,
+      required this.resetScore,
+      super.position});
 
   final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
@@ -36,9 +35,13 @@ class Player extends SpriteAnimationGroupComponent
   final void Function({int amount}) addScore;
   final VoidCallback resetScore;
   final double _gravity = 9.8;
-  final double _jumpForce = 200;
-  final double _maxVelocity = 300;
+  final double _jumpForce = 150;
+  bool canDoubleJump = true;
   bool hasJumped = false;
+  int _jumpCount = 0;
+
+  final double _maxVelocity = 300;
+
   double directionX = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
@@ -51,7 +54,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    // debugMode = true;
 
     debugMode = true;
     add(hitbox);
@@ -68,7 +70,6 @@ class Player extends SpriteAnimationGroupComponent
       _checkHorizontalCollisions();
       _updateVelocityY(fixedDeltaTime);
       _checkVerticalCollisions();
-      _updateJump(fixedDeltaTime);
       _updatePlayerPosition(fixedDeltaTime);
 
       accumulatedTime -= fixedDeltaTime;
@@ -116,18 +117,23 @@ class Player extends SpriteAnimationGroupComponent
     current = playerState;
   }
 
-  void _updateJump(double dt) {
-    if (hasJumped && isGrounded) jump(dt);
+  void jump() {
+    if (isGrounded) {
+      // Player is grounded, perform a regular jump
+      velocity.y = -_jumpForce;
+      _jumpCount = 1;
+      isGrounded = false;
+    } else if (canDoubleJump && _jumpCount < 2) {
+      // Perform a double jump
+      velocity.y = -_jumpForce;
+      _jumpCount =
+          2; // Set jump count to 2 to indicate a double jump has been used
+      canDoubleJump = false; // Prevent further double jumps until grounded
+    }
   }
 
   void _updateVelocityX(double dt) {
     velocity.x = directionX * moveSpeed;
-  }
-
-  void jump(double dt) {
-    velocity.y = -_jumpForce;
-    isGrounded = false;
-    hasJumped = true;
   }
 
   void _updateVelocityY(double dt) {
@@ -147,7 +153,7 @@ class Player extends SpriteAnimationGroupComponent
           }
           if (velocity.x < 0) {
             velocity.x = 0;
-            position.x = block.x + block.width + hitbox.width;
+            position.x = block.x + block.width;
             break;
           }
         }
@@ -163,6 +169,9 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height;
             isGrounded = true;
+            canDoubleJump = true;
+            _jumpCount = 0;
+
             break;
           }
         }
@@ -172,6 +181,8 @@ class Player extends SpriteAnimationGroupComponent
             velocity.y = 0;
             position.y = block.y - hitbox.height;
             isGrounded = true;
+            canDoubleJump = true;
+            _jumpCount = 0;
             break;
           }
           if (velocity.y < 0) {
