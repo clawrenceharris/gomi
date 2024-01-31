@@ -70,12 +70,8 @@ class GomiWorld extends World
       ..viewfinder.visibleGameSize = Vector2(150, 250);
 
     //anchor that will be used to follow the player at a given offset x and y
-    PlayerCameraAnchor anchor = PlayerCameraAnchor(
-        position: player.position,
-        size: player.size,
-        player: player,
-        offsetX: 80,
-        offsetY: -50);
+    PlayerCameraAnchor anchor =
+        PlayerCameraAnchor(player: player, offsetX: 80, offsetY: -50);
     add(anchor);
     game.camera.follow(anchor);
     game.camera.backdrop.add(cameraParallax);
