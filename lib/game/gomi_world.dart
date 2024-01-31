@@ -1,6 +1,8 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/parallax_background.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
@@ -11,6 +13,7 @@ import 'package:gomi/game/components/entities/collectibles/gomi_clone.dart';
 import 'package:gomi/game/components/entities/collectibles/seed.dart';
 import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import '../level_selection/levels.dart';
@@ -25,20 +28,15 @@ class GomiWorld extends World
     required this.playerProgress,
   });
 
-  /// The properties of the current level.
   final GameLevel level;
 
   late TiledComponent tiledLevel;
 
   List<CollisionBlock> collisionBlocks = [];
 
-  /// Used to see what the current progress of the player is and to update the
-  /// progress if a level is finished.
+  // Used to see what the current progress of the player is and to update the
+  // progress if a level is finished.
   final PlayerProgress playerProgress;
-
-  /// The speed is used for determining how fast the background should pass by
-  /// and how fast the enemies and obstacles should move.
-  // late double speed = _calculateSpeed(level.number);
 
   /// In the [scoreNotifier] we keep track of what the current score is, and if
   /// other parts of the code is interested in when the score is updated they
@@ -47,18 +45,16 @@ class GomiWorld extends World
   late final CameraComponent camera;
   late final DateTime timeStarted;
   Vector2 get size => (parent as FlameGame).size;
+
+  //the stars earned for the level
   int stars = 0;
 
-  /// The random number generator that is used to spawn periodic components.
-
-  /// The gravity is defined in virtual pixels per second squared.
-  /// These pixels are in relation to how big the [FixedResolutionViewport] is.
-  final double gravity = 30;
-
+  final cameraParallax = ParallaxBackground(speed: 0);
   @override
   Future<void> onLoad() async {
-    //initialze the tiled level
-    tiledLevel = await TiledComponent.load('level-2.tmx', Vector2.all(16));
+    //load the tiled level
+    tiledLevel = await TiledComponent.load(
+        level.pathname, Vector2.all(Globals.tileSize));
 
     add(tiledLevel);
 
@@ -67,13 +63,22 @@ class GomiWorld extends World
     _addGomiClones();
     _addCollisionBlocks();
     _addCollectibles();
-    camera = CameraComponent(
-        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 9))
+    game.camera = CameraComponent(
+        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
       ..viewport.size = size
-      ..viewfinder.visibleGameSize = Vector2(400, 500);
-    camera.follow(player);
+      ..viewfinder.anchor = Anchor.center
+      ..viewfinder.visibleGameSize = Vector2(150, 250);
 
-    game.add(camera);
+    //anchor that will be used to follow the player at a given offset x and y
+    PlayerCameraAnchor anchor = PlayerCameraAnchor(
+        position: player.position,
+        size: player.size,
+        player: player,
+        offsetX: 80,
+        offsetY: -50);
+    add(anchor);
+    game.camera.follow(anchor);
+    game.camera.backdrop.add(cameraParallax);
 
     // When the player takes a new point we check if the score is enough to
     // pass the level and if it is we calculate the stars earned for the level,
@@ -82,11 +87,17 @@ class GomiWorld extends World
     scoreNotifier.addListener(() {
       if (scoreNotifier.value >= level.winScore) {
         //TODO: calculate the amount of stars the player earned for the level
-        playerProgress.setLevelFinished(level.number, 0);
+        playerProgress.setLevelFinished(level.number, stars);
         game.pauseEngine();
         game.overlays.add(GameScreen.winDialogKey);
       }
     });
+  }
+
+  @override
+  void update(double dt) {
+    cameraParallax.speed = player.velocity.x;
+    super.update(dt);
   }
 
   @override
@@ -104,6 +115,7 @@ class GomiWorld extends World
   void _addPlayer() {
     final layer = getTiledLayer("player");
 
+    //there can only be one player in the level so get the first and only one
     final obj = layer.objects[0];
     final player = Player(
         addScore: addScore,
@@ -123,24 +135,6 @@ class GomiWorld extends World
   /// Sets the player's score to 0 again.
   void resetScore() {
     scoreNotifier.value = 0;
-  }
-
-  @override
-  void onTapDown(TapDownEvent event) {
-    // Which direction the player should jump.
-    // If the tap is underneath the player no jump is triggered, but if it is
-    // above the player it triggers a jump, even though the player might be in
-    // the air. This makes it possible to later implement double jumping inside
-    // of the `player` class if one would want to.
-
-    player.hasJumped = true;
-    super.onTapDown(event);
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    player.hasJumped = false;
-    super.onTapUp(event);
   }
 
   void _addCollisionBlocks() {

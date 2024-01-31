@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+
 import 'package:gomi/game/components/entities/player.dart';
 
 class PlayerCameraAnchor extends PositionComponent {
@@ -20,5 +21,6 @@ class PlayerCameraAnchor extends PositionComponent {
     position =
         Vector2(player.position.x + offsetX, player.position.y + offsetY);
     super.update(dt);
+
   }
 }
