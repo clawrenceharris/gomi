@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/input.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/constants/globals.dart';
@@ -12,8 +15,15 @@ enum PlayerState {
   idle,
 }
 
+mixin HasPlayerRef {
+  late final Player player;
+  setPlayer(Player player) {
+    this.player = player;
+  }
+}
+
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
+    with HasGameRef<Gomi>, CollisionCallbacks {
   String character;
   Player({
     position,
@@ -23,6 +33,7 @@ class Player extends SpriteAnimationGroupComponent
     required this.resetScore,
   }) : super(position: position);
 
+  final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
 
   final void Function({int amount}) addScore;
@@ -31,12 +42,11 @@ class Player extends SpriteAnimationGroupComponent
   final double _jumpForce = 200;
   final double _maxVelocity = 300;
   bool hasJumped = false;
-
   double directionX = 0;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-  List<CollisionBlock> collisionBlocks;
+  final List<CollisionBlock> collisionBlocks;
 
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
@@ -69,21 +79,6 @@ class Player extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
-  @override
-  bool onKeyEvent(RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    directionX = 0;
-    final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-    final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
-        keysPressed.contains(LogicalKeyboardKey.arrowRight);
-    directionX += isLeftKeyPressed ? -1 : 0;
-    directionX += isRightKeyPressed ? 1 : 0;
-
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
-
-    return super.onKeyEvent(event, keysPressed);
-  }
-
   void _loadAllAnimations() {
     idleAnimation = _spriteAnimation('Idle', 13);
 
@@ -98,7 +93,7 @@ class Player extends SpriteAnimationGroupComponent
 
   SpriteAnimation _spriteAnimation(String state, int amount) {
     return SpriteAnimation.fromFrameData(
-      game.images.fromCache('main_characters/$character/$state.png'),
+      game.images.fromCache('gomi/$character/$state.png'),
       SpriteAnimationData.sequenced(
         amount: amount,
         stepTime: Globals.animationStepTime,
@@ -143,12 +138,12 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.x > 0) {
             velocity.x = 0;
-            position.x = block.x - width;
+            position.x = block.x - hitbox.width;
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
-            position.x = block.x + block.width;
+            position.x = block.x + block.width + hitbox.width;
             break;
           }
         }
@@ -162,7 +157,7 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - height;
+            position.y = block.y - hitbox.height;
             isGrounded = true;
             break;
           }
@@ -171,7 +166,7 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - height;
+            position.y = block.y - hitbox.height;
             isGrounded = true;
             break;
           }

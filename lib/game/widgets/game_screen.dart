@@ -27,34 +27,36 @@ class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioController = context.read<AudioController>();
-    return Scaffold(
-      body: GameWidget<Gomi>(
-        key: const Key('play session'),
-        game: Gomi(
-          level: level,
-          playerProgress: context.read<PlayerProgress>(),
-          audioController: audioController,
-        ),
-        overlayBuilderMap: {
-          backButtonKey: (BuildContext context, Gomi game) {
-            return Positioned(
-              top: 20,
-              right: 10,
-              child: NesButton(
-                type: NesButtonType.normal,
-                onPressed: GoRouter.of(context).pop,
-                child: NesIcon(iconData: NesIcons.leftArrowIndicator),
-              ),
-            );
-          },
-          winDialogKey: (BuildContext context, Gomi game) {
-            return GameWinDialog(
+    return Focus(
+        focusNode: FocusNode(),
+        child: Scaffold(
+          body: GameWidget<Gomi>(
+            key: const Key('play session'),
+            game: Gomi(
               level: level,
-              stars: game.world.levelCompletedIn,
-            );
-          },
-        },
-      ),
-    );
+              playerProgress: context.read<PlayerProgress>(),
+              audioController: audioController,
+            ),
+            overlayBuilderMap: {
+              backButtonKey: (BuildContext context, Gomi game) {
+                return Positioned(
+                  top: 20,
+                  right: 10,
+                  child: NesButton(
+                    type: NesButtonType.normal,
+                    onPressed: GoRouter.of(context).pop,
+                    child: NesIcon(iconData: NesIcons.leftArrowIndicator),
+                  ),
+                );
+              },
+              winDialogKey: (BuildContext context, Gomi game) {
+                return GameWinDialog(
+                  level: level,
+                  stars: game.world.stars,
+                );
+              },
+            },
+          ),
+        ));
   }
 }

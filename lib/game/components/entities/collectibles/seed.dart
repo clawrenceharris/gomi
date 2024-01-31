@@ -3,24 +3,22 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/game/components/entities/player.dart';
-import 'package:gomi/game/components/collisions/custom_hitbox.dart';
 import 'package:gomi/game/gomi_game.dart';
 
 class Seed extends SpriteAnimationComponent
     with HasGameRef<Gomi>, CollisionCallbacks {
-  final String seed;
   Seed({
-    this.seed = 'Oak Seed',
+    required this.seed,
     position,
     size,
   }) : super(
           position: position,
           size: size,
         );
-
+  final String seed;
+  final hitbox = RectangleHitbox(collisionType: CollisionType.passive);
   bool _collected = false;
   final double stepTime = 0.1;
-  final hitbox = CustomHitbox(offsetX: 0, offsetY: 0, width: 36, height: 34);
 
   @override
   FutureOr<void> onLoad() {
@@ -32,10 +30,7 @@ class Seed extends SpriteAnimationComponent
           textureSize: Vector2.all(22),
         ));
 
-    add(RectangleHitbox(
-        position: Vector2(hitbox.offsetX, hitbox.offsetY),
-        size: Vector2(hitbox.width, hitbox.height),
-        collisionType: CollisionType.passive));
+    add(hitbox);
     return super.onLoad();
   }
 

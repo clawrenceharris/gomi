@@ -1,27 +1,16 @@
-import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_world.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 
-/// This is the base of the game which is added to the [GameWidget].
-///
-/// This class defines a few different properties for the game:
-///  - That it should run collision detection, this is done through the
-///  [HasCollisionDetection] mixin.
-///  - That it should have a [FixedResolutionViewport] with a size of 1600x720,
-///  this means that even if you resize the window, the game itself will keep
-///  the defined virtual resolution.
-///  - That the default world that the camera is looking at should be the
-///  [EndlessWorld].
-///
-/// Note that both of the last are passed in to the super constructor, they
-/// could also be set inside of `onLoad` for example.
-class Gomi extends FlameGame<GomiWorld> with HasCollisionDetection {
+class Gomi extends FlameGame<GomiWorld>
+    with HasCollisionDetection, KeyboardEvents {
   Gomi({
     required this.level,
     required PlayerProgress playerProgress,
@@ -73,5 +62,21 @@ class Gomi extends FlameGame<GomiWorld> with HasCollisionDetection {
       scoreComponent.text =
           scoreText.replaceFirst('0', '${world.scoreNotifier.value}');
     });
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    world.player.directionX = 0;
+    final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowLeft);
+    final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyD) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowRight);
+    world.player.directionX += isLeftKeyPressed ? -1 : 0;
+    world.player.directionX += isRightKeyPressed ? 1 : 0;
+
+    world.player.hasJumped = keysPressed.contains(LogicalKeyboardKey.space);
+
+    return super.onKeyEvent(event, keysPressed);
   }
 }

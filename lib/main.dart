@@ -23,48 +23,46 @@ class MyGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-        focusNode: FocusNode(),
-        child: AppLifecycleObserver(
-          child: MultiProvider(
-            providers: [
-              Provider(create: (context) => Palette()),
-              ChangeNotifierProvider(create: (context) => PlayerProgress()),
-              Provider(create: (context) => SettingsController()),
-              // Set up audio.
-              ProxyProvider2<SettingsController, AppLifecycleStateNotifier,
-                  AudioController>(
-                // Ensures that music starts immediately.
-                lazy: false,
-                create: (context) => AudioController(),
-                update: (context, settings, lifecycleNotifier, audio) {
-                  audio!.attachDependencies(lifecycleNotifier, settings);
-                  return audio;
-                },
-                dispose: (context, audio) => audio.dispose(),
-              ),
-            ],
-            child: Builder(builder: (context) {
-              final palette = context.watch<Palette>();
-
-              return MaterialApp.router(
-                title: 'Endless Runner',
-                theme: flutterNesTheme().copyWith(
-                  colorScheme: ColorScheme.fromSeed(
-                    seedColor: palette.seed.color,
-                    background: palette.backgroundMain.color,
-                  ),
-                  textTheme: GoogleFonts.pressStart2pTextTheme().apply(
-                    bodyColor: palette.text.color,
-                    displayColor: palette.text.color,
-                  ),
-                ),
-                routeInformationProvider: router.routeInformationProvider,
-                routeInformationParser: router.routeInformationParser,
-                routerDelegate: router.routerDelegate,
-              );
-            }),
+    return AppLifecycleObserver(
+      child: MultiProvider(
+        providers: [
+          Provider(create: (context) => Palette()),
+          ChangeNotifierProvider(create: (context) => PlayerProgress()),
+          Provider(create: (context) => SettingsController()),
+          // Set up audio.
+          ProxyProvider2<SettingsController, AppLifecycleStateNotifier,
+              AudioController>(
+            // Ensures that music starts immediately.
+            lazy: false,
+            create: (context) => AudioController(),
+            update: (context, settings, lifecycleNotifier, audio) {
+              audio!.attachDependencies(lifecycleNotifier, settings);
+              return audio;
+            },
+            dispose: (context, audio) => audio.dispose(),
           ),
-        ));
+        ],
+        child: Builder(builder: (context) {
+          final palette = context.watch<Palette>();
+
+          return MaterialApp.router(
+            title: 'Gomi Hero',
+            theme: flutterNesTheme().copyWith(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: palette.seed.color,
+                background: palette.backgroundMain.color,
+              ),
+              textTheme: GoogleFonts.pressStart2pTextTheme().apply(
+                bodyColor: palette.text.color,
+                displayColor: palette.text.color,
+              ),
+            ),
+            routeInformationProvider: router.routeInformationProvider,
+            routeInformationParser: router.routeInformationParser,
+            routerDelegate: router.routerDelegate,
+          );
+        }),
+      ),
+    );
   }
 }

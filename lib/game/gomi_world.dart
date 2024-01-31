@@ -1,6 +1,7 @@
 import 'package:flame/camera.dart';
+import 'package:flame/input.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter/services.dart';
+import 'package:gomi/game/components/background.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
@@ -15,12 +16,10 @@ import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiWorld extends World
-    with KeyboardHandler, TapCallbacks, HasGameReference {
+class GomiWorld extends World with HasGameReference, HasPlayerRef {
   GomiWorld({
     required this.level,
     required this.playerProgress,
@@ -45,11 +44,10 @@ class GomiWorld extends World
   /// other parts of the code is interested in when the score is updated they
   /// can listen to it and act on the updated value.
   final scoreNotifier = ValueNotifier(0);
-  late final Player player;
   late final CameraComponent camera;
   late final DateTime timeStarted;
   Vector2 get size => (parent as FlameGame).size;
-  int levelCompletedIn = 0;
+  int stars = 0;
 
   /// The random number generator that is used to spawn periodic components.
 
@@ -70,14 +68,13 @@ class GomiWorld extends World
     _addCollisionBlocks();
     _addCollectibles();
     camera = CameraComponent(
-        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 1.0))
+        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 2 / 3))
       ..viewfinder.anchor = Anchor.center
       ..viewport.size = size
       ..viewfinder.visibleGameSize = Vector2(400, 500);
-    game.add(camera);
     camera.follow(player);
 
-    // game.camera.backdrop = Background(speed: 0);
+    game.add(camera);
 
     // When the player takes a new point we check if the score is enough to
     // pass the level and if it is we calculate the stars earned for the level,
@@ -116,13 +113,14 @@ class GomiWorld extends World
     final layer = getTiledLayer("player");
 
     final obj = layer.objects[0];
-    player = Player(
+    final player = Player(
         addScore: addScore,
         resetScore: resetScore,
         character: obj.class_,
         position: Vector2(obj.x, obj.y),
         collisionBlocks: collisionBlocks);
     add(player);
+    setPlayer(player);
   }
 
   /// Gives the player points, with a default value +1 points.
@@ -137,22 +135,23 @@ class GomiWorld extends World
 
   /// [onTapDown] is called when the player taps the screen and then calculates
   /// if and how the player should jump.
-  @override
-  void onTapDown(TapDownEvent event) {
-    // Which direction the player should jump.
-    // If the tap is underneath the player no jump is triggered, but if it is
-    // above the player it triggers a jump, even though the player might be in
-    // the air. This makes it possible to later implement double jumping inside
-    // of the `player` class if one would want to.
+  // @override
+  // void onTapDown(TapDownEvent event) {
+  //   // Which direction the player should jump.
+  //   // If the tap is underneath the player no jump is triggered, but if it is
+  //   // above the player it triggers a jump, even though the player might be in
+  //   // the air. This makes it possible to later implement double jumping inside
+  //   // of the `player` class if one would want to.
 
-    player.jump(0.5);
-  }
+  //   player.jump(0.5);
+  //   super.onTapDown(event);
+  // }
 
-  @override
-  void onTapUp(TapUpEvent event) {
-    player.hasJumped = false;
-    super.onTapUp(event);
-  }
+  // @override
+  // void onTapUp(TapUpEvent event) {
+  //   player.hasJumped = false;
+  //   super.onTapUp(event);
+  // }
 
   /// A helper function to define how fast a certain level should be.
 
@@ -240,6 +239,7 @@ class GomiWorld extends World
       switch (obj.class_) {
         case 'Seed':
           final collectible = Seed(
+              seed: "Oak",
               position: Vector2(obj.x, obj.y),
               size: Vector2(obj.width, obj.height));
           add(collectible);

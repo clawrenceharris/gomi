@@ -73,11 +73,13 @@ flutter:
     - assets/images/
     - assets/sfx/
     - assets/music/
+    - assets/images/scenery/
+
     - assets/fonts/Press_Start_2P/
-    - assets/images/main_characters/green_gomi/
-    - assets/images/main_characters/red_gomi/
-    - assets/images/main_characters/blue_gomi/
-    - assets/images/main_characters/black_gomi/
+    - assets/images/gomi/green_gomi/
+    - assets/images/gomi/red_gomi/
+    - assets/images/gomi/blue_gomi/
+    - assets/images/gomi/black_gomi/
     - assets/images/enemies/light_bulb/
     - assets/images/enemies/tomato/
     - assets/images/enemies/syringe/

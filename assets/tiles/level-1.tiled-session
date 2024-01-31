@@ -20,7 +20,11 @@
         },
         "level-1.tmx": {
             "scale": 1.2035,
+<<<<<<< Updated upstream
             "selectedLayer": 2,
+=======
+            "selectedLayer": 4,
+>>>>>>> Stashed changes
             "viewCenter": {
                 "x": 449.9376817615288,
                 "y": 238.88658080598253
