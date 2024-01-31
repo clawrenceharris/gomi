@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 
-class CameraParallax extends ParallaxComponent {
-  CameraParallax({required this.speed});
+class ParallaxBackground extends ParallaxComponent {
+  ParallaxBackground({required this.speed});
 
   double speed;
   final layers = [
