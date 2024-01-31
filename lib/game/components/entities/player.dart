@@ -67,16 +67,21 @@ class Player extends SpriteAnimationGroupComponent
 
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
-      _updatePlayerMovement(fixedDeltaTime);
+      _updateVelocityX(fixedDeltaTime);
       _checkHorizontalCollisions();
-      _applyGravity(fixedDeltaTime);
+      _updateVelocityY(fixedDeltaTime);
       _checkVerticalCollisions();
-      position += velocity * dt;
+      _updateJump(fixedDeltaTime);
+      _updatePlayerPosition(fixedDeltaTime);
 
       accumulatedTime -= fixedDeltaTime;
     }
 
     super.update(dt);
+  }
+
+  void _updatePlayerPosition(double dt) {
+    position += velocity * dt;
   }
 
   void _loadAllAnimations() {
@@ -114,9 +119,11 @@ class Player extends SpriteAnimationGroupComponent
     current = playerState;
   }
 
-  void _updatePlayerMovement(double dt) {
+  void _updateJump(double dt) {
     if (hasJumped && isGrounded) jump(dt);
+  }
 
+  void _updateVelocityX(double dt) {
     velocity.x = directionX * moveSpeed;
   }
 
@@ -126,7 +133,7 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = true;
   }
 
-  void _applyGravity(double dt) {
+  void _updateVelocityY(double dt) {
     velocity.y += _gravity;
     velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
     position.y += velocity.y * dt;

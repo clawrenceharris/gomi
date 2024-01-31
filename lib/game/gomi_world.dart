@@ -1,7 +1,5 @@
 import 'package:flame/camera.dart';
-import 'package:flame/input.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:gomi/game/components/background.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
@@ -68,8 +66,7 @@ class GomiWorld extends World with HasGameReference, HasPlayerRef {
     _addCollisionBlocks();
     _addCollectibles();
     camera = CameraComponent(
-        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 2 / 3))
-      ..viewfinder.anchor = Anchor.center
+        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 9))
       ..viewport.size = size
       ..viewfinder.visibleGameSize = Vector2(400, 500);
     camera.follow(player);
@@ -88,12 +85,6 @@ class GomiWorld extends World with HasGameReference, HasPlayerRef {
         game.overlays.add(GameScreen.winDialogKey);
       }
     });
-  }
-
-  @override
-  void update(double dt) {
-    camera.viewfinder.position = player.position;
-    super.update(dt);
   }
 
   @override
