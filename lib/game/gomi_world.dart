@@ -1,4 +1,5 @@
 import 'package:flame/camera.dart';
+import 'package:flame/events.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
@@ -17,7 +18,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiWorld extends World with HasGameReference, HasPlayerRef {
+class GomiWorld extends World
+    with HasGameReference, HasPlayerRef, TapCallbacks {
   GomiWorld({
     required this.level,
     required this.playerProgress,
@@ -90,8 +92,7 @@ class GomiWorld extends World with HasGameReference, HasPlayerRef {
   @override
   void onMount() {
     super.onMount();
-    // When the world is mounted in the game we add a back button widget as an
-    // overlay so that the player can go back to the previous screen.
+    // When the world is mounted in the game add a back button widget as an overlay
     game.overlays.add(GameScreen.backButtonKey);
   }
 
@@ -124,27 +125,23 @@ class GomiWorld extends World with HasGameReference, HasPlayerRef {
     scoreNotifier.value = 0;
   }
 
-  /// [onTapDown] is called when the player taps the screen and then calculates
-  /// if and how the player should jump.
-  // @override
-  // void onTapDown(TapDownEvent event) {
-  //   // Which direction the player should jump.
-  //   // If the tap is underneath the player no jump is triggered, but if it is
-  //   // above the player it triggers a jump, even though the player might be in
-  //   // the air. This makes it possible to later implement double jumping inside
-  //   // of the `player` class if one would want to.
+  @override
+  void onTapDown(TapDownEvent event) {
+    // Which direction the player should jump.
+    // If the tap is underneath the player no jump is triggered, but if it is
+    // above the player it triggers a jump, even though the player might be in
+    // the air. This makes it possible to later implement double jumping inside
+    // of the `player` class if one would want to.
 
-  //   player.jump(0.5);
-  //   super.onTapDown(event);
-  // }
+    player.hasJumped = true;
+    super.onTapDown(event);
+  }
 
-  // @override
-  // void onTapUp(TapUpEvent event) {
-  //   player.hasJumped = false;
-  //   super.onTapUp(event);
-  // }
-
-  /// A helper function to define how fast a certain level should be.
+  @override
+  void onTapUp(TapUpEvent event) {
+    player.hasJumped = false;
+    super.onTapUp(event);
+  }
 
   void _addCollisionBlocks() {
     final layer = getTiledLayer('collisions');
