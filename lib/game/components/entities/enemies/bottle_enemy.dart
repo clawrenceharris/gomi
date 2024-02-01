@@ -1,8 +1,8 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
-import 'package:gomi/constants/globals.dart';
 
 class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
   final double offNeg;
@@ -26,25 +26,10 @@ class BottleEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
 
   @override
   void loadAllAnimations() {
-    idleAnimation = spriteAnimation("Idle", 9, Vector2(18, 25));
-    attackAnimation = spriteAnimation("Attack", 11, Vector2(18, 25));
+    idleAnimation = AnimationConfigs.bottleEnemy.idle();
+
+    attackAnimation = AnimationConfigs.bottleEnemy.attacking();
     super.loadAllAnimations();
-
-    animations = {
-      EnemyState.idle: idleAnimation,
-      EnemyState.attacking: attackAnimation
-    };
-  }
-
-  @override
-  SpriteAnimation spriteAnimation(
-      String state, int amount, Vector2 textureSize) {
-    return SpriteAnimation.fromFrameData(
-        game.images.fromCache('Enemies/Water Bottle/$state.png'),
-        SpriteAnimationData.sequenced(
-            amount: amount,
-            stepTime: Globals.animationStepTime,
-            textureSize: textureSize));
   }
 
   void _attack(dt) {

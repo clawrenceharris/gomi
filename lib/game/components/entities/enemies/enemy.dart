@@ -28,12 +28,10 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     //list of all animations
     animations = {
       EnemyState.idle: idleAnimation,
+      EnemyState.attacking: attackAnimation
     };
 
     //set current animation
     current = EnemyState.idle;
   }
-
-  SpriteAnimation spriteAnimation(
-      String state, int amount, Vector2 textureSize);
 }
