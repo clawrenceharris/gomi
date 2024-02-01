@@ -2,14 +2,18 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
-import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/gomi_game.dart';
 
 enum PlayerState {
   idle,
+  walkingLeft,
+  walkingRight,
+  jumping,
+  falling,
 }
 
 mixin HasPlayerRef {
@@ -20,7 +24,7 @@ mixin HasPlayerRef {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<Gomi>, CollisionCallbacks {
+    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player(
       {required this.character,
@@ -29,34 +33,31 @@ class Player extends SpriteAnimationGroupComponent
       required this.resetScore,
       super.position});
 
-  final double stepTime = 0.05;
-  late final SpriteAnimation idleAnimation;
+  int _jumpCount = 0;
+
+  final double _gravity = 9.8;
+  final double _jumpForce = 260;
+  final double _maxVelocity = 300;
+  bool hasJumped = false;
 
   final void Function({int amount}) addScore;
   final VoidCallback resetScore;
-  final double _gravity = 9.8;
-  final double _jumpForce = 150;
-  bool canDoubleJump = true;
-  bool hasJumped = false;
-  int _jumpCount = 0;
-
-  final double _maxVelocity = 300;
-
   double directionX = 0;
   double moveSpeed = 100;
+  Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-  final List<CollisionBlock> collisionBlocks;
-
+  List<CollisionBlock> collisionBlocks;
+  double jumpCooldown = 1.0; // Set the desired cooldown time in seconds
+  double lastJumpTimestamp = 0.0;
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
-  final hitbox = RectangleHitbox();
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+    // debugMode = true;
 
-    debugMode = true;
-    add(hitbox);
+    add(RectangleHitbox());
     return super.onLoad();
   }
 
@@ -66,11 +67,10 @@ class Player extends SpriteAnimationGroupComponent
 
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
-      _updateVelocityX(fixedDeltaTime);
+      _updatePlayerMovement(fixedDeltaTime);
       _checkHorizontalCollisions();
-      _updateVelocityY(fixedDeltaTime);
+      _applyGravity(fixedDeltaTime);
       _checkVerticalCollisions();
-      _updatePlayerPosition(fixedDeltaTime);
 
       accumulatedTime -= fixedDeltaTime;
     }
@@ -78,65 +78,74 @@ class Player extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
-  void _updatePlayerPosition(double dt) {
-    position += velocity * dt;
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    //TODO: handle collisions with enemies, collectables, etc
+
+    super.onCollisionStart(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
-    idleAnimation = _spriteAnimation('Idle', 13);
+    SpriteAnimation idleAnimation = AnimationConfigs.gomi.idle(character);
+    SpriteAnimation walkingRightAnimation =
+        AnimationConfigs.gomi.walkingRight(character);
+    SpriteAnimation walkingLeftAnimation =
+        AnimationConfigs.gomi.walkingLeft(character);
+    SpriteAnimation jumpingAnimation = AnimationConfigs.gomi.jumping(character);
 
     // List of all animations
     animations = {
       PlayerState.idle: idleAnimation,
+      PlayerState.walkingRight: walkingRightAnimation,
+      PlayerState.walkingLeft: walkingLeftAnimation,
+      PlayerState.jumping: jumpingAnimation,
     };
 
     // Set current animation
     current = PlayerState.idle;
   }
 
-  SpriteAnimation _spriteAnimation(String state, int amount) {
-    return SpriteAnimation.fromFrameData(
-      game.images.fromCache('gomi/$character/$state.png'),
-      SpriteAnimationData.sequenced(
-        amount: amount,
-        stepTime: Globals.animationStepTime,
-        textureSize: Vector2(22, 26),
-      ),
-    );
-  }
-
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
-    //TODO: Check if moving, set running state
+    //TODO: Check if moving, set running
 
-    //TODO: Check if Falling set to falling state
+    //TODO: Check if Falling set to falling
 
-    //TODO: Check if jumping, set to jumping state
+    //TODO: Check if jumping, set to jumping
 
     current = playerState;
   }
 
-  void jump() {
-    if (isGrounded) {
+  void _updatePlayerMovement(double dt) {
+    if (hasJumped) _jump(dt);
+
+    velocity.x = directionX * moveSpeed;
+    position.x += velocity.x * dt;
+  }
+
+  void _jump(double dt) {
+    hasJumped = false;
+    final currentTime =
+        DateTime.now().millisecondsSinceEpoch / 1000; // Convert to seconds
+    if (currentTime - lastJumpTimestamp >= jumpCooldown && isGrounded) {
       // Player is grounded, perform a regular jump
       velocity.y = -_jumpForce;
+      position.y += velocity.y * dt;
       _jumpCount = 1;
       isGrounded = false;
-    } else if (canDoubleJump && _jumpCount < 2) {
+    } else if (_jumpCount < 2) {
       // Perform a double jump
       velocity.y = -_jumpForce;
+      position.y += velocity.y * dt;
+
       _jumpCount =
           2; // Set jump count to 2 to indicate a double jump has been used
-      canDoubleJump = false; // Prevent further double jumps until grounded
     }
   }
 
-  void _updateVelocityX(double dt) {
-    velocity.x = directionX * moveSpeed;
-  }
-
-  void _updateVelocityY(double dt) {
+  void _applyGravity(double dt) {
     velocity.y += _gravity;
     velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
     position.y += velocity.y * dt;
@@ -148,7 +157,7 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.x > 0) {
             velocity.x = 0;
-            position.x = block.x - hitbox.width;
+            position.x = block.x - width;
             break;
           }
           if (velocity.x < 0) {
@@ -167,11 +176,8 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - hitbox.height;
+            position.y = block.y - height;
             isGrounded = true;
-            canDoubleJump = true;
-            _jumpCount = 0;
-
             break;
           }
         }
@@ -179,10 +185,8 @@ class Player extends SpriteAnimationGroupComponent
         if (_checkCollision(block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - hitbox.height;
+            position.y = block.y - height;
             isGrounded = true;
-            canDoubleJump = true;
-            _jumpCount = 0;
             break;
           }
           if (velocity.y < 0) {
@@ -197,20 +201,17 @@ class Player extends SpriteAnimationGroupComponent
   bool _checkCollision(CollisionBlock block) {
     final playerX = position.x;
     final playerY = position.y;
-    final playerWidth = width;
-    final playerHeight = height;
 
     final blockX = block.x;
     final blockY = block.y;
     final blockWidth = block.width;
     final blockHeight = block.height;
 
-    final fixedX = playerX;
-    final fixedY = block is OneWayPlatform ? playerY + playerHeight : playerY;
+    final fixedY = block is OneWayPlatform ? playerY + height : playerY;
 
     return (fixedY < blockY + blockHeight &&
-        playerY + playerHeight > blockY &&
-        fixedX < blockX + blockWidth &&
-        fixedX + playerWidth > blockX);
+        playerY + height > blockY &&
+        playerX < blockX + blockWidth &&
+        playerX + width > blockX);
   }
 }

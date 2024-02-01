@@ -6,7 +6,7 @@ class NormalPlatform extends CollisionBlock {
   NormalPlatform({position, size}) : super(position: position, size: size);
   @override
   FutureOr<void> onLoad() {
-    add(RectangleHitbox());
+    add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
   }
 }

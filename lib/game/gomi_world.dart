@@ -1,5 +1,6 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
+import 'package:flame/experimental.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/parallax_background.dart';
@@ -29,11 +30,10 @@ class GomiWorld extends World
   });
 
   final GameLevel level;
-
   late TiledComponent tiledLevel;
 
   List<CollisionBlock> collisionBlocks = [];
-
+  late final _levelBounds;
   // Used to see what the current progress of the player is and to update the
   // progress if a level is finished.
   final PlayerProgress playerProgress;
@@ -55,6 +55,14 @@ class GomiWorld extends World
     //load the tiled level
     tiledLevel = await TiledComponent.load(
         level.pathname, Vector2.all(Globals.tileSize));
+    _levelBounds = Rectangle.fromPoints(
+      Vector2(0, 0),
+      Vector2(
+            tiledLevel.tileMap.map.width.toDouble(),
+            tiledLevel.tileMap.map.height.toDouble(),
+          ) *
+          Globals.tileSize,
+    );
 
     add(tiledLevel);
 
@@ -63,19 +71,7 @@ class GomiWorld extends World
     _addGomiClones();
     _addCollisionBlocks();
     _addCollectibles();
-    game.camera = CameraComponent(
-        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
-      ..viewport.size = size
-      ..viewfinder.anchor = Anchor.center
-      ..viewfinder.visibleGameSize = Vector2(150, 250);
-
-    //anchor that will be used to follow the player at a given offset x and y
-    PlayerCameraAnchor anchor =
-        PlayerCameraAnchor(player: player, offsetX: 80, offsetY: -50);
-    add(anchor);
-    game.camera.follow(anchor);
-    game.camera.backdrop.add(cameraParallax);
-
+    _setUpCamera();
     // When the player takes a new point we check if the score is enough to
     // pass the level and if it is we calculate the stars earned for the level,
     // update the player's progress and open up a dialog that shows that
@@ -92,7 +88,7 @@ class GomiWorld extends World
 
   @override
   void update(double dt) {
-    cameraParallax.speed = player.velocity.x;
+    cameraParallax.speed = player.velocity.x / 2;
     super.update(dt);
   }
 
@@ -224,5 +220,21 @@ class GomiWorld extends World
           break;
       }
     }
+  }
+
+  void _setUpCamera() {
+    game.camera = CameraComponent(
+        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
+      ..viewport.size = size
+      ..viewfinder.anchor = Anchor.center
+      ..viewfinder.visibleGameSize = Vector2(150, 250);
+
+    //anchor that will be used to follow the player at a given offset x and y
+    PlayerCameraAnchor anchor =
+        PlayerCameraAnchor(player: player, offsetX: 80, offsetY: -50);
+    add(anchor);
+    game.camera.follow(anchor);
+    game.camera.setBounds(_levelBounds);
+    game.camera.backdrop.add(cameraParallax);
   }
 }

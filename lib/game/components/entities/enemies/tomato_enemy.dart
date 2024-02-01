@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/constants/globals.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
@@ -27,24 +26,9 @@ class TomatoEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
 
   @override
   void loadAllAnimations() {
-    idleAnimation = spriteAnimation("Idle", 1, Vector2(26, 34));
+    idleAnimation = AnimationConfigs.tomatoEnemy.idle();
+    attackAnimation = AnimationConfigs.tomatoEnemy.attacking();
     super.loadAllAnimations();
-
-    animations = {
-      EnemyState.idle: idleAnimation,
-      EnemyState.attacking: idleAnimation,
-    };
-  }
-
-  @override
-  SpriteAnimation spriteAnimation(
-      String state, int amount, Vector2 textureSize) {
-    return SpriteAnimation.fromFrameData(
-        game.images.fromCache('Enemies/Tomato/$state.png'),
-        SpriteAnimationData.sequenced(
-            amount: amount,
-            stepTime: Globals.animationStepTime,
-            textureSize: textureSize));
   }
 
   void _attack(dt) {

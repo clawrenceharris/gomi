@@ -1,7 +1,5 @@
 import 'dart:async';
-
-import 'package:flame/components.dart';
-import 'package:gomi/constants/globals.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 
 class SyringeEnemy extends Enemy {
@@ -18,18 +16,8 @@ class SyringeEnemy extends Enemy {
 
   @override
   void loadAllAnimations() {
-    idleAnimation = spriteAnimation("Idle", 12, Vector2(51, 22));
+    idleAnimation = AnimationConfigs.syringeEnemy.idle();
+    attackAnimation = AnimationConfigs.syringeEnemy.attacking();
     super.loadAllAnimations();
-  }
-
-  @override
-  SpriteAnimation spriteAnimation(
-      String state, int amount, Vector2 textureSize) {
-    return SpriteAnimation.fromFrameData(
-        game.images.fromCache('Enemies/Syringe/$state.png'),
-        SpriteAnimationData.sequenced(
-            amount: amount,
-            stepTime: Globals.animationStepTime,
-            textureSize: textureSize));
   }
 }

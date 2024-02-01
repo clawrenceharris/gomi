@@ -1,5 +1,4 @@
-import 'package:flame/components.dart';
-import 'package:gomi/constants/globals.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 
 class BulbEnemy extends Enemy {
@@ -7,18 +6,8 @@ class BulbEnemy extends Enemy {
 
   @override
   void loadAllAnimations() {
-    idleAnimation = spriteAnimation("Idle", 10, Vector2(17, 32));
+    idleAnimation = AnimationConfigs.bulbEnemy.idle();
+    attackAnimation = AnimationConfigs.bulbEnemy.attacking();
     super.loadAllAnimations();
-  }
-
-  @override
-  SpriteAnimation spriteAnimation(
-      String state, int amount, Vector2 textureSize) {
-    return SpriteAnimation.fromFrameData(
-        game.images.fromCache('Enemies/Light Bulb/$state.png'),
-        SpriteAnimationData.sequenced(
-            amount: amount,
-            stepTime: Globals.animationStepTime,
-            textureSize: textureSize));
   }
 }
