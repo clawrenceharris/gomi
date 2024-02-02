@@ -6,7 +6,7 @@ import 'package:gomi/game/gomi_game.dart';
 
 class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   final double _gravity = 10;
-  final double _jumpForce = 360;
+  final double jumpForce;
   final double enemyHeight = 32;
   final double _maxVelocity = 200;
   double _elapsedTime = 0.0;
@@ -15,6 +15,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   Vector2 velocity = Vector2.zero();
   TomatoEnemy({
     super.position,
+    this.jumpForce = 360,
     required super.player,
   });
 
@@ -34,7 +35,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
 
   void _applyGravity(double dt) {
     velocity.y += _gravity;
-    velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
+    velocity.y = velocity.y.clamp(-jumpForce, _maxVelocity);
   }
 
   @override
@@ -49,7 +50,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   }
 
   void _jump(double dt) {
-    velocity.y = -_jumpForce;
+    velocity.y = -jumpForce;
 
     isGrounded = false;
   }

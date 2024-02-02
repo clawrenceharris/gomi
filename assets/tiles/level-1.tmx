@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="35">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="40">
  <tileset firstgid="1" source="gomi.tsx"/>
  <tileset firstgid="221" source="gomi.tsx"/>
  <layer id="1" name="tiles" width="100" height="40">
@@ -59,13 +59,13 @@
  <objectgroup id="2" name="enemies">
   <object id="31" name="Tomato Enemy" type="Tomato Enemy" x="269.772" y="375.392" width="46.7342" height="26.9367">
    <properties>
-    <property name="offNeg" type="int" value="5"/>
+    <property name="Jump Force" type="float" value="260"/>
    </properties>
   </object>
   <object id="33" name="Bottle Enemy" type="Bottle Enemy" x="878.825" y="470.354" width="18" height="25">
    <properties>
-    <property name="endX" type="int" value="728"/>
-    <property name="startX" type="int" value="584"/>
+    <property name="Off Neg" type="int" value="8"/>
+    <property name="Off Pos" type="int" value="4"/>
    </properties>
   </object>
   <object id="34" name="Syringe Enemy" type="Syringe Enemy" x="539.947" y="470.193" width="64.7068" height="25.161">

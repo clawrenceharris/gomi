@@ -178,18 +178,22 @@ class GomiWorld extends World
               offPos: offPos);
           add(enemy);
         case 'Bottle Enemy':
-          final startX = obj.properties.getValue("startX");
-          final endX = obj.properties.getValue("endX");
+          final offNeg = obj.properties.getValue("Off Neg");
+          final offPos = obj.properties.getValue("Off Pos");
           final enemy = BottleEnemy(
-              player: player,
-              position: Vector2(obj.x, obj.y),
-              startX: startX,
-              endX: endX);
+            player: player,
+            offNeg: offNeg,
+            offPos: offPos,
+            position: Vector2(obj.x, obj.y),
+          );
           add(enemy);
           break;
         case 'Tomato Enemy':
-          final enemy =
-              TomatoEnemy(player: player, position: Vector2(obj.x, obj.y));
+          final jumpForce = obj.properties.getValue("Jump Force");
+          final enemy = TomatoEnemy(
+              jumpForce: jumpForce,
+              player: player,
+              position: Vector2(obj.x, obj.y));
           add(enemy);
           break;
       }

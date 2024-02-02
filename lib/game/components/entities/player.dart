@@ -2,19 +2,14 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/game/gomi_game.dart';
 
-enum PlayerState {
-  idle,
-  walkingLeft,
-  walkingRight,
-  jumping,
-  falling,
-}
+enum PlayerState { idle, walking, jumping, falling, hit }
 
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
@@ -32,7 +27,6 @@ class Player extends SpriteAnimationGroupComponent
   final double _maxVelocity = 300;
   final double _bounceForce = 200;
   bool hasJumped = false;
-
   final void Function({int amount}) addScore;
   final VoidCallback resetScore;
   double directionX = 0;
@@ -45,11 +39,12 @@ class Player extends SpriteAnimationGroupComponent
   double lastJumpTimestamp = 0.0;
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
+  bool gotHit = false;
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     // debugMode = true;
-
+    startingPosition = position;
     add(RectangleHitbox());
     return super.onLoad();
   }
@@ -57,7 +52,9 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void update(double dt) {
     accumulatedTime += dt;
-
+    if (gotHit) {
+      return;
+    }
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
       _updatePlayerMovement(fixedDeltaTime);
@@ -81,17 +78,13 @@ class Player extends SpriteAnimationGroupComponent
 
   void _loadAllAnimations() {
     SpriteAnimation idleAnimation = AnimationConfigs.gomi.idle(character);
-    SpriteAnimation walkingRightAnimation =
-        AnimationConfigs.gomi.walkingRight(character);
-    SpriteAnimation walkingLeftAnimation =
-        AnimationConfigs.gomi.walkingLeft(character);
+    SpriteAnimation walkingAnimation = AnimationConfigs.gomi.walking(character);
     SpriteAnimation jumpingAnimation = AnimationConfigs.gomi.jumping(character);
 
     // List of all animations
     animations = {
       PlayerState.idle: idleAnimation,
-      PlayerState.walkingRight: walkingRightAnimation,
-      PlayerState.walkingLeft: walkingLeftAnimation,
+      PlayerState.walking: walkingAnimation,
       PlayerState.jumping: jumpingAnimation,
     };
 
@@ -100,10 +93,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void collidedWithEnemy() {
-    lives -= 1;
-    if (lives == 0) {
-      _respawn();
-    }
+    _respawn();
   }
 
   void bounce() {
@@ -112,14 +102,25 @@ class Player extends SpriteAnimationGroupComponent
     velocity.y = -_bounceForce;
   }
 
-  void _respawn() {}
+  void _respawn() async {
+    position = startingPosition;
+  }
+
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
-    if (velocity.x > 0 && isGrounded) playerState = PlayerState.walkingRight;
-    if (velocity.x < 0 && isGrounded) playerState = PlayerState.walkingLeft;
+    if (velocity.x != 0 && isGrounded) playerState = PlayerState.walking;
     if (velocity.y < 0 && !isGrounded) playerState = PlayerState.jumping;
 
+    if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0) {
+      flipHorizontallyAroundCenter();
+    }
+
     current = playerState;
+  }
+
+  void hit() {
+    add(OpacityEffect.to(
+        0, EffectController(alternate: true, duration: 0.2, repeatCount: 5)));
   }
 
   void _updatePlayerMovement(double dt) {

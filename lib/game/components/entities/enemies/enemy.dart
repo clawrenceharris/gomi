@@ -55,6 +55,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
+    elapsedTime += dt;
     // Check if enemy is attacking
     if (isAttacking) {
       attack(dt);

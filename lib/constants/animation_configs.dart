@@ -41,14 +41,13 @@ class GomiAnimationConfigs {
               stepTime: AnimationConfigs.gomiStepTime,
               textureSize: Vector2(22, 26)));
 
-  SpriteAnimation walkingRight(String character) =>
-      SpriteAnimation.fromFrameData(
-          Flame.images
-              .fromCache('gomi/$character/${AnimationConfigs.walkRight}.png'),
-          SpriteAnimationData.sequenced(
-              amount: 1,
-              stepTime: AnimationConfigs.gomiStepTime,
-              textureSize: Vector2(22, 26)));
+  SpriteAnimation walking(String character) => SpriteAnimation.fromFrameData(
+      Flame.images
+          .fromCache('gomi/$character/${AnimationConfigs.walkRight}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 1,
+          stepTime: AnimationConfigs.gomiStepTime,
+          textureSize: Vector2(22, 26)));
 
   SpriteAnimation jumping(String character) => SpriteAnimation.fromFrameData(
       Flame.images.fromCache('gomi/$character/${AnimationConfigs.jump}.png'),

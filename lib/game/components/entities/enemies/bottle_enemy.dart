@@ -1,20 +1,23 @@
+import 'dart:async';
+
 import 'package:gomi/constants/animation_configs.dart';
+import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 
 class BottleEnemy extends Enemy {
-  final double attackWidth;
+  double rangeNeg = 0;
+  double rangePos = 0;
+  final int offNeg;
+  final int offPos;
+  double _direction = 1;
+  final double _speed = 90;
+
   BottleEnemy({
     super.position,
-    this.startX = 0,
+    required this.offNeg,
+    required this.offPos,
     required super.player,
-    this.endX = 0,
-    this.attackWidth = 0,
   });
-  final int startX;
-  final int endX;
-  double _direction = 1;
-
-  final double _speed = 90;
 
   @override
   void loadAllAnimations() {
@@ -25,22 +28,30 @@ class BottleEnemy extends Enemy {
   }
 
   @override
-  void attack(double dt) {
-    // Check if the enemy has reached the end or start position
-    if (_direction == 1 && position.x >= endX) {
-      _direction = -1; // Change direction to left
-    } else if (_direction == -1 && position.x <= startX) {
-      _direction = 1; // Change direction to right
-    }
+  FutureOr<void> onLoad() {
+    rangeNeg = position.x - offNeg * Globals.tileSize;
+    rangePos = position.x + offPos * Globals.tileSize;
+    print("rangeNeg: $rangeNeg rangePos: $rangePos");
+    return super.onLoad();
+  }
 
-    // Update the position based on speed and direction
-    position.x += _speed * _direction * dt;
+  @override
+  void attack(double dt) {
+    _move(dt);
+  }
+
+  void _move(double dt) {
+    if (position.x >= rangePos) {
+      _direction = -1;
+    } else if (position.x <= rangeNeg) {
+      _direction = 1;
+    }
+    position.x += _direction * _speed * dt;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    elapsedTime += dt;
 
     // Check if it's time to switch states
     if (isAttacking && elapsedTime >= attackTime) {
