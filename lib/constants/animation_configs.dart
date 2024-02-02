@@ -8,7 +8,7 @@ class AnimationConfigs {
   static const String idle = "idle";
   static const String attack = "attack";
   static const String walkLeft = "walk_left";
-  static const String walkRight = "walk_right";
+  static const String walking = "walk";
   static const String jump = "jump";
   static const String fall = "fall";
   static const double bottleEnemyStepTime = 0.1;
@@ -32,18 +32,8 @@ class GomiAnimationConfigs {
           stepTime: AnimationConfigs.gomiStepTime,
           textureSize: Vector2(22, 26)));
 
-  SpriteAnimation walkingLeft(String character) =>
-      SpriteAnimation.fromFrameData(
-          Flame.images
-              .fromCache('gomi/$character/${AnimationConfigs.walkLeft}.png'),
-          SpriteAnimationData.sequenced(
-              amount: 1,
-              stepTime: AnimationConfigs.gomiStepTime,
-              textureSize: Vector2(22, 26)));
-
   SpriteAnimation walking(String character) => SpriteAnimation.fromFrameData(
-      Flame.images
-          .fromCache('gomi/$character/${AnimationConfigs.walkRight}.png'),
+      Flame.images.fromCache('gomi/$character/${AnimationConfigs.walking}.png'),
       SpriteAnimationData.sequenced(
           amount: 1,
           stepTime: AnimationConfigs.gomiStepTime,
