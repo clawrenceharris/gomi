@@ -44,7 +44,7 @@ class Player extends SpriteAnimationGroupComponent
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     // debugMode = true;
-    startingPosition = position;
+    startingPosition = Vector2(position.x, position.y);
     add(RectangleHitbox());
     return super.onLoad();
   }
@@ -103,6 +103,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _respawn() async {
+    hit();
     position = startingPosition;
   }
 
