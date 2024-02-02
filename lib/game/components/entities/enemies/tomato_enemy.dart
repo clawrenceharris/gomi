@@ -1,28 +1,29 @@
 import 'dart:async';
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
-import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/gomi_game.dart';
 
-class TomatoEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
-  final double attackHeight;
-  late double _bottomY;
-  late double _topY;
-  double _direction = -1;
+class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
+  final double _gravity = 10;
+  final double _jumpForce = 360;
   final double enemyHeight = 32;
-
-  TomatoEnemy({super.position, this.attackHeight = 0});
+  final double _maxVelocity = 200;
+  double _elapsedTime = 0.0;
+  final double bounceCoolDown = 1;
+  bool isGrounded = true;
+  Vector2 velocity = Vector2.zero();
+  TomatoEnemy({
+    super.position,
+    required super.player,
+  });
 
   @override
   FutureOr<void> onLoad() {
-    _bottomY = attackHeight - enemyHeight;
-    _topY = position.y;
-    position.y += _bottomY;
+    //debugMode = true;
+    attackTime = 10;
     return super.onLoad();
   }
-
-  final double _speed = 50;
 
   @override
   void loadAllAnimations() {
@@ -31,22 +32,36 @@ class TomatoEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
     super.loadAllAnimations();
   }
 
-  void _attack(dt) {
-    // Check if the enemy has reached the end or start position
-    if (_direction == -1 && position.y <= _topY) {
-      _direction = 1; // Change direction to down
-    } else if (_direction == 1 && position.y > _topY + _bottomY) {
-      _direction = -1; // Change direction to right
-    }
+  void _applyGravity(double dt) {
+    velocity.y += _gravity;
+    velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
+  }
 
-    // Update the position based on speed and direction
-    position.y += _speed * _direction * dt;
+  @override
+  void attack(dt) {
+    _elapsedTime += dt;
+
+    if (isGrounded && _elapsedTime >= bounceCoolDown) {
+      _jump(dt);
+
+      _elapsedTime = 0.0;
+    }
+  }
+
+  void _jump(double dt) {
+    velocity.y = -_jumpForce;
+
+    isGrounded = false;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
+    _applyGravity(dt);
+    _checkVerticalCollisions();
     elapsedTime += dt;
+
+    position.y += velocity.y * dt;
 
     // Check if it's time to switch states
     if (isAttacking && elapsedTime >= attackTime) {
@@ -54,41 +69,18 @@ class TomatoEnemy extends Enemy with HasCollisionDetection, CollisionCallbacks {
     } else if (!isAttacking && elapsedTime >= idleTime) {
       switchToAttack();
     }
-
-    // Check if enemy is attacking
-    if (isAttacking) {
-      _attack(dt);
-    }
   }
 
-  void switchToIdle() {
-    isAttacking = false;
-    elapsedTime = 0.0; // Reset the elapsed time for the new state
-    current = EnemyState.idle;
-  }
-
-  void switchToAttack() {
-    isAttacking = true;
-    elapsedTime = 0.0; // Reset the elapsed time for the new state
-    current = EnemyState.attacking;
-  }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player) {
-      // interact with player
-      switch (current) {
-        case EnemyState.attacking:
-          //TODO: attack the player
+  void _checkVerticalCollisions() {
+    for (final block in game.world.collisionBlocks) {
+      if (game.world.checkCollision(block, this)) {
+        if (velocity.y > 0) {
+          velocity.y = 0;
+          position.y = block.y - height;
+          isGrounded = true;
           break;
-        case EnemyState.idle:
-          //TODO: remove enemy from game
-          super.remove(this);
-          break;
-        default:
-          break;
+        }
       }
     }
-    super.onCollision(intersectionPoints, other);
   }
 }

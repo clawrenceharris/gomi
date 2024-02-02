@@ -1,8 +1,8 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/entities/enemies/tomato_enemy.dart';
 import 'package:gomi/game/components/parallax_background.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
@@ -15,6 +15,8 @@ import 'package:gomi/game/components/entities/collectibles/seed.dart';
 import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
+import 'package:gomi/game/mixins/collision_aware.dart';
+import 'package:gomi/game/mixins/has_player_ref.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import '../level_selection/levels.dart';
@@ -23,7 +25,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class GomiWorld extends World
-    with HasGameReference, HasPlayerRef, TapCallbacks {
+    with HasGameReference, HasPlayerRef, TapCallbacks, CollisionAware {
   GomiWorld({
     required this.level,
     required this.playerProgress,
@@ -31,9 +33,6 @@ class GomiWorld extends World
 
   final GameLevel level;
   late TiledComponent tiledLevel;
-
-  List<CollisionBlock> collisionBlocks = [];
-  late final _levelBounds;
   // Used to see what the current progress of the player is and to update the
   // progress if a level is finished.
   final PlayerProgress playerProgress;
@@ -55,23 +54,16 @@ class GomiWorld extends World
     //load the tiled level
     tiledLevel = await TiledComponent.load(
         level.pathname, Vector2.all(Globals.tileSize));
-    _levelBounds = Rectangle.fromPoints(
-      Vector2(0, 0),
-      Vector2(
-            tiledLevel.tileMap.map.width.toDouble(),
-            tiledLevel.tileMap.map.height.toDouble(),
-          ) *
-          Globals.tileSize,
-    );
 
     add(tiledLevel);
 
+    _addCollisionBlocks();
     _addPlayer();
     _addEnemies();
     _addGomiClones();
-    _addCollisionBlocks();
     _addCollectibles();
     _setUpCamera();
+
     // When the player takes a new point we check if the score is enough to
     // pass the level and if it is we calculate the stars earned for the level,
     // update the player's progress and open up a dialog that shows that
@@ -113,8 +105,7 @@ class GomiWorld extends World
         addScore: addScore,
         resetScore: resetScore,
         character: obj.class_,
-        position: Vector2(obj.x, obj.y),
-        collisionBlocks: collisionBlocks);
+        position: Vector2(obj.x, obj.y));
     add(player);
     setPlayer(player);
   }
@@ -130,6 +121,7 @@ class GomiWorld extends World
   }
 
   void _addCollisionBlocks() {
+    final List<CollisionBlock> collisionBlocks = [];
     final layer = getTiledLayer('collisions');
 
     for (final collision in layer.objects) {
@@ -157,6 +149,7 @@ class GomiWorld extends World
           collisionBlocks.add(platform);
           add(platform);
       }
+      setCollisionBlocks(collisionBlocks);
     }
   }
 
@@ -169,16 +162,34 @@ class GomiWorld extends World
       switch (obj.class_) {
         case 'Bulb Enemy':
           final enemy = BulbEnemy(
+            player: player,
             position: Vector2(obj.x, obj.y),
           );
           add(enemy);
           break;
         case 'Syringe Enemy':
-          final enemy = SyringeEnemy(position: Vector2(obj.x, obj.y));
+          final offNeg = obj.properties.getValue("offNeg");
+          final offPos = obj.properties.getValue("offPos");
+
+          final enemy = SyringeEnemy(
+              position: Vector2(obj.x, obj.y),
+              player: player,
+              offNeg: offNeg,
+              offPos: offPos);
           add(enemy);
         case 'Bottle Enemy':
+          final startX = obj.properties.getValue("startX");
+          final endX = obj.properties.getValue("endX");
           final enemy = BottleEnemy(
-              position: Vector2(obj.x, obj.y), attackWidth: obj.width);
+              player: player,
+              position: Vector2(obj.x, obj.y),
+              startX: startX,
+              endX: endX);
+          add(enemy);
+          break;
+        case 'Tomato Enemy':
+          final enemy =
+              TomatoEnemy(player: player, position: Vector2(obj.x, obj.y));
           add(enemy);
           break;
       }
@@ -234,7 +245,6 @@ class GomiWorld extends World
         PlayerCameraAnchor(player: player, offsetX: 80, offsetY: -50);
     add(anchor);
     game.camera.follow(anchor);
-    game.camera.setBounds(_levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }
 }

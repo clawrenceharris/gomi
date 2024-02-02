@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
-import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/game/gomi_game.dart';
 
@@ -16,19 +16,11 @@ enum PlayerState {
   falling,
 }
 
-mixin HasPlayerRef {
-  late final Player player;
-  setPlayer(Player player) {
-    this.player = player;
-  }
-}
-
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player(
       {required this.character,
-      required this.collisionBlocks,
       required this.addScore,
       required this.resetScore,
       super.position});
@@ -38,6 +30,7 @@ class Player extends SpriteAnimationGroupComponent
   final double _gravity = 9.8;
   final double _jumpForce = 260;
   final double _maxVelocity = 300;
+  final double _bounceForce = 200;
   bool hasJumped = false;
 
   final void Function({int amount}) addScore;
@@ -47,8 +40,8 @@ class Player extends SpriteAnimationGroupComponent
   Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-  List<CollisionBlock> collisionBlocks;
-  double jumpCooldown = 1.0; // Set the desired cooldown time in seconds
+  int lives = 2;
+  double jumpCooldown = 1.5;
   double lastJumpTimestamp = 0.0;
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
@@ -106,14 +99,25 @@ class Player extends SpriteAnimationGroupComponent
     current = PlayerState.idle;
   }
 
+  void collidedWithEnemy() {
+    lives -= 1;
+    if (lives == 0) {
+      _respawn();
+    }
+  }
+
+  void bounce() {
+    game.audioController.playSfx(SfxType.jump);
+
+    velocity.y = -_bounceForce;
+  }
+
+  void _respawn() {}
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
-
-    //TODO: Check if moving, set running
-
-    //TODO: Check if Falling set to falling
-
-    //TODO: Check if jumping, set to jumping
+    if (velocity.x > 0 && isGrounded) playerState = PlayerState.walkingRight;
+    if (velocity.x < 0 && isGrounded) playerState = PlayerState.walkingLeft;
+    if (velocity.y < 0 && !isGrounded) playerState = PlayerState.jumping;
 
     current = playerState;
   }
@@ -127,16 +131,19 @@ class Player extends SpriteAnimationGroupComponent
 
   void _jump(double dt) {
     hasJumped = false;
-    final currentTime =
-        DateTime.now().millisecondsSinceEpoch / 1000; // Convert to seconds
-    if (currentTime - lastJumpTimestamp >= jumpCooldown && isGrounded) {
+
+    if (isGrounded) {
       // Player is grounded, perform a regular jump
       velocity.y = -_jumpForce;
       position.y += velocity.y * dt;
       _jumpCount = 1;
+      game.audioController.playSfx(SfxType.jump);
+
       isGrounded = false;
     } else if (_jumpCount < 2) {
       // Perform a double jump
+      game.audioController.playSfx(SfxType.doubleJump);
+
       velocity.y = -_jumpForce;
       position.y += velocity.y * dt;
 
@@ -152,9 +159,9 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _checkHorizontalCollisions() {
-    for (final block in collisionBlocks) {
+    for (final block in game.world.collisionBlocks) {
       if (block is OneWayPlatform == false) {
-        if (_checkCollision(block)) {
+        if (game.world.checkCollision(block, this)) {
           if (velocity.x > 0) {
             velocity.x = 0;
             position.x = block.x - width;
@@ -171,9 +178,9 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _checkVerticalCollisions() {
-    for (final block in collisionBlocks) {
+    for (final block in game.world.collisionBlocks) {
       if (block is OneWayPlatform) {
-        if (_checkCollision(block)) {
+        if (game.world.checkCollision(block, this)) {
           if (velocity.y > 0) {
             velocity.y = 0;
             position.y = block.y - height;
@@ -182,7 +189,7 @@ class Player extends SpriteAnimationGroupComponent
           }
         }
       } else {
-        if (_checkCollision(block)) {
+        if (game.world.checkCollision(block, this)) {
           if (velocity.y > 0) {
             velocity.y = 0;
             position.y = block.y - height;
@@ -196,22 +203,5 @@ class Player extends SpriteAnimationGroupComponent
         }
       }
     }
-  }
-
-  bool _checkCollision(CollisionBlock block) {
-    final playerX = position.x;
-    final playerY = position.y;
-
-    final blockX = block.x;
-    final blockY = block.y;
-    final blockWidth = block.width;
-    final blockHeight = block.height;
-
-    final fixedY = block is OneWayPlatform ? playerY + height : playerY;
-
-    return (fixedY < blockY + blockHeight &&
-        playerY + height > blockY &&
-        playerX < blockX + blockWidth &&
-        playerX + width > blockX);
   }
 }

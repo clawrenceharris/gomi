@@ -96,7 +96,7 @@ class SyringeEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.syringe}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 0,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: Vector2(51, 22)));
 }
@@ -114,7 +114,7 @@ class TomatoEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 0,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: Vector2(26, 34)));
 }
@@ -132,7 +132,7 @@ class BulbEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 0,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: Vector2(17, 32)));
 }
