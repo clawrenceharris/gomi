@@ -44,6 +44,7 @@ class GomiWorld extends World
   late final CameraComponent camera;
   late final DateTime timeStarted;
   Vector2 get size => (parent as FlameGame).size;
+  late final _cameraTarget; // Create a dummy component.
 
   //the stars earned for the level
   int stars = 0;
@@ -62,6 +63,7 @@ class GomiWorld extends World
     _addEnemies();
     _addGomiClones();
     _addCollectibles();
+
     _setUpCamera();
 
     // When the player takes a new point we check if the score is enough to
@@ -81,6 +83,9 @@ class GomiWorld extends World
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;
+    if ((_cameraTarget.position - player.position).length2 > 2) {
+      _cameraTarget.position.setFrom(player.position);
+    }
     super.update(dt);
   }
 
@@ -104,7 +109,7 @@ class GomiWorld extends World
     final player = Player(
         addScore: addScore,
         resetScore: resetScore,
-        character: obj.class_,
+        color: obj.properties.getValue("Color"),
         position: Vector2(obj.x, obj.y));
     add(player);
     setPlayer(player);
@@ -161,9 +166,11 @@ class GomiWorld extends World
     for (final obj in layer.objects) {
       switch (obj.class_) {
         case 'Bulb Enemy':
+          final direction = obj.properties.getValue("Direction");
           final enemy = BulbEnemy(
             player: player,
             position: Vector2(obj.x, obj.y),
+            direction: direction,
           );
           add(enemy);
           break;
@@ -243,12 +250,13 @@ class GomiWorld extends World
       ..viewport.size = size
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize = Vector2(150, 250);
-
+    _cameraTarget =
+        PlayerCameraAnchor(offsetX: 80, offsetY: -50, player: player);
+    add(_cameraTarget); // Add the dummy component to the scene.
     //anchor that will be used to follow the player at a given offset x and y
-    PlayerCameraAnchor anchor =
-        PlayerCameraAnchor(player: player, offsetX: 80, offsetY: -50);
-    add(anchor);
-    game.camera.follow(anchor);
+    // PlayerCameraAnchor anchor =
+    //     PlayerCameraAnchor(player: player, offsetX: 80, offsetY: -50);
+    game.camera.follow(_cameraTarget, maxSpeed: 600, snap: true);
     game.camera.backdrop.add(cameraParallax);
   }
 }

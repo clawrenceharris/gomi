@@ -31,7 +31,6 @@ class BottleEnemy extends Enemy {
   FutureOr<void> onLoad() {
     rangeNeg = position.x - offNeg * Globals.tileSize;
     rangePos = position.x + offPos * Globals.tileSize;
-    print("rangeNeg: $rangeNeg rangePos: $rangePos");
     return super.onLoad();
   }
 

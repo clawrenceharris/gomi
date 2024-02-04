@@ -73,6 +73,8 @@ flutter:
     - assets/images/
     - assets/sfx/
     - assets/music/
+    - assets/images/gomi/
+
     - assets/images/scenery/
     - assets/fonts/Press_Start_2P/
     - assets/images/gomi/green_gomi/

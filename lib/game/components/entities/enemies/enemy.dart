@@ -16,8 +16,8 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   Enemy({super.position, super.size, required this.player});
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
-  double idleTime = 4; // Time to stay in idle state (in seconds)
-  double attackTime = 4; // Time to stay in attacking state (in seconds)
+  double idleTime = 3; // Time to stay in idle state (in seconds)
+  double attackTime = 5; // Time to stay in attacking state (in seconds)
   double elapsedTime = 0.0; // Accumulated time for the current state
   bool isAttacking = false;
 
@@ -78,7 +78,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
       await animationTicker?.completed;
 
       removeFromParent();
-    } else {
+    } else if (isAttacking) {
       player.collidedWithEnemy();
     }
   }
