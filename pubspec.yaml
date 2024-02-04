@@ -73,21 +73,21 @@ flutter:
     - assets/images/
     - assets/sfx/
     - assets/music/
-    - assets/images/scenery/
+    - assets/images/gomi/
 
+    - assets/images/scenery/
     - assets/fonts/Press_Start_2P/
     - assets/images/gomi/green_gomi/
     - assets/images/gomi/red_gomi/
     - assets/images/gomi/blue_gomi/
     - assets/images/gomi/black_gomi/
     - assets/images/enemies/light_bulb/
-    - assets/images/enemies/tomato/
+    - assets/images/enemies/tomato/idle.png
+    - assets/images/enemies/tomato/attack.png
+
     - assets/images/enemies/syringe/
     - assets/images/enemies/water_bottle/
     - assets/images/collectibles/seed/
-
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

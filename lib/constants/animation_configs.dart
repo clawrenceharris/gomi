@@ -7,10 +7,24 @@ class AnimationConfigs {
 
   static const String idle = "idle";
   static const String attack = "attack";
-  static const String walkLeft = "walk_left";
-  static const String walkRight = "walk_right";
+  static const String walking = "walk";
   static const String jump = "jump";
+  static const String zap = "zap";
+
   static const String fall = "fall";
+  static const String hit = "hit";
+  static const String disappear = "disappear";
+  static const String appear = "appear";
+
+  static final Vector2 gomiTextureSize = Vector2(22, 26);
+  static final Vector2 zapTextureSize = Vector2(22, 16);
+
+  static final Vector2 bottleEnemyTextureSize = Vector2(18, 25);
+  static final Vector2 bulbEnemyTextureSize = Vector2(17, 32);
+  static final Vector2 bulbEnemyAttackingTextureSize = Vector2(30, 32);
+
+  static final Vector2 syringeEnemyTextureSize = Vector2(51, 22);
+
   static const double bottleEnemyStepTime = 0.1;
   static const double gomiStepTime = 0.1;
 
@@ -25,44 +39,59 @@ class AnimationConfigs {
 }
 
 class GomiAnimationConfigs {
-  SpriteAnimation idle(String character) => SpriteAnimation.fromFrameData(
-      Flame.images.fromCache('gomi/blue_gomi/${AnimationConfigs.idle}.png'),
+  SpriteAnimation idle(String color) => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
           amount: 13,
           stepTime: AnimationConfigs.gomiStepTime,
-          textureSize: Vector2(22, 26)));
+          textureSize: AnimationConfigs.gomiTextureSize));
 
-  SpriteAnimation walkingLeft(String character) =>
-      SpriteAnimation.fromFrameData(
-          Flame.images
-              .fromCache('gomi/$character/${AnimationConfigs.walkLeft}.png'),
-          SpriteAnimationData.sequenced(
-              amount: 1,
-              stepTime: AnimationConfigs.gomiStepTime,
-              textureSize: Vector2(22, 26)));
-
-  SpriteAnimation walkingRight(String character) =>
-      SpriteAnimation.fromFrameData(
-          Flame.images
-              .fromCache('gomi/$character/${AnimationConfigs.walkRight}.png'),
-          SpriteAnimationData.sequenced(
-              amount: 1,
-              stepTime: AnimationConfigs.gomiStepTime,
-              textureSize: Vector2(22, 26)));
-
-  SpriteAnimation jumping(String character) => SpriteAnimation.fromFrameData(
-      Flame.images.fromCache('gomi/$character/${AnimationConfigs.jump}.png'),
+  SpriteAnimation walking(String color) => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.walking}.png'),
       SpriteAnimationData.sequenced(
           amount: 1,
           stepTime: AnimationConfigs.gomiStepTime,
-          textureSize: Vector2(22, 26)));
+          textureSize: AnimationConfigs.gomiTextureSize));
 
-  SpriteAnimation falling(String character) => SpriteAnimation.fromFrameData(
-      Flame.images.fromCache('gomi/$character/${AnimationConfigs.fall}.png'),
+  SpriteAnimation jumping(String color) => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.jump}.png'),
       SpriteAnimationData.sequenced(
           amount: 1,
           stepTime: AnimationConfigs.gomiStepTime,
-          textureSize: Vector2(22, 26)));
+          textureSize: AnimationConfigs.gomiTextureSize));
+
+  SpriteAnimation falling(String color) => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.fall}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 1,
+          stepTime: AnimationConfigs.gomiStepTime,
+          textureSize: AnimationConfigs.gomiTextureSize));
+  SpriteAnimation disappearing() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache('gomi/${AnimationConfigs.disappear}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 7,
+          loop: false,
+          stepTime: 0.05,
+          textureSize: Vector2(96, 96)));
+  SpriteAnimation appearing() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache('gomi/${AnimationConfigs.appear}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 7,
+          loop: false,
+          stepTime: 0.05,
+          textureSize: Vector2(96, 96)));
+  SpriteAnimation hit(String color) => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.hit}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 5,
+          loop: false,
+          stepTime: AnimationConfigs.gomiStepTime,
+          textureSize: AnimationConfigs.gomiTextureSize));
 }
 
 class BottleEnemyAnimationConfigs {
@@ -72,7 +101,7 @@ class BottleEnemyAnimationConfigs {
       SpriteAnimationData.sequenced(
           amount: 9,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(18, 25)));
+          textureSize: AnimationConfigs.bottleEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
@@ -80,7 +109,7 @@ class BottleEnemyAnimationConfigs {
       SpriteAnimationData.sequenced(
           amount: 11,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(18, 25)));
+          textureSize: AnimationConfigs.bottleEnemyTextureSize));
 }
 
 class SyringeEnemyAnimationConfigs {
@@ -90,15 +119,15 @@ class SyringeEnemyAnimationConfigs {
       SpriteAnimationData.sequenced(
           amount: 12,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(51, 22)));
+          textureSize: AnimationConfigs.syringeEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.syringe}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 0,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(51, 22)));
+          textureSize: AnimationConfigs.syringeEnemyTextureSize));
 }
 
 class TomatoEnemyAnimationConfigs {
@@ -114,25 +143,33 @@ class TomatoEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 0,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: Vector2(26, 34)));
 }
 
 class BulbEnemyAnimationConfigs {
+  SpriteAnimation zap() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'enemies/${Globals.lightBulb}/${AnimationConfigs.zap}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 4,
+          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          textureSize: AnimationConfigs.zapTextureSize));
+
   SpriteAnimation idle() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
           amount: 10,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(17, 32)));
+          textureSize: AnimationConfigs.bulbEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 0,
+          amount: 3,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(17, 32)));
+          textureSize: AnimationConfigs.bulbEnemyAttackingTextureSize));
 }
