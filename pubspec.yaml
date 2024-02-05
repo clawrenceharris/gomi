@@ -83,7 +83,6 @@ flutter:
     - assets/images/gomi/black_gomi/
     - assets/images/enemies/light_bulb/
     - assets/images/enemies/tomato/
-
     - assets/images/enemies/syringe/
     - assets/images/enemies/water_bottle/
     - assets/images/collectibles/seed/
