@@ -28,6 +28,11 @@ class BottleEnemy extends Enemy {
   }
 
   @override
+  bool playerIsCorrectColor() {
+    return player.color.toLowerCase() == "blue";
+  }
+
+  @override
   FutureOr<void> onLoad() {
     rangeNeg = position.x - offNeg * Globals.tileSize;
     rangePos = position.x + offPos * Globals.tileSize;

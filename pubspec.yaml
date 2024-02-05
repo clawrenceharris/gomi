@@ -74,7 +74,7 @@ flutter:
     - assets/sfx/
     - assets/music/
     - assets/images/gomi/
-
+    - assets/images/tutorial/
     - assets/images/scenery/
     - assets/fonts/Press_Start_2P/
     - assets/images/gomi/green_gomi/
@@ -82,8 +82,7 @@ flutter:
     - assets/images/gomi/blue_gomi/
     - assets/images/gomi/black_gomi/
     - assets/images/enemies/light_bulb/
-    - assets/images/enemies/tomato/idle.png
-    - assets/images/enemies/tomato/attack.png
+    - assets/images/enemies/tomato/
 
     - assets/images/enemies/syringe/
     - assets/images/enemies/water_bottle/

@@ -56,6 +56,11 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   }
 
   @override
+  bool playerIsCorrectColor() {
+    return player.color.toLowerCase() == "green";
+  }
+
+  @override
   void update(double dt) {
     super.update(dt);
     _applyGravity(dt);

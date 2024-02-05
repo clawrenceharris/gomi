@@ -64,6 +64,10 @@ class Gomi extends FlameGame<GomiWorld>
   @override
   KeyEventResult onKeyEvent(
       RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    if (world.player.gotHit) {
+      return KeyEventResult.handled;
+    }
+
     world.player.directionX = 0;
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
@@ -76,8 +80,8 @@ class Gomi extends FlameGame<GomiWorld>
     } else {
       world.player.hasHorizontalInput = false;
     }
-    if (keysPressed.contains(LogicalKeyboardKey.space) &&
-        !world.player.hasJumped) {
+    if (keysPressed.contains(LogicalKeyboardKey.space) ||
+        keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
       world.player.hasJumped = true;
     }
 

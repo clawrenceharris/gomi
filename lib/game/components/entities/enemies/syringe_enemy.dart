@@ -49,6 +49,11 @@ class SyringeEnemy extends Enemy {
   }
 
   @override
+  bool playerIsCorrectColor() {
+    return player.color.toLowerCase() == "red";
+  }
+
+  @override
   void attack(double dt) {
     velocity.x = 0;
     double offset = (scale.x > 0) ? 0 : -width;

@@ -10,6 +10,7 @@ class AnimationConfigs {
   static const String walking = "walk";
   static const String jump = "jump";
   static const String zap = "zap";
+  static String sparks = "sparks";
 
   static const String fall = "fall";
   static const String hit = "hit";
@@ -88,8 +89,7 @@ class GomiAnimationConfigs {
       Flame.images.fromCache(
           'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.hit}.png'),
       SpriteAnimationData.sequenced(
-          amount: 5,
-          loop: false,
+          amount: 6,
           stepTime: AnimationConfigs.gomiStepTime,
           textureSize: AnimationConfigs.gomiTextureSize));
 }
@@ -161,13 +161,21 @@ class BulbEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
-          amount: 10,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: AnimationConfigs.bulbEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.attack}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 1,
+          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          textureSize: AnimationConfigs.bulbEnemyAttackingTextureSize));
+
+  SpriteAnimation sparks() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'enemies/${Globals.lightBulb}/${AnimationConfigs.sparks}.png'),
       SpriteAnimationData.sequenced(
           amount: 3,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
