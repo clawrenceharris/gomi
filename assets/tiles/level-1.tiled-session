@@ -1,28 +1,61 @@
 {
-    "activeFile": "",
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level-1.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "gomi 2.tsx": {
+            "scaleInDock": 1
+        },
+        "gomi.tsx": {
+            "scaleInDock": 1
+        },
         "level-1.tmx": {
-            "scale": 0.6483749999999999,
-            "selectedLayer": 0,
+            "scale": 1.567,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 801.2338538654328,
-                "y": 320.0308463466359
+                "x": 774.4097000638162,
+                "y": 157.9451180599872
             }
         },
         "level-2.tmx": {
-            "scale": 0.6483749999999999,
+            "scale": 0.8508,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 843.3239304184297,
+                "y": 437.82322519981193
+            }
+        },
+        "level-3.tmx": {
+            "scale": 0.64,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 801.2338538654328,
-                "y": 320.0308463466359
+                "x": 802.34375,
+                "y": 322.65625
             }
+        },
+        "tutorial_1.tsx": {
+            "scaleInDock": 1
+        },
+        "tutorial_2.tsx": {
+            "scaleInDock": 1
+        },
+        "tutorial_3.tsx": {
+            "scaleInDock": 1
         }
     },
+    "map.lastUsedFormat": "tmx",
     "openFiles": [
+        "level-1.tmx"
     ],
     "project": "level-1.tiled-project",
     "recentFiles": [
+        "level-2.tmx",
+        "level-3.tmx",
+        "level-1.tmx"
     ]
 }
