@@ -9,6 +9,11 @@ const gameLevels = <GameLevel>[
     pathname: 'level-2.tmx',
     winScore: 0,
   ),
+  (
+    number: 3,
+    pathname: 'level-3.tmx',
+    winScore: 0,
+  ),
 ];
 
 typedef GameLevel = ({

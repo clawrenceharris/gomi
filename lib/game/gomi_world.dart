@@ -249,7 +249,7 @@ class GomiWorld extends World
         world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
       ..viewport.size = size
       ..viewfinder.anchor = Anchor.center
-      ..viewfinder.visibleGameSize = Vector2(150, 250);
+      ..viewfinder.visibleGameSize = Vector2(150, 350);
     _cameraTarget =
         PlayerCameraAnchor(offsetX: 80, offsetY: -50, player: player);
     add(_cameraTarget); // Add the dummy component to the scene.

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
+import 'package:gomi/game/components/custom_hitbox.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/gomi_world.dart';
 
@@ -37,9 +38,9 @@ class Player extends SpriteAnimationGroupComponent
 
   String color;
   int _jumpCount = 0;
-  int maxLives = 1;
+  final int maxLives = 1;
   final double _gravity = 9.8;
-  final double _jumpForce = 260;
+  final double _jumpForce = 200;
   final double _maxVelocity = 300;
   final double _bounceForce = 200;
   bool hasJumped = false;
@@ -47,7 +48,7 @@ class Player extends SpriteAnimationGroupComponent
   final VoidCallback resetScore;
   double directionX = 0;
   double moveSpeed = 100;
-  Vector2 startingPosition = Vector2.zero();
+  late final Vector2 startingPosition;
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
   int lives = 0;
@@ -57,22 +58,24 @@ class Player extends SpriteAnimationGroupComponent
   double accumulatedTime = 0;
   bool gotHit = false;
   bool hasHorizontalInput = false;
-
+  late final CustomHitbox hitbox;
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    debugMode = true;
+    // debugMode = true;
+    hitbox = CustomHitbox(width: width - 8, height: height, offsetX: 4);
     startingPosition = Vector2(position.x, position.y);
-    add(RectangleHitbox());
+    add(RectangleHitbox(
+      position: Vector2(hitbox.offsetX, hitbox.offsetY),
+      size: Vector2(hitbox.width, hitbox.height),
+    ));
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     accumulatedTime += dt;
-    if (gotHit) {
-      return;
-    }
+
     while (accumulatedTime >= fixedDeltaTime) {
       _updatePlayerState();
       _updatePlayerMovement(fixedDeltaTime);
@@ -129,8 +132,17 @@ class Player extends SpriteAnimationGroupComponent
 
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
-    if (velocity.y < 0 && !isGrounded) playerState = PlayerState.jumping;
-    if (hasHorizontalInput) playerState = PlayerState.walking;
+    if (velocity.x != 0) {
+      playerState = PlayerState.walking;
+    }
+    if (velocity.y < 0 && !isGrounded) {
+      playerState = PlayerState.jumping;
+    }
+
+    if (gotHit) {
+      playerState = PlayerState.hit;
+    }
+
     if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0) {
       flipHorizontallyAroundCenter();
     }
@@ -141,11 +153,11 @@ class Player extends SpriteAnimationGroupComponent
   void _respawn() async {
     lives = maxLives;
     scale.x = 1;
-    position = startingPosition - Vector2.all(32);
+    hasHorizontalInput = false;
     velocity = Vector2.zero();
     position = startingPosition;
-    gotHit = false;
-    _updatePlayerState();
+    current = PlayerState.idle;
+    directionX = 0;
   }
 
   void collidedwithEnemy() {
@@ -155,19 +167,17 @@ class Player extends SpriteAnimationGroupComponent
   void _hit() async {
     gotHit = true;
     current = PlayerState.hit;
-
-    add(OpacityEffect.to(
-        0, EffectController(alternate: true, duration: 0.2, repeatCount: 5)));
-
-    await Future.delayed(const Duration(milliseconds: 500));
+    add(OpacityEffect.to(1, EffectController(duration: 0, repeatCount: 4)));
+    await Future.delayed(const Duration(seconds: 1));
 
     if (lives == 0) {
       _respawn();
     } else {
       current = PlayerState.idle;
-      gotHit = false;
       lives -= 1;
     }
+
+    gotHit = false;
   }
 
   void _updatePlayerMovement(double dt) {
@@ -228,13 +238,15 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _checkVerticalCollisions() {
+    var topCollisionPaddingY = 0.2;
+
     for (final block in world.collisionBlocks) {
       if (block.blockRect.overlaps(game.camera.visibleWorldRect)) {
         if (block is OneWayPlatform) {
-          if (world.checkCollisionTopCenter(this, block)) {
+          if (world.isCollisionFromTopPlayer(this, block)) {
             if (velocity.y > 0) {
               velocity.y = 0;
-              position.y = block.y - height;
+              position.y = block.y - hitbox.height - topCollisionPaddingY;
               isGrounded = true;
               break;
             }
@@ -243,7 +255,7 @@ class Player extends SpriteAnimationGroupComponent
           if (world.checkCollisionTopCenter(this, block)) {
             if (velocity.y > 0) {
               velocity.y = 0;
-              position.y = block.y - height;
+              position.y = block.y - hitbox.height;
               isGrounded = true;
               break;
             }

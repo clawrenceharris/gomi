@@ -1,9 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
+import 'package:gomi/game/components/entities/enemies/enemy.dart';
+import 'package:gomi/game/components/entities/player.dart';
 
 mixin CollisionAware {
   List<CollisionBlock> collisionBlocks = [];
+  final double topCollisionPaddingHeight = 7;
   void setCollisionBlocks(collisionBlocks) {
     this.collisionBlocks = collisionBlocks;
   }
@@ -16,6 +19,27 @@ mixin CollisionAware {
         other.y + other.height > block.y &&
         fixedX < block.x + block.width &&
         fixedX + other.width > block.x);
+  }
+
+  bool isCollisionFromTopPlayer(Player other, PositionComponent block) {
+    return other.y + other.hitbox.height <= block.y &&
+        other.y + other.hitbox.height >= block.y - topCollisionPaddingHeight &&
+        other.x >= block.x &&
+        other.x <= block.x + block.width;
+  }
+
+  bool isCollisionFromBottomPlayer(Player other, PositionComponent block) {
+    return other.y >= block.y + block.height &&
+        other.y <= block.y + block.height + topCollisionPaddingHeight &&
+        other.x >= block.x &&
+        other.x <= block.x + block.width;
+  }
+
+  bool isCollisionFromTopEnemy(Enemy other, PositionComponent block) {
+    return other.y + other.height <= block.y &&
+        other.y + other.height >= block.y - topCollisionPaddingHeight &&
+        other.x >= block.x &&
+        other.x <= block.x + block.width;
   }
 
   bool checkCollisionTopCenter(PositionComponent other, CollisionBlock block) {

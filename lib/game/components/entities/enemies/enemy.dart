@@ -68,9 +68,13 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     return player.velocity.y > 0 && player.y + player.height > position.y;
   }
 
+  bool playerIsCorrectColor();
+
   void attack(double dt);
   void collideWithPlayer() async {
-    if (isStomped()) {
+    if ((isAttacking || !playerIsCorrectColor()) && !player.gotHit) {
+      player.collidedWithEnemy();
+    } else if (isStomped() && playerIsCorrectColor()) {
       isHit = true;
       current = EnemyState.hit;
       player.bounce();
@@ -78,8 +82,6 @@ abstract class Enemy extends SpriteAnimationGroupComponent
       await animationTicker?.completed;
 
       removeFromParent();
-    } else if (isAttacking) {
-      player.collidedWithEnemy();
     }
   }
 
