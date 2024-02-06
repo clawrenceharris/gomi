@@ -28,13 +28,6 @@ mixin CollisionAware {
         other.x <= block.x + block.width;
   }
 
-  bool isCollisionFromBottomPlayer(Player other, PositionComponent block) {
-    return other.y >= block.y + block.height &&
-        other.y <= block.y + block.height + topCollisionPaddingHeight &&
-        other.x >= block.x &&
-        other.x <= block.x + block.width;
-  }
-
   bool isCollisionFromTopEnemy(Enemy other, PositionComponent block) {
     return other.y + other.height <= block.y &&
         other.y + other.height >= block.y - topCollisionPaddingHeight &&
