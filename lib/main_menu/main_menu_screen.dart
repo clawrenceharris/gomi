@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gomi/game/widgets/button.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
@@ -17,6 +18,10 @@ class MainMenuScreen extends StatelessWidget {
     final palette = context.watch<Palette>();
     final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
+    void _handlePlayPress() {
+      audioController.playSfx(SfxType.buttonTap);
+      GoRouter.of(context).go('/play');
+    }
 
     return Scaffold(
       backgroundColor: palette.backgroundMain.color,
@@ -25,10 +30,6 @@ class MainMenuScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Image.asset(
-              //   '',
-              //   filterQuality: FilterQuality.none,
-              // ),
               _gap,
               Transform.rotate(
                 angle: -0.1,
@@ -51,19 +52,20 @@ class MainMenuScreen extends StatelessWidget {
         rectangularMenuArea: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            WobblyButton(
-              onPressed: () {
-                audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/play');
-              },
-              child: const Text('Play'),
+            Button(
+              buttonModel:
+                  ButtonModel(onPressed: _handlePlayPress, text: "play"),
             ),
             _gap,
-            WobblyButton(
-              onPressed: () => GoRouter.of(context).push('/settings'),
-              child: const Text('Settings'),
+            Button(
+              buttonModel:
+                  ButtonModel(onPressed: _handlePlayPress, text: "help"),
             ),
             _gap,
+            Button(
+              buttonModel:
+                  ButtonModel(onPressed: _handlePlayPress, text: "about"),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 32),
               child: ValueListenableBuilder<bool>(

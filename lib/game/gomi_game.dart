@@ -4,6 +4,7 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_world.dart';
+import 'package:gomi/game/hud/hud.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
@@ -19,18 +20,16 @@ class Gomi extends FlameGame<GomiWorld>
           world: GomiWorld(level: level, playerProgress: playerProgress),
         );
 
-  /// What the properties of the level that is played has.
   final GameLevel level;
 
-  /// A helper for playing sound effects and background audio.
   final AudioController audioController;
 
-  /// In the [onLoad] method you load different type of assets and set things
-  /// that only needs to be set once when the level starts up.
   @override
   Future<void> onLoad() async {
     //Load all images into cache
     await images.loadAllImages();
+
+    add(Hud());
 
     // With the `TextPaint` we define what properties the text that we are going
     // to render will have, like font family, size and color in this instance.

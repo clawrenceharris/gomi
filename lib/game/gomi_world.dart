@@ -17,7 +17,6 @@ import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/mixins/collision_aware.dart';
 import 'package:gomi/game/mixins/has_player_ref.dart';
-import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
@@ -75,7 +74,6 @@ class GomiWorld extends World
         //TODO: calculate the amount of stars the player earned for the level
         playerProgress.setLevelFinished(level.number, stars);
         game.pauseEngine();
-        game.overlays.add(GameScreen.winDialogKey);
       }
     });
   }
@@ -93,13 +91,10 @@ class GomiWorld extends World
   void onMount() {
     super.onMount();
     // When the world is mounted in the game add a back button widget as an overlay
-    game.overlays.add(GameScreen.backButtonKey);
   }
 
   @override
-  void onRemove() {
-    game.overlays.remove(GameScreen.backButtonKey);
-  }
+  void onRemove() {}
 
   void _addPlayer() {
     final layer = getTiledLayer("player");
@@ -109,7 +104,7 @@ class GomiWorld extends World
     final player = Player(
         addScore: addScore,
         resetScore: resetScore,
-        color: obj.properties.getValue("Color"),
+        color: obj.properties.getValue("Color").toString().trim(),
         position: Vector2(obj.x, obj.y));
     add(player);
     setPlayer(player);
