@@ -22,8 +22,8 @@ class AnimationConfigs {
 
   static final Vector2 bottleEnemyTextureSize = Vector2(18, 25);
   static final Vector2 bulbEnemyTextureSize = Vector2(17, 32);
+  static final Vector2 tomatoEnemyTextureSize = Vector2(32, 32);
   static final Vector2 bulbEnemyAttackingTextureSize = Vector2(30, 32);
-
   static final Vector2 syringeEnemyTextureSize = Vector2(51, 22);
 
   static const double bottleEnemyStepTime = 0.1;
@@ -135,17 +135,17 @@ class TomatoEnemyAnimationConfigs {
       Flame.images
           .fromCache('enemies/${Globals.tomato}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
-          amount: 1,
+          amount: 6,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(26, 34)));
+          textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 1,
+          amount: 6,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: Vector2(26, 34)));
+          textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 }
 
 class BulbEnemyAnimationConfigs {

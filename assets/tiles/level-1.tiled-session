@@ -16,10 +16,10 @@
         },
         "level-1.tmx": {
             "scale": 1.567,
-            "selectedLayer": 2,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 774.4097000638162,
-                "y": 157.9451180599872
+                "x": 773.4524569240587,
+                "y": 440.6509253350351
             }
         },
         "level-2.tmx": {
@@ -53,9 +53,10 @@
         "level-1.tmx"
     ],
     "project": "level-1.tiled-project",
+    "property.type": "float",
     "recentFiles": [
+        "level-1.tmx",
         "level-2.tmx",
-        "level-3.tmx",
-        "level-1.tmx"
+        "level-3.tmx"
     ]
 }
