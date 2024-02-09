@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="132">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="140">
  <tileset firstgid="1" source="gomi.tsx"/>
  <layer id="1" name="tiles" width="100" height="40">
   <data encoding="csv">
@@ -20,8 +20,8 @@
 19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,19,19,19,19,19,19,19,19,19,19,
 19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,19,19,19,19,19,19,19,19,19,19,
 19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,120,0,0,0,120,0,0,18,19,19,19,19,19,19,19,19,19,19,
-19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,70,70,70,70,70,70,70,70,71,0,0,66,67,67,67,67,67,68,0,18,19,19,19,19,19,19,19,19,19,19,
-19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,108,120,0,0,0,0,0,0,0,69,70,70,70,70,70,70,71,0,0,0,0,0,0,69,70,70,70,70,70,70,70,70,71,0,0,0,0,0,69,70,70,70,70,70,70,70,70,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,19,19,19,19,19,19,19,19,19,19,
+19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,66,67,67,67,67,67,68,0,18,19,19,19,19,19,19,19,19,19,19,
+19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,108,120,0,0,0,0,0,0,0,69,70,70,70,70,70,71,0,0,0,69,70,70,70,70,71,0,0,0,69,70,70,70,70,71,0,0,0,69,70,70,70,70,71,0,0,0,69,70,70,70,70,71,0,0,0,69,70,70,70,70,71,0,0,0,0,0,0,0,0,0,0,0,0,0,18,19,19,19,19,19,19,19,19,19,19,
 19,19,19,19,19,19,19,19,19,19,19,51,51,51,51,51,51,51,51,52,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,19,19,19,19,19,19,19,19,19,19,
 19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,66,67,67,67,68,0,18,19,19,19,19,19,19,19,19,19,19,
 19,19,19,19,19,19,19,19,19,19,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,19,19,19,19,19,19,19,19,19,19,
@@ -50,10 +50,10 @@
   <object id="25" x="0" y="0" width="176" height="496"/>
   <object id="26" x="1424" y="0" width="176" height="496"/>
   <object id="99" x="171.886" y="304.61" width="146.919" height="15.0586"/>
-  <object id="100" name="One Way Platform" type="One Way Platform" x="607.973" y="288.258" width="159.468" height="7.30897"/>
-  <object id="101" name="One Way Platform" type="One Way Platform" x="384.328" y="287.651" width="126.91" height="7.30897"/>
-  <object id="102" name="One Way Platform" type="One Way Platform" x="847.841" y="288.258" width="159.8" height="7.30897"/>
-  <object id="103" name="One Way Platform" type="One Way Platform" x="1103.16" y="271.579" width="160.133" height="7.30897"/>
+  <object id="100" name="One Way Platform" type="One Way Platform" x="831.649" y="287.987" width="95.9484" height="7.30897"/>
+  <object id="101" name="One Way Platform" type="One Way Platform" x="384.328" y="287.651" width="111.166" height="7.30897"/>
+  <object id="102" name="One Way Platform" type="One Way Platform" x="975.934" y="288.124" width="96.0138" height="7.30897"/>
+  <object id="103" name="One Way Platform" type="One Way Platform" x="1119.73" y="288.134" width="95.8853" height="7.30897"/>
   <object id="104" name="One Way Platform" type="One Way Platform" x="1296.35" y="271.761" width="111.295" height="7.30897"/>
   <object id="105" name="One Way Platform" type="One Way Platform" x="1327.74" y="319.934" width="79.4013" height="7.30897"/>
   <object id="106" name="One Way Platform" type="One Way Platform" x="1328.41" y="368.106" width="79.4013" height="7.30897"/>
@@ -72,36 +72,47 @@
   <object id="119" x="800.602" y="480.28" width="15.0596" height="15.8737"/>
   <object id="123" x="1023.99" y="480.371" width="16.0851" height="16.0851"/>
   <object id="124" x="1311.89" y="480.371" width="15.8124" height="15.5398"/>
+  <object id="135" name="One Way Platform" type="One Way Platform" x="543.51" y="287.884" width="95.9647" height="7.30897"/>
+  <object id="136" name="One Way Platform" type="One Way Platform" x="688.194" y="288.156" width="95.1504" height="7.30897"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles"/>
  <objectgroup id="2" name="enemies">
-  <object id="125" name="Bottle Enemy" type="Bottle Enemy" x="591.409" y="470.551" width="18" height="25">
+  <object id="125" name="Bottle Enemy" type="Bottle Enemy" x="616.389" y="471.821" width="18" height="25">
    <properties>
-    <property name="Off Neg" type="int" value="3"/>
-    <property name="Off Pos" type="int" value="3"/>
+    <property name="Off Neg" type="int" value="4"/>
+    <property name="Off Pos" type="int" value="4"/>
    </properties>
   </object>
-  <object id="128" name="Bottle Enemy" type="Bottle Enemy" x="739.677" y="470.551" width="18" height="25">
+  <object id="130" name="Bottle Enemy" type="Bottle Enemy" x="1225.09" y="469.462" width="18" height="25">
    <properties>
-    <property name="Off Neg" type="int" value="3"/>
-    <property name="Off Pos" type="int" value="3"/>
+    <property name="Off Neg" type="int" value="5"/>
+    <property name="Off Pos" type="int" value="5"/>
    </properties>
   </object>
-  <object id="129" name="Bottle Enemy" type="Bottle Enemy" x="1078.13" y="470.551" width="18" height="25">
+  <object id="133" name="Bulb Enemy" type="Bulb Enemy" x="430.416" y="260.687" width="18" height="25">
    <properties>
-    <property name="Off Neg" type="int" value="3"/>
-    <property name="Off Pos" type="int" value="3"/>
+    <property name="Direction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="130" name="Bottle Enemy" type="Bottle Enemy" x="1188.67" y="470.027" width="18" height="25">
+  <object id="137" name="Bottle Enemy" type="Bottle Enemy" x="1112.34" y="470.251" width="18" height="25">
    <properties>
-    <property name="Off Neg" type="int" value="3"/>
-    <property name="Off Pos" type="int" value="3"/>
+    <property name="Off Neg" type="int" value="5"/>
+    <property name="Off Pos" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="138" name="Bottle Enemy" type="Bottle Enemy" x="708.068" y="470.815" width="18" height="25">
+   <properties>
+    <property name="Off Neg" type="int" value="4"/>
+    <property name="Off Pos" type="int" value="4"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="3" name="player">
-  <object id="120" name="Black Gomi" type="black_gomi" x="196.24" y="430.082" width="39.953" height="58.7544"/>
+  <object id="120" name="Player" type="Player" x="196.24" y="430.082" width="39.953" height="58.7544">
+   <properties>
+    <property name="Color" value="Blue"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="gomi clones"/>
 </map>
