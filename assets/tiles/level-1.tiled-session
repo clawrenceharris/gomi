@@ -15,27 +15,41 @@
             "scaleInDock": 1
         },
         "level-1.tmx": {
-            "scale": 1.567,
-            "selectedLayer": 4,
+            "expandedObjectLayers": [
+                3,
+                2
+            ],
+            "scale": 1.5785,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 773.4524569240587,
-                "y": 440.6509253350351
+                "x": 976.8767817548305,
+                "y": 433.6395312005068
             }
         },
         "level-2.tmx": {
-            "scale": 0.8508,
-            "selectedLayer": 1,
+            "expandedObjectLayers": [
+                3,
+                5,
+                2
+            ],
+            "scale": 0.8782,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 843.3239304184297,
-                "y": 437.82322519981193
+                "x": 802.7784103848782,
+                "y": 393.41835572762466
             }
         },
         "level-3.tmx": {
-            "scale": 0.64,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                3,
+                5,
+                2
+            ],
+            "scale": 1.7711,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 802.34375,
-                "y": 322.65625
+                "x": 684.3204787984869,
+                "y": 317.5992321156343
             }
         },
         "tutorial_1.tsx": {
@@ -53,7 +67,7 @@
         "level-1.tmx"
     ],
     "project": "level-1.tiled-project",
-    "property.type": "float",
+    "property.type": "int",
     "recentFiles": [
         "level-1.tmx",
         "level-2.tmx",

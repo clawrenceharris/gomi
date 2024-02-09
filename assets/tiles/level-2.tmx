@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="138">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="159">
  <tileset firstgid="1" source="gomi.tsx"/>
  <layer id="1" name="tiles" width="100" height="40">
   <data encoding="csv">
@@ -45,7 +45,7 @@
 19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19
 </data>
  </layer>
- <objectgroup id="5" name="collisions" visible="0">
+ <objectgroup id="5" name="collisions">
   <object id="7" x="2.38459" y="495.381" width="1593.26" height="147.048"/>
   <object id="25" x="0" y="0" width="176" height="496"/>
   <object id="26" x="1424" y="0" width="176" height="496"/>
@@ -62,12 +62,49 @@
   <object id="134" name="One Way Platform" type="One Way Platform" x="1153.54" y="464.458" width="274.641" height="16.0568"/>
   <object id="135" name="One Way Platform" type="One Way Platform" x="1216.74" y="336.441" width="211.286" height="15.8585"/>
   <object id="136" name="One Way Platform" type="One Way Platform" x="1201.19" y="368.44" width="227.148" height="15.8585"/>
-  <object id="137" x="1252.26" y="165.232" width="135.48" height="117.416"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles"/>
- <objectgroup id="2" name="enemies"/>
+ <objectgroup id="2" name="enemies">
+  <object id="145" name="Tomato Enemy" type="Tomato Enemy" x="516.221" y="462.705" width="35.7371" height="35.7371">
+   <properties>
+    <property name="Jump Force" type="float" value="300"/>
+   </properties>
+  </object>
+  <object id="153" name="Tomato Enemy" type="Tomato Enemy" x="801.461" y="461.1" width="35.7371" height="35.7371">
+   <properties>
+    <property name="Jump Force" type="float" value="300"/>
+   </properties>
+  </object>
+  <object id="154" name="Tomato Enemy" type="Tomato Enemy" x="1084.56" y="461.635" width="35.7371" height="35.7371">
+   <properties>
+    <property name="Jump Force" type="float" value="300"/>
+   </properties>
+  </object>
+  <object id="155" name="Bottle Enemy" type="Bottle Enemy" x="659.415" y="373.35" width="18" height="25">
+   <properties>
+    <property name="Off Neg" type="int" value="3"/>
+    <property name="Off Pos" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="157" name="Bottle Enemy" type="Bottle Enemy" x="409.495" y="406.53" width="18" height="25">
+   <properties>
+    <property name="Off Neg" type="int" value="3"/>
+    <property name="Off Pos" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="158" name="Bottle Enemy" type="Bottle Enemy" x="949.211" y="373.609" width="18" height="25">
+   <properties>
+    <property name="Off Neg" type="int" value="3"/>
+    <property name="Off Pos" type="int" value="3"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup id="3" name="player">
-  <object id="1" name="Black Gomi" type="black_gomi" x="202.363" y="467.786" width="22" height="26"/>
+  <object id="1" name="Player" type="Player" x="197.547" y="468.321" width="22" height="26">
+   <properties>
+    <property name="Color" value="Blue"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="gomi clones"/>
 </map>
