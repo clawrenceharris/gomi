@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flutter/services.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/game/components/custom_hitbox.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/gomi_world.dart';
 
 enum PlayerState {
   idle,
@@ -21,31 +18,32 @@ enum PlayerState {
   appearing
 }
 
+enum GomiColor {
+  black("black"),
+  green("green"),
+  red("red"),
+  blue("blue");
+
+  const GomiColor(this.color);
+  final String color;
+}
+
 class Player extends SpriteAnimationGroupComponent
-    with
-        HasGameRef<Gomi>,
-        KeyboardHandler,
-        CollisionCallbacks,
-        HasWorldReference<GomiWorld> {
-  Player(
-      {required this.color,
-      required this.addScore,
-      required this.resetScore,
-      super.position})
+    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
+  Player({required this.color, super.position})
       : super(anchor: Anchor.topCenter) {
     lives = maxLives;
   }
 
-  String color;
+  GomiColor color;
   int _jumpCount = 0;
-  final int maxLives = 1;
+  final int maxLives = 3;
   final double _gravity = 9.8;
   final double _jumpForce = 200;
   final double _maxVelocity = 300;
   final double _bounceForce = 200;
   bool hasJumped = false;
-  final void Function({int amount}) addScore;
-  final VoidCallback resetScore;
+  bool seedCollected = false;
   double directionX = 0;
   double moveSpeed = 100;
   late final Vector2 startingPosition;
@@ -57,12 +55,18 @@ class Player extends SpriteAnimationGroupComponent
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
   bool gotHit = false;
-  bool hasHorizontalInput = false;
+  late final Vector2 _minClamp;
+  late final Vector2 _maxClamp;
   late final CustomHitbox hitbox;
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     // debugMode = true;
+
+    // Prevents player from going out of bounds of level.
+    // Since anchor is top center, split size in half for calculation.
+    _minClamp = game.world.levelBounds.topLeft;
+    _maxClamp = game.world.levelBounds.bottomRight + (size / 2);
     hitbox = CustomHitbox(width: width - 8, height: height, offsetX: 4);
     startingPosition = Vector2(position.x, position.y);
     add(RectangleHitbox(
@@ -77,11 +81,13 @@ class Player extends SpriteAnimationGroupComponent
     accumulatedTime += dt;
 
     while (accumulatedTime >= fixedDeltaTime) {
-      _updatePlayerState();
-      _updatePlayerMovement(fixedDeltaTime);
-      _checkHorizontalCollisions();
-      _applyGravity(fixedDeltaTime);
-      _checkVerticalCollisions();
+      if (!seedCollected) {
+        _updatePlayerState();
+        _updatePlayerMovement(fixedDeltaTime);
+        _checkHorizontalCollisions();
+        _applyGravity(fixedDeltaTime);
+        _checkVerticalCollisions();
+      }
 
       accumulatedTime -= fixedDeltaTime;
     }
@@ -89,22 +95,16 @@ class Player extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
-  @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    //TODO: handle collisions with collectables
-
-    super.onCollisionStart(intersectionPoints, other);
-  }
-
   void _loadAllAnimations() {
-    SpriteAnimation idleAnimation = AnimationConfigs.gomi.idle(color);
-    SpriteAnimation walkingAnimation = AnimationConfigs.gomi.walking(color);
-    SpriteAnimation jumpingAnimation = AnimationConfigs.gomi.jumping(color);
+    SpriteAnimation idleAnimation = AnimationConfigs.gomi.idle(color.color);
+    SpriteAnimation walkingAnimation =
+        AnimationConfigs.gomi.walking(color.color);
+    SpriteAnimation jumpingAnimation =
+        AnimationConfigs.gomi.jumping(color.color);
     SpriteAnimation disappearingAnimation =
         AnimationConfigs.gomi.disappearing();
     SpriteAnimation appearingAnimation = AnimationConfigs.gomi.appearing();
-    SpriteAnimation hitAnimation = AnimationConfigs.gomi.hit(color);
+    SpriteAnimation hitAnimation = AnimationConfigs.gomi.hit(color.color);
 
     // List of all animations
     animations = {
@@ -120,8 +120,9 @@ class Player extends SpriteAnimationGroupComponent
     current = PlayerState.idle;
   }
 
-  void collidedWithEnemy() {
-    _hit();
+  void changeColor(GomiColor color) {
+    this.color = color;
+    _loadAllAnimations();
   }
 
   void bounce() {
@@ -150,33 +151,25 @@ class Player extends SpriteAnimationGroupComponent
     current = playerState;
   }
 
-  void _respawn() async {
+  void respawn() async {
     lives = maxLives;
     scale.x = 1;
-    hasHorizontalInput = false;
     velocity = Vector2.zero();
-    position = startingPosition;
+    position = Vector2(startingPosition.x, startingPosition.y);
     current = PlayerState.idle;
-    directionX = 0;
+    changeColor(GomiColor.black);
   }
 
-  void collidedwithEnemy() {
-    _hit();
-  }
-
-  void _hit() async {
+  Future<void> hit() async {
     gotHit = true;
-    current = PlayerState.hit;
-    add(OpacityEffect.to(1, EffectController(duration: 0, repeatCount: 4)));
     await Future.delayed(const Duration(seconds: 1));
 
     if (lives == 0) {
-      _respawn();
+      game.world.playerDeathNotifier.handlePlayerDeath();
     } else {
-      current = PlayerState.idle;
       lives -= 1;
     }
-
+    current = PlayerState.idle;
     gotHit = false;
   }
 
@@ -185,6 +178,7 @@ class Player extends SpriteAnimationGroupComponent
 
     velocity.x = directionX * moveSpeed;
     position.x += velocity.x * dt;
+    position.clamp(_minClamp, _maxClamp);
   }
 
   void _jump(double dt) {
@@ -217,10 +211,10 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _checkHorizontalCollisions() {
-    for (final block in world.collisionBlocks) {
+    for (final block in game.world.collisionBlocks) {
       if (block.blockRect.overlaps(game.camera.visibleWorldRect)) {
         if (block is OneWayPlatform == false) {
-          if (world.checkCollisionTopCenter(this, block)) {
+          if (game.world.checkCollisionTopCenter(this, block)) {
             if (velocity.x > 0) {
               velocity.x = 0;
               position.x = block.x - width / 2;
@@ -240,10 +234,10 @@ class Player extends SpriteAnimationGroupComponent
   void _checkVerticalCollisions() {
     var topCollisionPaddingY = 0.2;
 
-    for (final block in world.collisionBlocks) {
+    for (final block in game.world.collisionBlocks) {
       if (block.blockRect.overlaps(game.camera.visibleWorldRect)) {
         if (block is OneWayPlatform) {
-          if (world.isCollisionFromTopPlayer(this, block)) {
+          if (game.world.isCollisionFromTopPlayer(this, block)) {
             if (velocity.y > 0) {
               velocity.y = 0;
               position.y = block.y - hitbox.height - topCollisionPaddingY;
@@ -252,7 +246,7 @@ class Player extends SpriteAnimationGroupComponent
             }
           }
         } else {
-          if (world.checkCollisionTopCenter(this, block)) {
+          if (game.world.checkCollisionTopCenter(this, block)) {
             if (velocity.y > 0) {
               velocity.y = 0;
               position.y = block.y - hitbox.height;

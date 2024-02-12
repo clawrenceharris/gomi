@@ -122,7 +122,11 @@
  <objectgroup id="6" name="collectibles"/>
  <objectgroup id="2" name="enemies"/>
  <objectgroup id="3" name="player">
-  <object id="1" name="Blue Gomi" type="blue_gomi" x="202.363" y="467.786" width="22" height="26"/>
+  <object id="1" name="Player" type="Player" x="202.363" y="467.786" width="22" height="26">
+   <properties>
+    <property name="Color" value="Blue"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="gomi clones"/>
 </map>

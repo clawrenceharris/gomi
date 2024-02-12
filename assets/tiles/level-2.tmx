@@ -52,7 +52,7 @@
   <object id="99" x="176.53" y="352.998" width="318.732" height="30.9478"/>
   <object id="100" x="479.948" y="384.913" width="14.2496" height="62.8627"/>
   <object id="101" name="One Way Platform" type="One Way Platform" x="639.496" y="336.188" width="64.7047" height="7.13844"/>
-  <object id="102" name="One Way Platform" x="752.418" y="240.367" width="62.8627" height="6.76983"/>
+  <object id="102" name="One Way Platform" type="One Way Platform" x="752.418" y="240.367" width="62.8627" height="6.76983"/>
   <object id="103" name="One Way Platform" type="One Way Platform" x="1215.83" y="240.36" width="63.8298" height="6.76983"/>
   <object id="104" name="One Way Platform" type="One Way Platform" x="1343.84" y="336.557" width="47.5843" height="6.76983"/>
   <object id="105" x="848.322" y="192.314" width="334.561" height="31.3916"/>

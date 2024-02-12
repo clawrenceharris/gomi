@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.2.2
   logging: ^1.2.0
   google_fonts: ^6.1.0
+  flame_behaviors: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,7 +75,7 @@ flutter:
     - assets/sfx/
     - assets/music/
     - assets/images/gomi/
-    - assets/images/tutorial/
+    - assets/images/tutorials/
     - assets/images/hud/
     - assets/images/scenery/
     - assets/fonts/Press_Start_2P/
@@ -87,6 +88,7 @@ flutter:
     - assets/images/enemies/syringe/
     - assets/images/enemies/water_bottle/
     - assets/images/collectibles/seed/
+    - assets/images/collectibles/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

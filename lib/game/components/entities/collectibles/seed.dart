@@ -1,64 +1,41 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/game/components/entities/player.dart';
-import 'package:gomi/game/gomi_game.dart';
+import 'package:flame/effects.dart';
+import 'package:flutter/widgets.dart';
+import 'package:gomi/constants/animation_configs.dart';
+import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 
-class Seed extends SpriteAnimationComponent
-    with HasGameRef<Gomi>, CollisionCallbacks {
+class Seed extends Collectible {
   Seed({
     required this.seed,
-    position,
-    size,
-  }) : super(
-          position: position,
-          size: size,
-        );
+    super.position,
+  });
   final String seed;
-  final hitbox = RectangleHitbox(collisionType: CollisionType.passive);
-  bool _collected = false;
   final double stepTime = 0.1;
 
   @override
   FutureOr<void> onLoad() {
-    animation = SpriteAnimation.fromFrameData(
-        game.images.fromCache('seed.png'),
-        SpriteAnimationData.sequenced(
-          amount: 11,
-          stepTime: stepTime,
-          textureSize: Vector2.all(22),
-        ));
-
-    add(hitbox);
+    animation = AnimationConfigs.seed.idle();
+    add(MoveEffect.to(
+        Vector2(position.x, position.y - 10),
+        EffectController(
+            infinite: true,
+            duration: 2,
+            alternate: true,
+            curve: Curves.easeOutSine)));
+    add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
   }
 
   @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player) {
-      collidedWithPlayer();
+  Future<void> collideWithPlayer() async {
+    if (world.activeEnemies.isEmpty) {
+      animation = AnimationConfigs.seed.disappearing();
+
+      world.player.seedCollected = true;
+      await Future.delayed(const Duration(seconds: 1));
+      removeFromParent();
     }
-    super.onCollisionStart(intersectionPoints, other);
-  }
-
-  void collidedWithPlayer() {
-    if (!_collected) {
-      animation = SpriteAnimation.fromFrameData(
-          game.images.fromCache('collected.png'),
-          SpriteAnimationData.sequenced(
-            amount: 6,
-            stepTime: stepTime,
-            textureSize: Vector2.all(22),
-          ));
-
-      _collected = true;
-    }
-
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () => removeFromParent(),
-    );
   }
 }

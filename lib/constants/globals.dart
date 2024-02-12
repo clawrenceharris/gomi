@@ -10,4 +10,5 @@ class Globals {
   static const String lightBulb = "light_bulb";
   static const String syringe = "syringe";
   static const String tomato = "tomato";
+  static String seed = "seed";
 }
