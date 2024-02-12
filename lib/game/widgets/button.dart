@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ButtonModel {
-  final void Function() onPressed;
-  final String text;
-  ButtonModel({required this.onPressed, required this.text});
-}
+class ButtonModel {}
 
 class Button extends StatelessWidget {
-  const Button({required this.buttonModel, super.key});
-  final ButtonModel buttonModel;
+  const Button({required this.text, required this.onPressed, super.key});
+  final String text;
+  final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: buttonModel.onPressed,
+        onPressed: onPressed,
         style: ButtonStyle(
             overlayColor: MaterialStateProperty.all(Colors.transparent)),
         child: Stack(
@@ -29,10 +26,10 @@ class Button extends StatelessWidget {
 
             // Text widget on top of the image
             Text(
-              buttonModel.text,
+              text,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),

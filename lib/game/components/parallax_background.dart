@@ -9,10 +9,10 @@ class ParallaxBackground extends ParallaxComponent {
 
   double speed;
   final layers = [
-    ParallaxImageData('scenery/background.png'),
-    ParallaxImageData('scenery/clouds_2.png'),
+    ParallaxImageData('scenery/background_1a.png'),
+    ParallaxImageData('scenery/sun.png'),
+    ParallaxImageData('scenery/background_2a.png'),
     ParallaxImageData('scenery/clouds_1.png'),
-    ParallaxImageData('scenery/mountains.png'),
     ParallaxImageData('scenery/trees_2.png'),
     ParallaxImageData('scenery/trees_1.png'),
   ];

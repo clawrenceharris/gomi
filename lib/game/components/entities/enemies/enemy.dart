@@ -4,6 +4,7 @@ import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
 import 'package:gomi/game/gomi_game.dart';
+import 'package:gomi/game/gomi_world.dart';
 
 enum EnemyState {
   idle,
@@ -12,22 +13,26 @@ enum EnemyState {
 }
 
 abstract class Enemy extends SpriteAnimationGroupComponent
-    with HasGameRef<Gomi>, CollisionCallbacks {
-  Enemy({super.position, super.size, required this.player});
+    with HasGameRef<Gomi>, HasWorldReference<GomiWorld>, CollisionCallbacks {
+  Enemy({super.position, super.size});
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
-  double idleTime = 3; // Time to stay in idle state (in seconds)
+  double idleTime = 5; // Time to stay in idle state (in seconds)
   double attackTime = 5; // Time to stay in attacking state (in seconds)
   double elapsedTime = 0.0; // Accumulated time for the current state
   bool isAttacking = false;
+  late final Vector2 startingPosition;
+  bool gotHit = false;
 
-  bool isHit = false;
-  Player player;
   @override
   FutureOr<void> onLoad() {
+    startingPosition = Vector2(position.x, position.y);
     loadAllAnimations();
-    add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
+  }
+
+  void respawn() {
+    position = Vector2(startingPosition.x, startingPosition.y);
   }
 
   void loadAllAnimations() {
@@ -63,25 +68,26 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     super.update(dt);
   }
 
-  //returns whether the player is above the enemy and stomped on it
+  //returns whether the world.player is above the enemy and stomped on it
   bool isStomped() {
-    return player.velocity.y > 0 && player.y + player.height > position.y;
+    return world.player.velocity.y > 0 &&
+        world.player.y + world.player.height > position.y;
   }
 
   bool playerIsCorrectColor();
 
   void attack(double dt);
   void collideWithPlayer() async {
-    if ((isAttacking || !playerIsCorrectColor()) && !player.gotHit) {
-      player.collidedWithEnemy();
-    } else if (isStomped() && playerIsCorrectColor()) {
-      isHit = true;
+    if (world.player.gotHit) {
+      return;
+    }
+    if (!isAttacking && isStomped() && playerIsCorrectColor()) {
+      gotHit = true;
       current = EnemyState.hit;
-      player.bounce();
-
-      await animationTicker?.completed;
-
+      world.player.bounce();
       removeFromParent();
+    } else if (isAttacking) {
+      await world.player.hit();
     }
   }
 

@@ -44,7 +44,6 @@ mixin CollisionAware {
     final fixedX = other.scale.x < 0 ? topCenterX - other.width : topCenterX;
     final fixedY =
         block is OneWayPlatform ? topCenterY + other.height : topCenterY;
-
     return (fixedY < block.y + block.height &&
         fixedY + other.height > block.y &&
         fixedX < block.x + block.width &&

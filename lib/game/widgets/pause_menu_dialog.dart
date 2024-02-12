@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/widgets/button.dart';
-import 'package:gomi/game/widgets/resume_button.dart';
 
 class PauseMenuDialog extends StatelessWidget {
   const PauseMenuDialog({super.key});
   void _handleQuitButtonPress(BuildContext context) {
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _handleResumeButtonPress(BuildContext context) {
+    Navigator.of(context).pop();
   }
 
   @override
@@ -52,12 +55,13 @@ class PauseMenuDialog extends StatelessWidget {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                          const ResumeButton(),
                           Button(
-                              buttonModel: ButtonModel(
-                                  onPressed: () =>
-                                      _handleQuitButtonPress(context),
-                                  text: "quit")),
+                              onPressed: () =>
+                                  _handleResumeButtonPress(context),
+                              text: "Resume"),
+                          Button(
+                              onPressed: () => _handleQuitButtonPress(context),
+                              text: "Quit"),
                           _gap,
                           const Text("press space to resume",
                               style: TextStyle(

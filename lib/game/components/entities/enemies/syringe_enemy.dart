@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
+import 'package:gomi/game/components/entities/player.dart';
 
 class SyringeEnemy extends Enemy {
   double _rangeNeg = 0;
@@ -12,18 +14,20 @@ class SyringeEnemy extends Enemy {
   Vector2 velocity = Vector2.zero();
   int _targetDirection = -1;
   final double _speed = 100;
-  final int offNeg; //alloted spaces to the left the eneymy can move
-  final int offPos; //alloted spaces to the right the eneymy can move
+  final double offNeg; //alloted spaces to the left the eneymy can move
+  final double offPos; //alloted spaces to the right the eneymy can move
   double moveDirection = 1;
-  SyringeEnemy(
-      {super.position,
-      required super.player,
-      this.offNeg = 0,
-      this.offPos = 0});
+  SyringeEnemy({
+    this.offNeg = 0,
+    this.offPos = 0,
+    super.position,
+  });
 
   @override
   FutureOr<void> onLoad() {
     // debugMode = true;
+    add(RectangleHitbox(collisionType: CollisionType.passive));
+
     _calculateRange();
     isAttacking = true;
     return super.onLoad();
@@ -50,7 +54,7 @@ class SyringeEnemy extends Enemy {
 
   @override
   bool playerIsCorrectColor() {
-    return player.color.toLowerCase() == "red";
+    return world.player.color == GomiColor.red;
   }
 
   @override
@@ -59,8 +63,8 @@ class SyringeEnemy extends Enemy {
     double offset = (scale.x > 0) ? 0 : -width;
 
     if (playerInRange()) {
-      //if the player is to the right of the enemy set direction to the right and vise versa
-      _targetDirection = (player.x < position.x + offset) ? -1 : 1;
+      //if the world.player is to the right of the enemy set direction to the right and vise versa
+      _targetDirection = (world.player.x < position.x + offset) ? -1 : 1;
       velocity.x = _targetDirection * _speed;
     }
     moveDirection = lerpDouble(moveDirection, _targetDirection, 0.1) ?? 1;
@@ -68,10 +72,10 @@ class SyringeEnemy extends Enemy {
   }
 
   bool playerInRange() {
-    return player.x >= _rangeNeg &&
-        player.x <= _rangePos &&
-        player.y + player.height > position.y &&
-        player.y < position.y + height;
+    return world.player.x >= _rangeNeg &&
+        world.player.x <= _rangePos &&
+        world.player.y + world.player.height > position.y &&
+        world.player.y < position.y + height;
   }
 
   void _updateState() {
