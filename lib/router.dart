@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gomi/game/splash/splash_screen.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -16,16 +17,14 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const MainMenuScreen(key: Key('main menu')),
+      builder: (context, state) => const SplashScreen(key: Key('splash')),
       routes: [
         GoRoute(
           path: 'play',
           pageBuilder: (context, state) => buildPageTransition<void>(
-            key: const ValueKey('play'),
+            key: const ValueKey('level selection'),
             color: context.watch<Palette>().backgroundLevelSelection.color,
-            child: const LevelSelectionScreen(
-              key: Key('level selection'),
-            ),
+            child: const LevelSelectionScreen(),
           ),
           routes: [
             GoRoute(

@@ -1,6 +1,7 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
+import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
@@ -29,12 +30,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiWorld extends World
+class GomiLevel extends World
     with HasGameReference, TapCallbacks, CollisionAware {
-  GomiWorld({
-    required this.level,
-    required this.playerProgress,
-  });
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;
@@ -50,7 +47,20 @@ class GomiWorld extends World
   /// can listen to it and act on the updated value.
   final scoreNotifier = ValueNotifier(0);
   final PlayerDeathNotifier playerDeathNotifier = PlayerDeathNotifier();
-  late final CameraComponent camera;
+  final cameraParallax = ParallaxBackground(speed: 0, layers: [
+    ParallaxImageData('scenery/background_1a.png'),
+    ParallaxImageData('scenery/sun.png'),
+    ParallaxImageData('scenery/clouds_2.png'),
+    ParallaxImageData('scenery/clouds_1.png'),
+    ParallaxImageData('scenery/trees_2.png'),
+    ParallaxImageData('scenery/trees_1.png'),
+  ]);
+
+  GomiLevel({
+    required this.level,
+    required this.playerProgress,
+  });
+
   Vector2 get size => (parent as FlameGame).size;
   Iterable<Enemy> get activeEnemies =>
       enemies.where((element) => contains(element));
@@ -58,7 +68,6 @@ class GomiWorld extends World
   //the stars earned for the level
   int stars = 0;
 
-  final cameraParallax = ParallaxBackground(speed: 0);
   @override
   Future<void> onLoad() async {
     //load the tiled level
@@ -67,9 +76,10 @@ class GomiWorld extends World
 
     //level bounds will start 5 tiles to the right
     levelBounds = Rectangle.fromPoints(
-        Vector2(3 * Globals.tileSize, 0),
-        Vector2(tiledLevel.tileMap.map.width.toDouble() * Globals.tileSize,
-            tiledLevel.tileMap.map.width.toDouble() * Globals.tileSize));
+        Vector2(8 * Globals.tileSize, 0),
+        Vector2(
+            (tiledLevel.tileMap.map.width.toDouble() - 5) * Globals.tileSize,
+            tiledLevel.tileMap.map.height.toDouble() * Globals.tileSize));
     add(tiledLevel);
     _addEnemies();
 
@@ -190,22 +200,22 @@ class GomiWorld extends World
     // Adds each enemy at the TiledObject's position
     for (final obj in layer.objects) {
       late final Enemy enemy;
-      switch (obj.class_) {
-        case 'Bulb Enemy':
+      switch (obj.class_.toLowerCase()) {
+        case 'bulb enemy':
           final direction = obj.properties.getValue("Direction");
           enemy = BulbEnemy(
             position: Vector2(obj.x, obj.y),
             direction: direction,
           );
           break;
-        case 'Syringe Enemy':
+        case 'syringe enemy':
           final offNeg = obj.properties.getValue("offNeg");
           final offPos = obj.properties.getValue("offPos");
 
           enemy = SyringeEnemy(
               position: Vector2(obj.x, obj.y), offNeg: offNeg, offPos: offPos);
 
-        case 'Bottle Enemy':
+        case 'bottle enemy':
           final offNeg = obj.properties.getValue("Off Neg");
           final offPos = obj.properties.getValue("Off Pos");
           enemy = BottleEnemy(
@@ -215,7 +225,7 @@ class GomiWorld extends World
           );
 
           break;
-        case 'Tomato Enemy':
+        case 'tomato enemy':
           final jumpForce = obj.properties.getValue("Jump Force");
           enemy = TomatoEnemy(
               jumpForce: jumpForce, position: Vector2(obj.x, obj.y));
@@ -244,6 +254,8 @@ class GomiWorld extends World
           gomiColor = GomiColor.blue;
         case "red":
           gomiColor = GomiColor.red;
+        default:
+          gomiColor = GomiColor.black;
       }
       final clone =
           GomiClone(color: gomiColor, position: Vector2(obj.x, obj.y));
@@ -257,12 +269,12 @@ class GomiWorld extends World
 
     for (final obj in layer.objects) {
       late final Collectible collectible;
-      switch (obj.class_) {
-        case "Seed":
+      switch (obj.class_.toLowerCase()) {
+        case "seed":
           collectible = Seed(seed: "Oak", position: Vector2(obj.x, obj.y));
 
           break;
-        case "Coin":
+        case "coin":
           collectible = Coin(
             position: Vector2(obj.x, obj.y),
           );
@@ -274,15 +286,17 @@ class GomiWorld extends World
 
   void _setUpCamera() {
     game.camera = CameraComponent(
-        world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
+        viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
       ..viewport.size = size
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =
-          Vector2(Globals.tileSize * 20, Globals.tileSize * 10);
-    //anchor that will be used to follow the player at a given offset x and y
+          Vector2(Globals.tileSize * 15, Globals.tileSize * 12);
     final anchor = PlayerCameraAnchor(
-        offsetX: 7 * Globals.tileSize, offsetY: -50, player: player);
-    add(anchor);
+        offsetX: 6 * Globals.tileSize,
+        offsetY: -Globals.tileSize * 3,
+        player: player);
+    //target that will be used to follow the player at a given offset x and y
+    game.add(anchor);
 
     game.camera.follow(anchor, maxSpeed: 600, snap: true);
     game.camera.setBounds(levelBounds);

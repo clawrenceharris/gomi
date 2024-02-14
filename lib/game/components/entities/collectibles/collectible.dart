@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/game/components/entities/player.dart';
-import 'package:gomi/game/gomi_world.dart';
+import 'package:gomi/game/gomi_level.dart';
 
 class Collectible extends SpriteAnimationComponent
-    with CollisionCallbacks, HasWorldReference<GomiWorld> {
+    with CollisionCallbacks, HasWorldReference<GomiLevel> {
   late final Vector2 startingPosition;
   Collectible({required super.position, super.size, super.animation});
   @override

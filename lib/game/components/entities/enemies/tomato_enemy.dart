@@ -12,7 +12,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   final double enemyHeight = 32;
   final double _maxVelocity = 200;
   double _elapsedTime = 0.0;
-  final double bounceCoolDown = 1;
+  final double bounceCoolDown = 0.5;
   bool isGrounded = true;
   Vector2 velocity = Vector2.zero();
   TomatoEnemy({

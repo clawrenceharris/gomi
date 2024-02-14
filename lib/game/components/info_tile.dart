@@ -4,10 +4,10 @@ import 'package:flame/collisions.dart';
 import 'package:flame/flame.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/game/gomi_world.dart';
+import 'package:gomi/game/gomi_level.dart';
 
 class InfoTile extends PositionComponent
-    with CollisionCallbacks, HasWorldReference<GomiWorld> {
+    with CollisionCallbacks, HasWorldReference<GomiLevel> {
   final int index;
   late final SpriteComponent infoSprite;
   InfoTile({required this.index, super.position, super.size});

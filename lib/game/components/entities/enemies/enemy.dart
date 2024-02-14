@@ -4,7 +4,7 @@ import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/gomi_world.dart';
+import 'package:gomi/game/gomi_level.dart';
 
 enum EnemyState {
   idle,
@@ -13,7 +13,7 @@ enum EnemyState {
 }
 
 abstract class Enemy extends SpriteAnimationGroupComponent
-    with HasGameRef<Gomi>, HasWorldReference<GomiWorld>, CollisionCallbacks {
+    with HasGameRef<Gomi>, HasWorldReference<GomiLevel>, CollisionCallbacks {
   Enemy({super.position, super.size});
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;

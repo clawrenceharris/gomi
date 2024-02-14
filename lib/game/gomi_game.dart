@@ -3,21 +3,21 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/game/gomi_world.dart';
+import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/game/hud/hud.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 
-class Gomi extends FlameGame<GomiWorld>
+class Gomi extends FlameGame<GomiLevel>
     with HasCollisionDetection, KeyboardEvents {
   Gomi({
     required this.level,
     required PlayerProgress playerProgress,
     required this.audioController,
   }) : super(
-          world: GomiWorld(level: level, playerProgress: playerProgress),
+          world: GomiLevel(level: level, playerProgress: playerProgress),
         );
 
   final GameLevel level;
