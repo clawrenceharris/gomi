@@ -25,9 +25,11 @@ class AnimationConfigs {
   static final Vector2 tomatoEnemyTextureSize = Vector2(32, 32);
   static final Vector2 bulbEnemyAttackingTextureSize = Vector2(30, 32);
   static final Vector2 syringeEnemyTextureSize = Vector2(51, 22);
+  static final Vector2 seedTextureSize = Vector2(44, 52);
 
   static const double bottleEnemyStepTime = 0.1;
   static const double gomiStepTime = 0.1;
+  static const double seedStepTime = 0.3;
 
   static BottleEnemyAnimationConfigs bottleEnemy =
       BottleEnemyAnimationConfigs();
@@ -37,6 +39,7 @@ class AnimationConfigs {
   static TomatoEnemyAnimationConfigs tomatoEnemy =
       TomatoEnemyAnimationConfigs();
   static BulbEnemyAnimationConfigs bulbEnemy = BulbEnemyAnimationConfigs();
+  static SeedAnimationConfigs seed = SeedAnimationConfigs();
 }
 
 class GomiAnimationConfigs {
@@ -180,4 +183,21 @@ class BulbEnemyAnimationConfigs {
           amount: 3,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: AnimationConfigs.bulbEnemyAttackingTextureSize));
+}
+
+class SeedAnimationConfigs {
+  SpriteAnimation idle() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache('collectibles/seed.png'),
+      SpriteAnimationData.sequenced(
+          amount: 1,
+          stepTime: AnimationConfigs.seedStepTime,
+          textureSize: AnimationConfigs.seedTextureSize));
+
+  SpriteAnimation growing() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache('collectibles/seed.png'),
+      SpriteAnimationData.sequenced(
+          amount: 6,
+          stepTime: AnimationConfigs.seedStepTime,
+          textureSize: AnimationConfigs.seedTextureSize,
+          loop: false));
 }

@@ -230,7 +230,7 @@ class GomiWorld extends World
       switch (obj.class_) {
         case 'Seed':
           final collectible = Seed(
-              seed: "Oak",
+              seed: "Seed",
               position: Vector2(obj.x, obj.y),
               size: Vector2(obj.width, obj.height));
           add(collectible);

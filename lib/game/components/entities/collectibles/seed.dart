@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_game.dart';
 
@@ -19,17 +20,14 @@ class Seed extends SpriteAnimationComponent
   final hitbox = RectangleHitbox(collisionType: CollisionType.passive);
   bool _collected = false;
   final double stepTime = 0.1;
+  final Vector2 seedSize = Vector2(44, 52);
+  late final SpriteAnimation idleAnimation;
+  late final SpriteAnimation growingAnimation;
 
   @override
   FutureOr<void> onLoad() {
-    animation = SpriteAnimation.fromFrameData(
-        game.images.fromCache('seed.png'),
-        SpriteAnimationData.sequenced(
-          amount: 11,
-          stepTime: stepTime,
-          textureSize: Vector2.all(22),
-        ));
-
+    loadAllAnimations();
+    animation = idleAnimation;
     add(hitbox);
     return super.onLoad();
   }
@@ -45,20 +43,14 @@ class Seed extends SpriteAnimationComponent
 
   void collidedWithPlayer() {
     if (!_collected) {
-      animation = SpriteAnimation.fromFrameData(
-          game.images.fromCache('collected.png'),
-          SpriteAnimationData.sequenced(
-            amount: 6,
-            stepTime: stepTime,
-            textureSize: Vector2.all(22),
-          ));
+      animation = growingAnimation;
 
       _collected = true;
     }
+  }
 
-    Future.delayed(
-      const Duration(milliseconds: 500),
-      () => removeFromParent(),
-    );
+  void loadAllAnimations() {
+    idleAnimation = AnimationConfigs.seed.idle();
+    growingAnimation = AnimationConfigs.seed.growing();
   }
 }
