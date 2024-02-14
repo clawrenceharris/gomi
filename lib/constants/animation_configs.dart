@@ -21,8 +21,9 @@ class AnimationConfigs {
   static final Vector2 zapTextureSize = Vector2(22, 16);
 
   static final Vector2 bottleEnemyTextureSize = Vector2(18, 25);
+
   static final Vector2 bulbEnemyTextureSize = Vector2(17, 32);
-  static final Vector2 tomatoEnemyTextureSize = Vector2(32, 32);
+  static final Vector2 tomatoEnemyTextureSize = Vector2(32, 26);
   static final Vector2 bulbEnemyAttackingTextureSize = Vector2(30, 32);
   static final Vector2 syringeEnemyTextureSize = Vector2(51, 22);
   static final Vector2 seedTextureSize = Vector2(44, 52);
@@ -138,7 +139,7 @@ class TomatoEnemyAnimationConfigs {
       Flame.images
           .fromCache('enemies/${Globals.tomato}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 
@@ -146,7 +147,7 @@ class TomatoEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 1,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 }

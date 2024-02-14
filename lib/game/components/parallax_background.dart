@@ -5,17 +5,10 @@ import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 
 class ParallaxBackground extends ParallaxComponent {
-  ParallaxBackground({required this.speed});
-
+  ParallaxBackground({required this.speed, this.layers});
+  final dynamic layers;
   double speed;
-  final layers = [
-    ParallaxImageData('scenery/background.png'),
-    ParallaxImageData('scenery/clouds_2.png'),
-    ParallaxImageData('scenery/clouds_1.png'),
-    ParallaxImageData('scenery/mountains.png'),
-    ParallaxImageData('scenery/trees_2.png'),
-    ParallaxImageData('scenery/trees_1.png'),
-  ];
+
   @override
   Future<void> onLoad() async {
     parallax = await game.loadParallax(

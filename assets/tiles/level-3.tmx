@@ -108,7 +108,11 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="player">
+<<<<<<< HEAD
   <object id="120" name="Player" type="Player" x="196.24" y="430.082" width="39.953" height="58.7544">
+=======
+  <object id="1" name="Player" type="Player" x="202.363" y="467.786" width="22" height="26">
+>>>>>>> c1a254791f0137e45df0851b8134342e3088c46f
    <properties>
     <property name="Color" value="Blue"/>
    </properties>

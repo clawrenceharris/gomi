@@ -1,23 +1,20 @@
 import 'dart:async';
 
+import 'package:flame/collisions.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
+import 'package:gomi/game/components/entities/player.dart';
 
 class BottleEnemy extends Enemy {
   double rangeNeg = 0;
   double rangePos = 0;
-  final int offNeg;
-  final int offPos;
+  final double offNeg;
+  final double offPos;
   double _direction = 1;
   final double _speed = 90;
 
-  BottleEnemy({
-    super.position,
-    required this.offNeg,
-    required this.offPos,
-    required super.player,
-  });
+  BottleEnemy({required this.offNeg, required this.offPos, super.position});
 
   @override
   void loadAllAnimations() {
@@ -29,13 +26,14 @@ class BottleEnemy extends Enemy {
 
   @override
   bool playerIsCorrectColor() {
-    return player.color.toLowerCase() == "blue";
+    return world.player.color == GomiColor.blue;
   }
 
   @override
   FutureOr<void> onLoad() {
     rangeNeg = position.x - offNeg * Globals.tileSize;
     rangePos = position.x + offPos * Globals.tileSize;
+    add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
   }
 
@@ -68,6 +66,7 @@ class BottleEnemy extends Enemy {
   @override
   void switchToAttack() {
     super.switchToAttack();
+    //go the opposite direction from last time
     _direction *= -1;
   }
 }

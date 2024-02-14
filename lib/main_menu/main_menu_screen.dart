@@ -1,90 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gomi/game/widgets/button.dart';
+import 'package:gomi/game/widgets/animated_text.dart';
+import 'package:gomi/game/widgets/pause_button.dart';
+import 'package:gomi/game/widgets/sound_button.dart';
 import 'package:provider/provider.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
-import '../settings/settings.dart';
-import '../style/wobbly_button.dart';
-import '../style/palette.dart';
-import '../style/responsive_screen.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.watch<Palette>();
-    final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
     void _handlePlayPress() {
       audioController.playSfx(SfxType.buttonTap);
       GoRouter.of(context).go('/play');
     }
 
-    return Scaffold(
-      backgroundColor: palette.backgroundMain.color,
-      body: ResponsiveScreen(
-        squarishMainArea: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _gap,
-              Transform.rotate(
-                angle: -0.1,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  child: const Text(
-                    'A Flutter game template.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Press Start 2P',
-                      fontSize: 32,
-                      height: 1,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        rectangularMenuArea: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    return RawKeyboardListener(
+        autofocus: true, // Ensure the widget has focus
+        focusNode: FocusNode(),
+        onKey: (RawKeyEvent event) {
+          if (event.logicalKey == LogicalKeyboardKey.space) {
+            audioController.playSfx(SfxType.buttonTap);
+            GoRouter.of(context).go('/play');
+          }
+        },
+        child: Scaffold(
+            body: Stack(
           children: [
-            Button(
-              buttonModel:
-                  ButtonModel(onPressed: _handlePlayPress, text: "play"),
+            Positioned(
+                child: Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                  fit: BoxFit.cover,
+                  width: 1920,
+                  height: 1080,
+                  "assets/images/gomi_splash.png"),
+            )),
+
+            // Button positioned in the top right corner
+            const Positioned(
+              top: 10,
+              right: 70,
+              child: PauseButton(),
+              //onPressed: () => GoRouter.of(context).push('/settings')
             ),
-            _gap,
-            Button(
-              buttonModel:
-                  ButtonModel(onPressed: _handlePlayPress, text: "help"),
+
+            const Positioned(
+              top: 10,
+              right: 10,
+              child: SoundButton(),
             ),
-            _gap,
-            Button(
-              buttonModel:
-                  ButtonModel(onPressed: _handlePlayPress, text: "about"),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: settingsController.audioOn,
-                builder: (context, audioOn, child) {
-                  return IconButton(
-                    onPressed: () => settingsController.toggleAudioOn(),
-                    icon: Icon(audioOn ? Icons.volume_up : Icons.volume_off),
-                  );
-                },
+
+            const Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedTextMovement(
+                text: "tap to play",
               ),
             ),
+
             _gap,
-            const Text('Built with Flame'),
           ],
+        )));
+  }
+
+  static const _gap = SizedBox(height: 40);
+}
+
+class GradientTextWidget extends StatelessWidget {
+  final String text;
+  final List<Color> gradientColors;
+  final double fontSize;
+
+  const GradientTextWidget(
+      {required this.text,
+      required this.gradientColors,
+      required this.fontSize,
+      super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      shaderCallback: (Rect bounds) {
+        return LinearGradient(
+          colors: gradientColors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ).createShader(bounds);
+      },
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: Colors.white, // Text color on the gradient text
         ),
       ),
     );
   }
-
-  static const _gap = SizedBox(height: 10);
 }

@@ -229,10 +229,8 @@ class GomiWorld extends World
     for (final obj in layer.objects) {
       switch (obj.class_) {
         case 'Seed':
-          final collectible = Seed(
-              seed: "Seed",
-              position: Vector2(obj.x, obj.y),
-              size: Vector2(obj.width, obj.height));
+          final collectible =
+              Seed(seed: "Seed", position: Vector2(obj.x, obj.y));
           add(collectible);
           break;
       }

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
+import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_game.dart';
 
 class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
@@ -10,18 +12,19 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   final double enemyHeight = 32;
   final double _maxVelocity = 200;
   double _elapsedTime = 0.0;
-  final double bounceCoolDown = 1;
+  final double bounceCoolDown = 0.5;
   bool isGrounded = true;
   Vector2 velocity = Vector2.zero();
   TomatoEnemy({
     super.position,
     this.jumpForce = 360,
-    required super.player,
   });
 
   @override
   FutureOr<void> onLoad() {
-    //debugMode = true;
+    debugMode = true;
+    add(RectangleHitbox(collisionType: CollisionType.passive));
+
     attackTime = 10;
     return super.onLoad();
   }
@@ -57,7 +60,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
 
   @override
   bool playerIsCorrectColor() {
-    return player.color.toLowerCase() == "green";
+    return world.player.color == GomiColor.green;
   }
 
   @override
@@ -78,8 +81,8 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   }
 
   void _checkVerticalCollisions() {
-    for (final block in game.world.collisionBlocks) {
-      if (game.world.checkCollision(block, this)) {
+    for (final block in world.collisionBlocks) {
+      if (world.checkCollision(block, this)) {
         if (velocity.y > 0) {
           velocity.y = 0;
           position.y = block.y - height;

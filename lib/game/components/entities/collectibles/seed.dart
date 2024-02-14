@@ -1,24 +1,15 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/constants/animation_configs.dart';
-import 'package:gomi/game/components/entities/player.dart';
-import 'package:gomi/game/gomi_game.dart';
+import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 
-class Seed extends SpriteAnimationComponent
-    with HasGameRef<Gomi>, CollisionCallbacks {
+class Seed extends Collectible {
   Seed({
     required this.seed,
-    position,
-    size,
-  }) : super(
-          position: position,
-          size: size,
-        );
+    super.position,
+  });
   final String seed;
-  final hitbox = RectangleHitbox(collisionType: CollisionType.passive);
-  bool _collected = false;
   final double stepTime = 0.1;
   final Vector2 seedSize = Vector2(44, 52);
   late final SpriteAnimation idleAnimation;
@@ -28,24 +19,16 @@ class Seed extends SpriteAnimationComponent
   FutureOr<void> onLoad() {
     loadAllAnimations();
     animation = idleAnimation;
-    add(hitbox);
+    add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
   }
 
   @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player) {
-      collidedWithPlayer();
-    }
-    super.onCollisionStart(intersectionPoints, other);
-  }
-
-  void collidedWithPlayer() {
-    if (!_collected) {
-      animation = growingAnimation;
-
-      _collected = true;
+  Future<void> collideWithPlayer() async {
+    animation = growingAnimation;
+    if (world.activeEnemies.isEmpty && !world.player.seedCollected) {
+      animation = AnimationConfigs.seed.growing();
+      world.player.seedCollected = true;
     }
   }
 

@@ -3,21 +3,21 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/game/gomi_world.dart';
+import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/game/hud/hud.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 
-class Gomi extends FlameGame<GomiWorld>
+class Gomi extends FlameGame<GomiLevel>
     with HasCollisionDetection, KeyboardEvents {
   Gomi({
     required this.level,
     required PlayerProgress playerProgress,
     required this.audioController,
   }) : super(
-          world: GomiWorld(level: level, playerProgress: playerProgress),
+          world: GomiLevel(level: level, playerProgress: playerProgress),
         );
 
   final GameLevel level;
@@ -51,7 +51,7 @@ class Gomi extends FlameGame<GomiWorld>
       textRenderer: textRenderer,
     );
 
-    camera.viewport.add(scoreComponent);
+    //camera.viewport.add(scoreComponent);
 
     // add a listener to the points notifier and update the text
     world.scoreNotifier.addListener(() {
@@ -63,10 +63,6 @@ class Gomi extends FlameGame<GomiWorld>
   @override
   KeyEventResult onKeyEvent(
       RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    if (world.player.gotHit) {
-      return KeyEventResult.handled;
-    }
-
     world.player.directionX = 0;
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
@@ -74,11 +70,7 @@ class Gomi extends FlameGame<GomiWorld>
         keysPressed.contains(LogicalKeyboardKey.arrowRight);
     world.player.directionX += isLeftKeyPressed ? -1 : 0;
     world.player.directionX += isRightKeyPressed ? 1 : 0;
-    if (isLeftKeyPressed || isRightKeyPressed) {
-      world.player.hasHorizontalInput = true;
-    } else {
-      world.player.hasHorizontalInput = false;
-    }
+
     if (keysPressed.contains(LogicalKeyboardKey.space) ||
         keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
       world.player.hasJumped = true;
