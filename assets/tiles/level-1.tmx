@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="88">
+=======
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="136" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="100">
+>>>>>>> 614766f2a6f31531b2a425cbe42ffb8a2a38abe5
  <tileset firstgid="1" source="gomi.tsx"/>
  <tileset firstgid="521" source="gomi_2.tsx"/>
  <layer id="1" name="tiles" width="136" height="40">
@@ -110,7 +114,11 @@
     <property name="Off Pos" type="float" value="2.9"/>
    </properties>
   </object>
+<<<<<<< HEAD
+  <object id="67" name="Bulb Enemy" type="Bulb Enemy" x="582.067" y="389.78" width="18" height="25">
+=======
   <object id="76" type="Tomato Enemy" x="1280" y="336" width="32" height="32">
+>>>>>>> 614766f2a6f31531b2a425cbe42ffb8a2a38abe5
    <properties>
     <property name="Jump Force" type="float" value="260"/>
    </properties>
@@ -131,4 +139,11 @@
    </properties>
   </object>
  </objectgroup>
+<<<<<<< HEAD
+ <objectgroup id="6" name="collectibles">
+  <object id="83" name="Seed" type="Seed" x="1319.61" y="402.914" width="54.4821" height="77.2886"/>
+ </objectgroup>
+ <objectgroup id="4" name="gomi clones"/>
+=======
+>>>>>>> 614766f2a6f31531b2a425cbe42ffb8a2a38abe5
 </map>
