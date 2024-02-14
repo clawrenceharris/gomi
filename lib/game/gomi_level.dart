@@ -22,6 +22,7 @@ import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/event_manager.dart';
+import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/mixins/collision_aware.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/player_progress/player_progress.dart';
@@ -31,7 +32,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class GomiLevel extends World
-    with HasGameReference, TapCallbacks, CollisionAware {
+    with HasGameRef<Gomi>, TapCallbacks, CollisionAware {
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;

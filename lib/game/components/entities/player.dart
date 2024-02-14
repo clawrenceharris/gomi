@@ -81,12 +81,15 @@ class Player extends SpriteAnimationGroupComponent
     accumulatedTime += dt;
 
     while (accumulatedTime >= fixedDeltaTime) {
+      _updatePlayerState();
+      _checkHorizontalCollisions();
+      _applyGravity(fixedDeltaTime);
+      _checkVerticalCollisions();
+
       if (!seedCollected) {
-        _updatePlayerState();
         _updatePlayerMovement(fixedDeltaTime);
-        _checkHorizontalCollisions();
-        _applyGravity(fixedDeltaTime);
-        _checkVerticalCollisions();
+      } else {
+        velocity.x = 0;
       }
 
       accumulatedTime -= fixedDeltaTime;
