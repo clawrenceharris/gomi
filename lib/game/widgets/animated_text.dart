@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gomi/main_menu/main_menu_screen.dart';
 
 class AnimatedTextMovement extends StatefulWidget {
@@ -25,7 +24,7 @@ class _AnimatedTextMovementState extends State<AnimatedTextMovement>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1), // Adjust the duration as needed
+      duration: const Duration(seconds: 2), // Adjust the duration as needed
     );
 
     _animation = Tween<double>(

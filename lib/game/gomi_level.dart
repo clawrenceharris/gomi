@@ -70,8 +70,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   @override
   Future<void> onLoad() async {
     //load the tiled level
-    tiledLevel =
-        await TiledComponent.load('level-1.tmx', Vector2.all(Globals.tileSize));
+    tiledLevel = await TiledComponent.load(
+        level.pathname, Vector2.all(Globals.tileSize));
 
     //level bounds will start 5 tiles to the right
     levelBounds = Rectangle.fromPoints(
@@ -79,14 +79,15 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
         Vector2(
             (tiledLevel.tileMap.map.width.toDouble() - 5) * Globals.tileSize,
             tiledLevel.tileMap.map.height.toDouble() * Globals.tileSize));
+
     add(tiledLevel);
     _addEnemies();
-
     _addPlayer();
-    _addInfoTiles();
     _addCollisionBlocks();
     _addGomiClones();
     _addCollectibles();
+    if (level.hasInfoTiles) _addInfoTiles();
+
     _setUpCamera();
 
     // When the player takes a new point we check if the score is enough to
@@ -270,7 +271,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       late final Collectible collectible;
       switch (obj.class_.toLowerCase()) {
         case "seed":
-          collectible = Seed(seed: "Oak", position: Vector2(obj.x, obj.y));
+          collectible = Seed(position: Vector2(obj.x, obj.y));
 
           break;
         case "coin":
@@ -289,10 +290,10 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       ..viewport.size = size
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =
-          Vector2(Globals.tileSize * 15, Globals.tileSize * 12);
+          Vector2(Globals.tileSize * 15, Globals.tileSize * 11);
     final anchor = PlayerCameraAnchor(
-        offsetX: 6 * Globals.tileSize,
-        offsetY: -Globals.tileSize * 3,
+        offsetX: 3 * Globals.tileSize,
+        offsetY: -Globals.tileSize * 2,
         player: player);
     //target that will be used to follow the player at a given offset x and y
     game.add(anchor);

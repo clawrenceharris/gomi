@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gomi/game/splash/splash_screen.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
+import 'package:gomi/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'level_selection/level_selection_screen.dart';
