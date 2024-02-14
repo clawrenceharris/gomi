@@ -18,9 +18,9 @@ class LevelButton extends SpriteComponent
       required this.isLocked});
   @override
   FutureOr<void> onLoad() async {
-    final levelButtonImage = await Flame.images.load("hud/level_button.png");
+    final levelButtonImage = await Flame.images.load("level_button.png");
     final emptyLevelButtonImage =
-        await Flame.images.load("hud/empty_level_button.png");
+        await Flame.images.load("empty_level_button.png");
 
     sprite = Sprite(isLocked ? emptyLevelButtonImage : levelButtonImage);
     final text = TextComponent(
@@ -31,14 +31,14 @@ class LevelButton extends SpriteComponent
       anchor: Anchor.center,
       text: levelNumber.toString(),
     );
-    text.position = Vector2(x + width / 2, y + height / 2 - text.height / 2);
+    text.position = Vector2(x + width / 2, y + height / 2 - text.height);
     if (!isLocked) world.add(text);
     return super.onLoad();
   }
 
   @override
   void onTapUp(TapUpEvent event) {
-    router.go('/play/session/1');
+    if (!isLocked) router.go('/play/session/$levelNumber');
     super.onTapUp(event);
   }
 }

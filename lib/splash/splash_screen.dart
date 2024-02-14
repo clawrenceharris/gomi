@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                   width: 1920,
                   height: 1080,
-                  "assets/images/gomi_splash.png"),
+                  "assets/images/splash.png"),
             )),
 
             // Button positioned in the top right corner
