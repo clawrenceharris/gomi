@@ -13,6 +13,7 @@ class Seed extends Collectible {
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation growingAnimation;
   late final MoveEffect moveEffect;
+  late final MoveEffect plantedMoveEffect;
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
@@ -26,6 +27,13 @@ class Seed extends Collectible {
             infinite: true,
             curve: Curves.easeInOut));
 
+    plantedMoveEffect = MoveEffect.to(
+        Vector2(position.x, position.y + 14),
+        EffectController(
+            duration: 2,
+            alternate: false,
+            infinite: false,
+            curve: Curves.easeInOut));
     add(moveEffect);
     return super.onLoad();
   }
@@ -33,9 +41,10 @@ class Seed extends Collectible {
   @override
   Future<void> collideWithPlayer() async {
     if (world.activeEnemies.isEmpty) {
-      animation = growingAnimation;
       position = Vector2(startingPosition.x, startingPosition.y);
       remove(moveEffect);
+      add(plantedMoveEffect);
+      animation = growingAnimation;
       world.player.seedCollected = true;
     }
   }
