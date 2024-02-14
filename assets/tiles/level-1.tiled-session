@@ -12,18 +12,21 @@
             "scaleInDock": 1
         },
         "gomi.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 1.5
+        },
+        "gomi_2.tsx": {
+            "scaleInDock": 1.5
         },
         "level-1.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
-            "scale": 1.5785,
-            "selectedLayer": 3,
+            "scale": 5.3375,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 610.072853975293,
-                "y": 419.06873614190687
+                "x": 1988.758782201405,
+                "y": 230.35128805620604
             }
         },
         "level-2.tmx": {
