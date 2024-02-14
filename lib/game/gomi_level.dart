@@ -1,5 +1,4 @@
 import 'package:flame/camera.dart';
-import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
@@ -31,8 +30,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiLevel extends World
-    with HasGameRef<Gomi>, TapCallbacks, CollisionAware {
+class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;
