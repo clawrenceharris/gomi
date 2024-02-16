@@ -269,18 +269,19 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
     for (final obj in layer.objects) {
       late final Collectible collectible;
+
       switch (obj.class_.toLowerCase()) {
         case "seed":
           collectible = Seed(position: Vector2(obj.x, obj.y));
-
+          add(collectible);
+          collectibles.add(collectible);
           break;
         case "coin":
-          collectible = Coin(
-            position: Vector2(obj.x, obj.y),
-          );
+          collectible = Coin(position: Vector2(obj.x, obj.y));
+          add(collectible);
+          collectibles.add(collectible);
+          break;
       }
-      add(collectible);
-      collectibles.add(collectible);
     }
   }
 
@@ -290,7 +291,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       ..viewport.size = size
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =
-          Vector2(Globals.tileSize * 15, Globals.tileSize * 11);
+          Vector2(Globals.tileSize * 17, Globals.tileSize * 13);
     final anchor = PlayerCameraAnchor(
         offsetX: 3 * Globals.tileSize,
         offsetY: -Globals.tileSize * 2,

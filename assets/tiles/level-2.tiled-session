@@ -1,33 +1,53 @@
 {
-    "activeFile": "",
+    "activeFile": "level-3.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "gomi.tsx": {
+            "scaleInDock": 1
+        },
+        "gomi_2.tsx": {
+            "scaleInDock": 1
+        },
         "level-2.tmx": {
             "expandedObjectLayers": [
+                2,
+                6,
+                4,
                 3,
                 5
             ],
-            "scale": 1.2703,
-            "selectedLayer": 0,
+            "scale": 1.2386,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 899.0002361646855,
-                "y": 297.1738959300952
+                "x": 631.3579848215728,
+                "y": 308.0090424673018
             }
         },
         "level-3.tmx": {
-            "scale": 0.6952812500000001,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                2,
+                6,
+                4,
+                3,
+                5
+            ],
+            "scale": 1.0801,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 801.1146568385094,
-                "y": 320.01438266888397
+                "x": 941.5794833811683,
+                "y": 351.3563558929729
             }
         }
     },
     "openFiles": [
+        "level-2.tmx",
+        "level-3.tmx"
     ],
     "project": "level-2.tiled-project",
     "recentFiles": [
+        "level-2.tmx",
+        "level-3.tmx"
     ]
 }
