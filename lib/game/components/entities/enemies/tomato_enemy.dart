@@ -14,7 +14,6 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   double _elapsedTime = 0.0;
   final double bounceCoolDown = 0.5;
   bool isGrounded = true;
-  bool renderFlipX = false;
   Vector2 velocity = Vector2.zero();
   TomatoEnemy({
     super.position,
@@ -68,7 +67,6 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
     super.update(dt);
     _applyGravity(dt);
     _checkVerticalCollisions();
-    _swapDirection(world.player);
     elapsedTime += dt;
 
     position.y += velocity.y * dt;
@@ -92,18 +90,5 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
         }
       }
     }
-  }
-
-  void _swapDirection(Player other) {
-    bool lastState = renderFlipX;
-
-    if (other.x > position.x) {
-      renderFlipX = false;
-    } else {
-      renderFlipX = true;
-    }
-
-    if (renderFlipX == lastState) return;
-    flipHorizontallyAroundCenter();
   }
 }

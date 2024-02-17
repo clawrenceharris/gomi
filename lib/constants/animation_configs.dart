@@ -139,7 +139,7 @@ class TomatoEnemyAnimationConfigs {
       Flame.images
           .fromCache('enemies/${Globals.tomato}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
-          amount: 1,
+          amount: 6,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 
@@ -147,7 +147,7 @@ class TomatoEnemyAnimationConfigs {
       Flame.images.fromCache(
           'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
-          amount: 1,
+          amount: 6,
           stepTime: AnimationConfigs.bottleEnemyStepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 }
