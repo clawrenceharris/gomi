@@ -120,7 +120,6 @@ class Sparks extends SpriteAnimationComponent with CollisionCallbacks {
   @override
   FutureOr<void> onLoad() {
     add(CircleHitbox());
-
     return super.onLoad();
   }
 

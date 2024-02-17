@@ -106,6 +106,9 @@ abstract class Enemy extends SpriteAnimationGroupComponent
 
     if (other.x < position.x) {
       renderFlipX = false;
+    } else if (other.x >= position.x && other.x <= position.x + width) {
+      // do not flip
+      return;
     } else {
       renderFlipX = true;
     }

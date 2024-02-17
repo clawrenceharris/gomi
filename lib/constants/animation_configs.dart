@@ -18,7 +18,7 @@ class AnimationConfigs {
   static const String appear = "appear";
 
   static final Vector2 gomiTextureSize = Vector2(22, 26);
-  static final Vector2 zapTextureSize = Vector2(22, 16);
+  static final Vector2 zapTextureSize = Vector2(22, 22);
 
   static final Vector2 bottleEnemyTextureSize = Vector2(18, 25);
 
