@@ -32,6 +32,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.tomatoEnemy.idle();
     attackAnimation = AnimationConfigs.tomatoEnemy.attacking();
+    current = EnemyState.attacking;
     super.loadAllAnimations();
   }
 
