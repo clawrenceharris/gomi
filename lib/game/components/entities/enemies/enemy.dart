@@ -23,7 +23,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   bool isAttacking = false;
   late final Vector2 startingPosition;
   bool gotHit = false;
-
+  bool renderFlipX = false;
   @override
   FutureOr<void> onLoad() {
     startingPosition = Vector2(position.x, position.y);
@@ -65,6 +65,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     if (isAttacking) {
       attack(dt);
     }
+    _swapDirection(world.player);
     super.update(dt);
   }
 
@@ -98,5 +99,18 @@ abstract class Enemy extends SpriteAnimationGroupComponent
       collideWithPlayer();
     }
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  void _swapDirection(Player other) {
+    bool lastState = renderFlipX;
+
+    if (other.x < position.x) {
+      renderFlipX = false;
+    } else {
+      renderFlipX = true;
+    }
+
+    if (renderFlipX == lastState) return;
+    flipHorizontallyAroundCenter();
   }
 }
