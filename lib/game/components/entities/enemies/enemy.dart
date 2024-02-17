@@ -82,6 +82,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     if (world.player.gotHit) {
       return;
     }
+
     if (!isAttacking && isStomped() && playerIsCorrectColor()) {
       gotHit = true;
       current = EnemyState.hit;
