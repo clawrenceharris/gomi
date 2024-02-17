@@ -12,7 +12,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   final double enemyHeight = 32;
   final double _maxVelocity = 200;
   double _elapsedTime = 0.0;
-  final double bounceCoolDown = 0.5;
+  final double bounceCoolDown = 1;
   bool isGrounded = true;
   Vector2 velocity = Vector2.zero();
   TomatoEnemy({
@@ -40,8 +40,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
     velocity.y = velocity.y.clamp(-jumpForce, _maxVelocity);
   }
 
-  @override
-  void attack(dt) {
+  void _attack(dt) {
     _elapsedTime += dt;
 
     if (isGrounded && _elapsedTime >= bounceCoolDown) {
@@ -67,16 +66,9 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
     super.update(dt);
     _applyGravity(dt);
     _checkVerticalCollisions();
-    elapsedTime += dt;
+    _attack(dt);
 
     position.y += velocity.y * dt;
-
-    // Check if it's time to switch states
-    if (isAttacking && elapsedTime >= attackTime) {
-      switchToIdle();
-    } else if (!isAttacking && elapsedTime >= idleTime) {
-      switchToAttack();
-    }
   }
 
   void _checkVerticalCollisions() {

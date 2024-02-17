@@ -20,15 +20,16 @@ class AnimationConfigs {
   static final Vector2 gomiTextureSize = Vector2(22, 26);
   static final Vector2 zapTextureSize = Vector2(22, 22);
 
-  static final Vector2 bottleEnemyTextureSize = Vector2(18, 25);
+  static final Vector2 bottleEnemyTextureSize = Vector2(16, 25);
 
-  static final Vector2 bulbEnemyTextureSize = Vector2(17, 32);
+  static final Vector2 bulbEnemyTextureSize = Vector2(17, 26);
   static final Vector2 tomatoEnemyTextureSize = Vector2(32, 26);
   static final Vector2 bulbEnemyAttackingTextureSize = Vector2(30, 32);
   static final Vector2 syringeEnemyTextureSize = Vector2(51, 22);
   static final Vector2 seedTextureSize = Vector2(44, 52);
 
-  static const double bottleEnemyStepTime = 0.1;
+  static const double stepTime = 0.1;
+
   static const double gomiStepTime = 0.1;
   static const double seedStepTime = 0.3;
 
@@ -48,7 +49,7 @@ class GomiAnimationConfigs {
       Flame.images.fromCache(
           'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
-          amount: 13,
+          amount: 1,
           stepTime: AnimationConfigs.gomiStepTime,
           textureSize: AnimationConfigs.gomiTextureSize));
 
@@ -104,7 +105,7 @@ class BottleEnemyAnimationConfigs {
           'enemies/${Globals.waterBottle}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
           amount: 9,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.bottleEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
@@ -112,7 +113,7 @@ class BottleEnemyAnimationConfigs {
           'enemies/${Globals.waterBottle}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
           amount: 11,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.bottleEnemyTextureSize));
 }
 
@@ -122,7 +123,7 @@ class SyringeEnemyAnimationConfigs {
           .fromCache('enemies/${Globals.syringe}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
           amount: 12,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.syringeEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
@@ -130,7 +131,7 @@ class SyringeEnemyAnimationConfigs {
           'enemies/${Globals.syringe}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
           amount: 1,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.syringeEnemyTextureSize));
 }
 
@@ -140,7 +141,7 @@ class TomatoEnemyAnimationConfigs {
           .fromCache('enemies/${Globals.tomato}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
           amount: 6,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
@@ -148,7 +149,7 @@ class TomatoEnemyAnimationConfigs {
           'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
           amount: 6,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 }
 
@@ -158,15 +159,15 @@ class BulbEnemyAnimationConfigs {
           'enemies/${Globals.lightBulb}/${AnimationConfigs.zap}.png'),
       SpriteAnimationData.sequenced(
           amount: 4,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.zapTextureSize));
 
   SpriteAnimation idle() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.idle}.png'),
       SpriteAnimationData.sequenced(
-          amount: 1,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          amount: 13,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.bulbEnemyTextureSize));
 
   SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
@@ -174,28 +175,28 @@ class BulbEnemyAnimationConfigs {
           'enemies/${Globals.lightBulb}/${AnimationConfigs.attack}.png'),
       SpriteAnimationData.sequenced(
           amount: 1,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
-          textureSize: AnimationConfigs.bulbEnemyAttackingTextureSize));
+          stepTime: AnimationConfigs.stepTime,
+          textureSize: AnimationConfigs.bulbEnemyTextureSize));
 
   SpriteAnimation sparks() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
           'enemies/${Globals.lightBulb}/${AnimationConfigs.sparks}.png'),
       SpriteAnimationData.sequenced(
           amount: 3,
-          stepTime: AnimationConfigs.bottleEnemyStepTime,
+          stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.bulbEnemyAttackingTextureSize));
 }
 
 class SeedAnimationConfigs {
   SpriteAnimation idle() => SpriteAnimation.fromFrameData(
-      Flame.images.fromCache('collectibles/seed.png'),
+      Flame.images.fromCache('collectibles/${Globals.seed}/idle.png'),
       SpriteAnimationData.sequenced(
           amount: 1,
           stepTime: AnimationConfigs.seedStepTime,
           textureSize: AnimationConfigs.seedTextureSize));
 
   SpriteAnimation growing() => SpriteAnimation.fromFrameData(
-      Flame.images.fromCache('collectibles/seed.png'),
+      Flame.images.fromCache('collectibles/${Globals.seed}/grow.png'),
       SpriteAnimationData.sequenced(
           amount: 6,
           stepTime: AnimationConfigs.seedStepTime,

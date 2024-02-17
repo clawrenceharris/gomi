@@ -66,7 +66,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
   //the stars earned for the level
   int stars = 0;
-
   @override
   Future<void> onLoad() async {
     //load the tiled level
@@ -115,8 +114,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
         collectible.respawn();
       }
     }
-
-    add(player);
     player.respawn();
   }
 
@@ -124,7 +121,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;
-
     super.update(dt);
   }
 
@@ -286,8 +282,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   }
 
   void _setUpCamera() {
-    game.camera = CameraComponent(
-        viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
+    final viewport = FixedAspectRatioViewport(aspectRatio: size.x / size.y);
+
+    game.camera = CameraComponent(viewport: viewport)
       ..viewport.size = size
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =

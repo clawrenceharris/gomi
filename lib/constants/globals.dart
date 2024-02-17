@@ -11,4 +11,7 @@ class Globals {
   static const String syringe = "syringe";
   static const String tomato = "tomato";
   static String seed = "seed";
+  static const int maxLives = 3;
+  static const int gomiWidth = 22;
+  static const int gomiHeight = 26;
 }

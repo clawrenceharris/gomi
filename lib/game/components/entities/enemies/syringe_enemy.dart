@@ -36,14 +36,15 @@ class SyringeEnemy extends Enemy {
   @override
   void update(double dt) {
     _updateState();
-
+    _attack(dt);
     super.update(dt);
   }
 
   @override
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.syringeEnemy.idle();
-    attackAnimation = AnimationConfigs.syringeEnemy.idle();
+    attackAnimation = AnimationConfigs.syringeEnemy.attacking();
+    current = EnemyState.attacking;
     super.loadAllAnimations();
   }
 
@@ -58,7 +59,15 @@ class SyringeEnemy extends Enemy {
   }
 
   @override
-  void attack(double dt) {
+  void collideWithPlayer() {
+    if (isStomped()) {
+      hit();
+    } else {
+      world.player.hit();
+    }
+  }
+
+  void _attack(double dt) {
     velocity.x = 0;
     double offset = (scale.x > 0) ? 0 : -width;
 
@@ -83,22 +92,6 @@ class SyringeEnemy extends Enemy {
 
     if (moveDirection > 0 && scale.x > 0 || moveDirection < 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();
-    }
-  }
-
-  @override
-  void collideWithPlayer() async {
-    if (world.player.gotHit) {
-      return;
-    }
-
-    if (isStomped() && playerIsCorrectColor()) {
-      gotHit = true;
-      current = EnemyState.hit;
-      world.player.bounce();
-      removeFromParent();
-    } else if (isAttacking) {
-      await world.player.hit();
     }
   }
 }

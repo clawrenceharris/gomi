@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/collisions.dart';
+import 'package:flame/components.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -12,15 +13,17 @@ class BottleEnemy extends Enemy {
   final double offNeg;
   final double offPos;
   double _direction = 1;
-  final double _speed = 90;
+  final double _speed = 70;
 
-  BottleEnemy({required this.offNeg, required this.offPos, super.position});
+  BottleEnemy({required this.offNeg, required this.offPos, super.position})
+      : super(anchor: Anchor.topLeft);
 
   @override
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.bottleEnemy.idle();
 
     attackAnimation = AnimationConfigs.bottleEnemy.attacking();
+    current = EnemyState.attacking;
     super.loadAllAnimations();
   }
 
@@ -33,40 +36,24 @@ class BottleEnemy extends Enemy {
   FutureOr<void> onLoad() {
     rangeNeg = position.x - offNeg * Globals.tileSize;
     rangePos = position.x + offPos * Globals.tileSize;
+    isAttacking = true;
     add(RectangleHitbox(collisionType: CollisionType.passive));
     return super.onLoad();
   }
 
   @override
-  void attack(double dt) {
-    _move(dt);
+  void update(double dt) {
+    _attack(dt);
+
+    super.update(dt);
   }
 
-  void _move(double dt) {
+  void _attack(double dt) {
     if (position.x >= rangePos) {
       _direction = -1;
     } else if (position.x <= rangeNeg) {
       _direction = 1;
     }
     position.x += _direction * _speed * dt;
-  }
-
-  @override
-  void update(double dt) {
-    super.update(dt);
-
-    // Check if it's time to switch states
-    if (isAttacking && elapsedTime >= attackTime) {
-      switchToIdle();
-    } else if (!isAttacking && elapsedTime >= idleTime) {
-      switchToAttack();
-    }
-  }
-
-  @override
-  void switchToAttack() {
-    super.switchToAttack();
-    //go the opposite direction from last time
-    _direction *= -1;
   }
 }

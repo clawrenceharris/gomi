@@ -11,7 +11,7 @@ import 'package:gomi/game/components/entities/player.dart';
 
 class Coin extends Collectible {
   Coin({super.position});
-  final int points = 100;
+  final int points = 10;
   @override
   FutureOr<void> onLoad() async {
     size = Vector2.all(Globals.tileSize);
@@ -37,7 +37,6 @@ class Coin extends Collectible {
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
-      
       world.addScore(amount: points);
     }
     super.onCollisionStart(intersectionPoints, other);
