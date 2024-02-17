@@ -14,7 +14,7 @@ enum EnemyState {
 
 abstract class Enemy extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, HasWorldReference<GomiLevel>, CollisionCallbacks {
-  Enemy({super.position, super.size});
+  Enemy({super.position, super.size, super.anchor});
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
   double idleTime = 5; // Time to stay in idle state (in seconds)
@@ -41,30 +41,10 @@ abstract class Enemy extends SpriteAnimationGroupComponent
       EnemyState.idle: idleAnimation,
       EnemyState.attacking: attackAnimation
     };
-
-    //set current animation
-    current = EnemyState.idle;
-  }
-
-  void switchToIdle() {
-    isAttacking = false;
-    elapsedTime = 0.0; // Reset the elapsed time for the new state
-    current = EnemyState.idle;
-  }
-
-  void switchToAttack() {
-    isAttacking = true;
-    elapsedTime = 0.0; // Reset the elapsed time for the new state
-    current = EnemyState.attacking;
   }
 
   @override
   void update(double dt) {
-    elapsedTime += dt;
-    // Check if enemy is attacking
-    if (isAttacking) {
-      attack(dt);
-    }
     _swapDirection(world.player);
     super.update(dt);
   }
@@ -76,30 +56,30 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   }
 
   bool playerIsCorrectColor();
+  void hit() {
+    gotHit = true;
+    current = EnemyState.hit;
+    world.player.bounce();
+    removeFromParent();
+  }
 
-  void attack(double dt);
   void collideWithPlayer() async {
     if (world.player.gotHit) {
       return;
     }
-
-    if (!isAttacking && isStomped() && playerIsCorrectColor()) {
-      gotHit = true;
-      current = EnemyState.hit;
-      world.player.bounce();
-      removeFromParent();
-    } else if (isAttacking) {
-      await world.player.hit();
+    if (isStomped() && playerIsCorrectColor()) {
+      hit();
+    } else {
+      world.player.hit();
     }
   }
 
   @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       collideWithPlayer();
     }
-    super.onCollisionStart(intersectionPoints, other);
+    super.onCollision(intersectionPoints, other);
   }
 
   void _swapDirection(Player other) {
