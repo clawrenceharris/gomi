@@ -85,4 +85,20 @@ class SyringeEnemy extends Enemy {
       flipHorizontallyAroundCenter();
     }
   }
+
+  @override
+  void collideWithPlayer() async {
+    if (world.player.gotHit) {
+      return;
+    }
+
+    if (isStomped() && playerIsCorrectColor()) {
+      gotHit = true;
+      current = EnemyState.hit;
+      world.player.bounce();
+      removeFromParent();
+    } else if (isAttacking) {
+      await world.player.hit();
+    }
+  }
 }
