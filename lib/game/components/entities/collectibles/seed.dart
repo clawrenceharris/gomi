@@ -18,7 +18,6 @@ class Seed extends Collectible {
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    debugMode = true;
     animation = idleAnimation;
     add(RectangleHitbox(collisionType: CollisionType.passive));
     idleMoveEffect = MoveEffect.to(
@@ -43,7 +42,7 @@ class Seed extends Collectible {
 
   @override
   Future<void> collideWithPlayer() async {
-    if (world.activeEnemies.isNotEmpty) {
+    if (world.activeEnemies.isEmpty) {
       world.player.seedCollected = true;
 
       add(plantedMoveEffect);
