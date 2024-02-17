@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
+import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/game/components/custom_hitbox.dart';
 import 'package:gomi/game/gomi_game.dart';
@@ -28,12 +30,31 @@ enum GomiColor {
   final String color;
 }
 
+class PlayerLives extends ChangeNotifier {
+  int _count = Globals.maxLives;
+
+  int get count => _count;
+  ValueNotifier<int> getValueNotifier() {
+    return ValueNotifier<int>(_count);
+  }
+
+  /// Resets the player's progress so it's like if they just started
+  /// playing the game for the first time.
+  void reset() {
+    _count = Globals.maxLives;
+    notifyListeners();
+  }
+
+  void decrease() {
+    _count -= 1;
+    notifyListeners();
+  }
+}
+
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   Player({required this.color, super.position})
-      : super(anchor: Anchor.topCenter) {
-    lives = maxLives;
-  }
+      : super(anchor: Anchor.topCenter);
 
   GomiColor color;
   int _jumpCount = 0;
@@ -49,7 +70,7 @@ class Player extends SpriteAnimationGroupComponent
   late final Vector2 startingPosition;
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-  int lives = 0;
+  final PlayerLives lives = PlayerLives();
   double jumpCooldown = 1.5;
   double lastJumpTimestamp = 0.0;
   double fixedDeltaTime = 1 / 60;
@@ -155,7 +176,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void respawn() async {
-    lives = maxLives;
+    lives.reset();
     scale.x = 1;
     velocity = Vector2.zero();
     position = Vector2(startingPosition.x, startingPosition.y);
@@ -166,12 +187,9 @@ class Player extends SpriteAnimationGroupComponent
   Future<void> hit() async {
     gotHit = true;
     await Future.delayed(const Duration(seconds: 1));
+    lives.decrease();
+    if (lives.count == 0) game.world.playerDeathNotifier.handlePlayerDeath();
 
-    if (lives == 0) {
-      game.world.playerDeathNotifier.handlePlayerDeath();
-    } else {
-      lives -= 1;
-    }
     current = PlayerState.idle;
     gotHit = false;
   }

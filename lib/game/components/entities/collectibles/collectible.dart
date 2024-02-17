@@ -8,7 +8,8 @@ import 'package:gomi/game/gomi_level.dart';
 class Collectible extends SpriteAnimationComponent
     with CollisionCallbacks, HasWorldReference<GomiLevel> {
   late final Vector2 startingPosition;
-  Collectible({required super.position, super.size, super.animation});
+  Collectible(
+      {required super.position, super.anchor, super.size, super.animation});
   @override
   FutureOr<void> onLoad() {
     startingPosition = Vector2(position.x, position.y);

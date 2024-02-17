@@ -4,7 +4,6 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_level.dart';
-import 'package:gomi/game/hud/hud.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
@@ -18,8 +17,10 @@ class Gomi extends FlameGame<GomiLevel>
     required this.audioController,
   }) : super(
           world: GomiLevel(level: level, playerProgress: playerProgress),
-        );
-
+        ) {
+    instance = this;
+  }
+  late final Gomi instance;
   final GameLevel level;
 
   final AudioController audioController;
@@ -28,8 +29,6 @@ class Gomi extends FlameGame<GomiLevel>
   Future<void> onLoad() async {
     //Load all images into cache
     await images.loadAllImages();
-
-    add(Hud());
 
     // With the `TextPaint` we define what properties the text that we are going
     // to render will have, like font family, size and color in this instance.
