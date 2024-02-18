@@ -51,27 +51,27 @@
   <object id="151" x="330.948" y="543.756" width="186.769" height="97.4728"/>
   <object id="152" name="Water" type="Water" x="336.51" y="518.326" width="175.378" height="25.0319"/>
   <object id="169" name="One Way Platform" type="One Way Platform" x="163.771" y="276.017" width="61.7127" height="15.0775"/>
-  <object id="170" name="One Way Platform" type="One Way Platform" x="400.202" y="319.746" width="79.2418" height="15.0775"/>
-  <object id="171" name="One Way Platform" type="One Way Platform" x="400.231" y="272.383" width="79.2418" height="15.0775"/>
-  <object id="172" name="One Way Platform" type="One Way Platform" x="400.514" y="224.208" width="79.0017" height="15.0775"/>
+  <object id="170" name="One Way Platform" type="One Way Platform" x="400.202" y="319.746" width="79.7944" height="15.0775"/>
+  <object id="171" name="One Way Platform" type="One Way Platform" x="399.955" y="272.107" width="79.9325" height="15.0775"/>
+  <object id="172" name="One Way Platform" type="One Way Platform" x="400.238" y="223.932" width="79.6924" height="15.0775"/>
   <object id="173" name="One Way Platform" type="One Way Platform" x="448.404" y="175.978" width="79.2418" height="15.0775"/>
-  <object id="174" name="One Way Platform" type="One Way Platform" x="237.565" y="324.045" width="125.826" height="15.0775"/>
+  <object id="174" name="One Way Platform" type="One Way Platform" x="237.565" y="324.045" width="126.102" height="15.0775"/>
   <object id="175" name="One Way Platform" type="One Way Platform" x="532.195" y="340.096" width="126.118" height="15.0775"/>
   <object id="176" name="One Way Platform" type="One Way Platform" x="669.006" y="388.053" width="46.8826" height="15.0775"/>
   <object id="177" name="One Way Platform" type="One Way Platform" x="611.967" y="436.031" width="46.2449" height="15.0775"/>
   <object id="178" x="767.951" y="447.94" width="79.3171" height="48.6276"/>
-  <object id="179" x="799.902" y="416.341" width="15.442" height="32.3457"/>
-  <object id="180" x="800.476" y="208.32" width="319.11" height="15.9385"/>
-  <object id="181" x="799.897" y="320.02" width="559.83" height="15.9385"/>
-  <object id="182" x="800.323" y="192.295" width="15.442" height="143.297"/>
-  <object id="183" x="1104.36" y="192.15" width="15.442" height="63.6069"/>
-  <object id="184" x="1104.54" y="321.248" width="15.442" height="110.162"/>
-  <object id="185" x="1360.14" y="335.979" width="15.442" height="109.332"/>
-  <object id="186" x="1375.8" y="383.539" width="15.442" height="62.7838"/>
-  <object id="187" x="1359.41" y="431.933" width="63.4525" height="14.4594"/>
-  <object id="189" name="One Way Platform" type="One Way Platform" x="1152.18" y="223.915" width="63.244" height="15.0775"/>
-  <object id="190" name="One Way Platform" type="One Way Platform" x="1168.35" y="272.6" width="63.244" height="15.0775"/>
-  <object id="191" name="One Way Platform" type="One Way Platform" x="160.118" y="447.281" width="142.625" height="50.2569"/>
+  <object id="179" x="799.902" y="416.097" width="16.0116" height="32.5898"/>
+  <object id="180" x="813.803" y="207.983" width="295.81" height="15.8712"/>
+  <object id="181" x="811.497" y="320.02" width="548.48" height="15.9385"/>
+  <object id="182" x="799.919" y="191.891" width="16.0477" height="144.172"/>
+  <object id="183" x="1103.93" y="191.988" width="16.0271" height="64.0062"/>
+  <object id="184" x="1103.94" y="321.248" width="16.0403" height="110.162"/>
+  <object id="185" x="1360.14" y="336.041" width="15.8163" height="110.611"/>
+  <object id="186" x="1375.74" y="384.038" width="16.1907" height="62.7838"/>
+  <object id="187" x="1360.16" y="432.058" width="63.7021" height="15.8944"/>
+  <object id="189" name="One Way Platform" type="One Way Platform" x="1152.18" y="223.915" width="63.7627" height="15.0775"/>
+  <object id="190" name="One Way Platform" type="One Way Platform" x="1168.09" y="271.908" width="63.8491" height="15.0775"/>
+  <object id="191" name="One Way Platform" type="One Way Platform" x="160.809" y="448.11" width="141.934" height="49.428"/>
   <object id="192" x="576.236" y="128.566" width="174.962" height="157.714"/>
   <object id="193" x="560.598" y="144.61" width="15.442" height="127.019"/>
   <object id="194" x="751.278" y="144.378" width="15.442" height="127.019"/>
