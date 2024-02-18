@@ -135,7 +135,7 @@
   <object id="145" type="Coin" x="1712" y="400" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="2" name="enemies">
-  <object id="48" name="Bottle Enemy" type="Bottle Enemy" x="799.235" y="454.827" width="18" height="25">
+  <object id="48" name="Bottle Enemy" type="Bottle Enemy" x="799.235" y="453.285" width="18" height="25">
    <properties>
     <property name="Off Neg" type="float" value="2.9"/>
     <property name="Off Pos" type="float" value="2.9"/>

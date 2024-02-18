@@ -2,6 +2,7 @@
     "activeFile": "level-4.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "gomi.tsx": {
             "scaleInDock": 1.312
@@ -20,46 +21,72 @@
                 "y": 383.0525272547077
             }
         },
+        "level-1.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.9454,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 1320.5510434872006,
+                "y": 441.8114526575512
+            }
+        },
+        "level-2.tmx": {
+            "expandedObjectLayers": [
+                6,
+                5
+            ],
+            "scale": 2.4353,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1853.159774976389,
+                "y": 507.32969244035644
+            }
+        },
         "level-3.tmx": {
             "expandedObjectLayers": [
                 2,
+                4,
                 3,
-                5,
                 6,
-                4
+                5
             ],
-            "scale": 2.2019,
-            "selectedLayer": 2,
+            "scale": 1.9193,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1502.338889141196,
-                "y": 434.8517189699804
+                "x": 939.9260146928567,
+                "y": 250.87271401031626
             }
         },
         "level-4.tmx": {
             "expandedObjectLayers": [
                 2,
-                5,
+                4,
                 6,
-                4
+                5
             ],
-            "scale": 1.1744,
-            "selectedLayer": 0,
+            "scale": 2.0691,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 843.8351498637601,
-                "y": 368.2731607629428
+                "x": 278.8652070948721,
+                "y": 356.4351650476052
             }
         }
     },
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "level-4.tmx",
+        "level-1.tmx",
+        "level-2.tmx",
         "level-3.tmx",
-        "kitchen-sink.tmx"
+        "level-4.tmx"
     ],
     "project": "level-4.tiled-project",
     "recentFiles": [
-        "kitchen-sink.tmx",
+        "level-1.tmx",
+        "level-2.tmx",
         "level-3.tmx",
-        "level-4.tmx"
+        "level-4.tmx",
+        "kitchen-sink.tmx"
     ]
 }
