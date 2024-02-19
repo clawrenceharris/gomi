@@ -1,5 +1,5 @@
 {
-    "activeFile": "level-4.tmx",
+    "activeFile": "level-3.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -23,13 +23,14 @@
         },
         "level-1.tmx": {
             "expandedObjectLayers": [
+                5,
                 2
             ],
-            "scale": 1.9454,
-            "selectedLayer": 5,
+            "scale": 1.9595,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1320.5510434872006,
-                "y": 441.8114526575512
+                "x": 446.5424853278898,
+                "y": 472.31436590967087
             }
         },
         "level-2.tmx": {
@@ -37,39 +38,39 @@
                 6,
                 5
             ],
-            "scale": 2.4353,
-            "selectedLayer": 3,
+            "scale": 1.8051,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1853.159774976389,
-                "y": 507.32969244035644
+                "x": 1600.4653481801563,
+                "y": 391.39105866710986
             }
         },
         "level-3.tmx": {
             "expandedObjectLayers": [
-                2,
-                4,
-                3,
                 6,
-                5
+                4,
+                5,
+                2,
+                3
             ],
-            "scale": 1.9193,
-            "selectedLayer": 1,
+            "scale": 2.5847,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 939.9260146928567,
-                "y": 250.87271401031626
+                "x": 440.2832050141215,
+                "y": 429.6436723797732
             }
         },
         "level-4.tmx": {
             "expandedObjectLayers": [
-                2,
-                4,
                 6,
-                5
+                4,
+                5,
+                2
             ],
             "scale": 2.0691,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 278.8652070948721,
+                "x": 278.8652070948722,
                 "y": 356.4351650476052
             }
         }
@@ -85,8 +86,8 @@
     "recentFiles": [
         "level-1.tmx",
         "level-2.tmx",
-        "level-3.tmx",
         "level-4.tmx",
+        "level-3.tmx",
         "kitchen-sink.tmx"
     ]
 }
