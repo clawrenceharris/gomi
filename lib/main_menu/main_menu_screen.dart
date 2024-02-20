@@ -15,10 +15,6 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioController = context.watch<AudioController>();
-    void _handlePlayPress() {
-      audioController.playSfx(SfxType.buttonTap);
-      GoRouter.of(context).go('/play');
-    }
 
     return RawKeyboardListener(
         focusNode: FocusNode(),
@@ -42,18 +38,9 @@ class MainMenuScreen extends StatelessWidget {
             )),
 
             // Button positioned in the top right corner
-            const Positioned(
-              top: 10,
-              right: 70,
-              child: PauseButton(),
-              //onPressed: () => GoRouter.of(context).push('/settings')
-            ),
+            const Positioned(top: 10, right: 70, child: PauseButton()),
 
-            const Positioned(
-              top: 10,
-              right: 10,
-              child: SoundButton(),
-            ),
+            const Positioned(top: 10, right: 10, child: SoundButton()),
 
             const Align(
               alignment: Alignment.bottomCenter,
@@ -95,6 +82,7 @@ class GradientTextWidget extends StatelessWidget {
         text,
         style: TextStyle(
           fontSize: fontSize,
+          fontFamily: 'Pixel',
           color: Colors.white, // Text color on the gradient text
         ),
       ),

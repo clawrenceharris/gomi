@@ -37,7 +37,7 @@ class Coin extends Collectible {
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
-      world.addScore(amount: points);
+      other.playerScore.addCoin(points);
     }
     super.onCollisionStart(intersectionPoints, other);
   }

@@ -4,6 +4,8 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_level.dart';
+import 'package:gomi/player_stats/player_health.dart';
+import 'package:gomi/player_stats/player_score.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
@@ -14,9 +16,15 @@ class Gomi extends FlameGame<GomiLevel>
   Gomi({
     required this.level,
     required PlayerProgress playerProgress,
+    required PlayerHealth playerHealth,
+    required PlayerScore playerScore,
     required this.audioController,
   }) : super(
-          world: GomiLevel(level: level, playerProgress: playerProgress),
+          world: GomiLevel(
+              level: level,
+              playerScore: playerScore,
+              playerProgress: playerProgress,
+              playerHealth: playerHealth),
         ) {
     instance = this;
   }
@@ -29,34 +37,6 @@ class Gomi extends FlameGame<GomiLevel>
   Future<void> onLoad() async {
     //Load all images into cache
     await images.loadAllImages();
-
-    // With the `TextPaint` we define what properties the text that we are going
-    // to render will have, like font family, size and color in this instance.
-    final textRenderer = TextPaint(
-      style: const TextStyle(
-        fontSize: 30,
-        color: Colors.white,
-        fontFamily: 'Press Start 2P',
-      ),
-    );
-
-    final scoreText = 'Litter Critters: 0 / ${level.winScore}';
-
-    // The component that is responsible for rendering the text that contains
-    // the current score.
-    final scoreComponent = TextComponent(
-      text: scoreText,
-      position: Vector2.all(30),
-      textRenderer: textRenderer,
-    );
-
-    //camera.viewport.add(scoreComponent);
-
-    // add a listener to the points notifier and update the text
-    world.scoreNotifier.addListener(() {
-      scoreComponent.text =
-          scoreText.replaceFirst('0', '${world.scoreNotifier.value}');
-    });
   }
 
   @override

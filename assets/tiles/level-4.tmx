@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="276">
  <tileset firstgid="1" source="gomi.tsx"/>
+ <tileset firstgid="161" source="gomi_2.tsx"/>
  <layer id="1" name="tiles" width="100" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -129,27 +130,32 @@
     <property name="Jump Force" type="float" value="250"/>
    </properties>
   </object>
-  <object id="265" name="Bottle Enemy" type="Bottle Enemy" x="933.284" y="246.609" width="18" height="25">
+  <object id="265" name="Bottle Enemy" type="Bottle Enemy" x="895.768" y="311.032" width="16" height="25">
    <properties>
-    <property name="Off Neg" type="float" value="1"/>
-    <property name="Off Pos" type="float" value="1"/>
+    <property name="Off Neg" type="float" value="3"/>
+    <property name="Off Pos" type="float" value="3"/>
    </properties>
   </object>
-  <object id="266" name="Bottle Enemy" type="Bottle Enemy" x="1046.57" y="246.992" width="18" height="25">
+  <object id="266" name="Bottle Enemy" type="Bottle Enemy" x="1055" y="311.517" width="16" height="25">
    <properties>
-    <property name="Off Neg" type="float" value="1"/>
-    <property name="Off Pos" type="float" value="1"/>
+    <property name="Off Neg" type="float" value="3"/>
+    <property name="Off Pos" type="float" value="3"/>
    </properties>
   </object>
-  <object id="267" name="Bottle Enemy" type="Bottle Enemy" x="1158.65" y="262.786" width="18" height="25">
+  <object id="267" name="Bottle Enemy" type="Bottle Enemy" x="1216" y="311" width="16" height="25">
    <properties>
-    <property name="Off Neg" type="float" value="1"/>
-    <property name="Off Pos" type="float" value="1"/>
+    <property name="Off Neg" type="float" value="3"/>
+    <property name="Off Pos" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="282" type="bulb enemy" x="800" y="336" width="16" height="32">
+   <properties>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="3" name="player">
-  <object id="140" name="Player" type="Player" x="260.114" y="466.222" width="22" height="26"/>
+  <object id="140" name="Player" type="Player" x="316.388" y="468.809" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="4" name="gomi clones">
   <object id="216" name="Green Gomi" x="756.432" y="200.796" width="22" height="26">
@@ -157,7 +163,7 @@
     <property name="Color" value="Green"/>
    </properties>
   </object>
-  <object id="245" name="Blue Gomi" x="819.577" y="461.815" width="22" height="26">
+  <object id="245" name="Blue Gomi" x="277.361" y="469.827" width="22" height="26">
    <properties>
     <property name="Color" value="Blue"/>
    </properties>

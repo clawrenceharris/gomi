@@ -14,7 +14,9 @@ enum EnemyState {
 
 abstract class Enemy extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, HasWorldReference<GomiLevel>, CollisionCallbacks {
-  Enemy({super.position, super.size, super.anchor});
+  Enemy({super.position, super.size, super.anchor}) {
+    startingPosition = Vector2(position.x, position.y);
+  }
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
   double idleTime = 5; // Time to stay in idle state (in seconds)
@@ -24,9 +26,9 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   late final Vector2 startingPosition;
   bool gotHit = false;
   bool renderFlipX = false;
+  int points = 100;
   @override
   FutureOr<void> onLoad() {
-    startingPosition = Vector2(position.x, position.y);
     loadAllAnimations();
     return super.onLoad();
   }
@@ -60,15 +62,15 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     gotHit = true;
     current = EnemyState.hit;
     world.player.bounce();
+    world.player.playerScore.addScore(points);
     removeFromParent();
   }
 
   void collideWithPlayer() async {
-    if (world.player.gotHit) {
-      return;
-    }
     if (isStomped() && playerIsCorrectColor()) {
       hit();
+    } else if (world.player.gotHit) {
+      return;
     } else {
       world.player.hit();
     }

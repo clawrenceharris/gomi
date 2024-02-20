@@ -35,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
                       'Settings',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: 'Press Start 2P',
+                        fontFamily: 'Pixel',
                         fontSize: 30,
                         height: 1,
                       ),
@@ -111,7 +111,7 @@ class _NameChangeLine extends StatelessWidget {
           children: [
             Text(title,
                 style: const TextStyle(
-                  fontFamily: 'Press Start 2P',
+                  fontFamily: 'Pixel',
                   fontSize: 20,
                 )),
             const Spacer(),
@@ -120,7 +120,7 @@ class _NameChangeLine extends StatelessWidget {
               builder: (context, name, child) => Text(
                 '‘$name’',
                 style: const TextStyle(
-                  fontFamily: 'Press Start 2P',
+                  fontFamily: 'Pixel',
                   fontSize: 20,
                 ),
               ),
@@ -157,7 +157,7 @@ class _SettingsLine extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontFamily: 'Press Start 2P',
+                  fontFamily: 'Pixel',
                   fontSize: 20,
                 ),
               ),

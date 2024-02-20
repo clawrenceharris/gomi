@@ -48,6 +48,7 @@ class PauseMenuDialog extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 22,
+                            fontFamily: 'Pixel',
                             fontWeight: FontWeight.bold)),
                     _gap,
 
@@ -67,6 +68,7 @@ class PauseMenuDialog extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
+                                  fontFamily: 'Pixel',
                                   fontWeight: FontWeight.normal)),
                           _gap
                         ]))

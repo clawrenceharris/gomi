@@ -78,7 +78,6 @@ flutter:
     - assets/images/tutorials/
     - assets/images/hud/
     - assets/images/scenery/
-    - assets/fonts/Press_Start_2P/
     - assets/images/gomi/green_gomi/
     - assets/images/gomi/red_gomi/
     - assets/images/gomi/blue_gomi/
@@ -103,9 +102,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
+    - family: Pixel
+      fonts:
+        - asset: assets/fonts/Pixel.ttf
     - family: Press Start 2P
       fonts:
-        - asset: assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf
+        - asset: assets/fonts/PressStart2P-Regular.ttf
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
