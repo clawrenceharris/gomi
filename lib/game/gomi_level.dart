@@ -20,11 +20,13 @@ import 'package:gomi/game/components/entities/collectibles/seed.dart';
 import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
-import 'package:gomi/game/event_manager.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/mixins/collision_aware.dart';
 import 'package:gomi/game/utils.dart';
+import 'package:gomi/game/widgets/game_screen.dart';
+import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
+import 'package:gomi/player_stats/player_score.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -37,6 +39,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   // Used to see what the current progress of the player is and to update the
   // progress if a level is finished.
   final PlayerProgress playerProgress;
+  final PlayerHealth playerHealth;
+  final PlayerScore playerScore;
+
   late final Rectangle levelBounds;
   List<Enemy> enemies = [];
   List<Collectible> collectibles = [];
@@ -45,7 +50,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   /// other parts of the code is interested in when the score is updated they
   /// can listen to it and act on the updated value.
   final scoreNotifier = ValueNotifier(0);
-  final PlayerDeathNotifier playerDeathNotifier = PlayerDeathNotifier();
+  final ValueNotifier<bool> playerHitNotifier = ValueNotifier<bool>(false);
+
   final cameraParallax = ParallaxBackground(speed: 0, layers: [
     ParallaxImageData('scenery/background_1a.png'),
     ParallaxImageData('scenery/sun.png'),
@@ -55,11 +61,11 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     ParallaxImageData('scenery/trees_1.png'),
   ]);
 
-  GomiLevel({
-    required this.level,
-    required this.playerProgress,
-  });
-
+  GomiLevel(
+      {required this.playerHealth,
+      required this.level,
+      required this.playerProgress,
+      required this.playerScore});
   Vector2 get size => (parent as FlameGame).size;
   Iterable<Enemy> get activeEnemies =>
       enemies.where((element) => contains(element));
@@ -89,15 +95,31 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
     _setUpCamera();
 
-    // When the player takes a new point we check if the score is enough to
-    // pass the level and if it is we calculate the stars earned for the level,
-    // update the player's progress and open up a dialog that shows that
-    // the player passed the level.
     scoreNotifier.addListener(_onScoreChange);
-    playerDeathNotifier.addListener(_restartLevel);
+
+    //when health changes check if the player has died (ran out of lives) if so restart the level.
+    playerHealth.lives.addListener(() {
+      if (playerHealth.isDead) {
+        _restartLevel();
+        print("Died");
+      }
+    });
+  }
+
+  @override
+  void onMount() {
+    super.onMount();
+
+    game.overlays.add(GameScreen.hudKey);
+  }
+
+  @override
+  void onRemove() {
+    game.overlays.remove(GameScreen.hudKey);
   }
 
   void _restartLevel() {
+    print("restarting");
     for (final enemy in enemies) {
       // if the enemy is not in component tree, add it back and respawn
 
@@ -115,6 +137,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       }
     }
     player.respawn();
+    playerScore.reset();
+    playerHealth.reset();
   }
 
   void _onScoreChange() {}
@@ -124,8 +148,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     super.update(dt);
   }
 
-  @override
-  void onRemove() {}
   void _addInfoTiles() {
     final layer = getTiledLayer(tiledLevel, "info tiles");
 
@@ -144,7 +166,11 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
     //there can only be one player in the level so get the first and only one
     final obj = layer.objects[0];
-    player = Player(color: GomiColor.black, position: Vector2(obj.x, obj.y));
+    player = Player(
+        playerScore: playerScore,
+        playerHealth: playerHealth,
+        color: GomiColor.black,
+        position: Vector2(obj.x, obj.y));
     add(player);
   }
 

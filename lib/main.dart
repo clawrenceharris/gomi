@@ -1,10 +1,9 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
-import 'package:gomi/game/components/entities/player.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gomi/player_stats/player_health.dart';
+import 'package:gomi/player_stats/player_score.dart';
 import 'package:nes_ui/nes_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'router.dart';
 import 'app_lifecycle/app_lifecycle.dart';
 import 'audio/audio_controller.dart';
@@ -29,7 +28,8 @@ class MyGame extends StatelessWidget {
         providers: [
           Provider(create: (context) => Palette()),
           ChangeNotifierProvider(create: (context) => PlayerProgress()),
-          ChangeNotifierProvider(create: (context) => PlayerLives()),
+          Provider(create: (context) => PlayerHealth()),
+          Provider(create: (context) => PlayerScore()),
 
           Provider(create: (context) => SettingsController()),
           // Set up audio.
@@ -54,10 +54,6 @@ class MyGame extends StatelessWidget {
               colorScheme: ColorScheme.fromSeed(
                 seedColor: palette.seed.color,
                 background: palette.backgroundMain.color,
-              ),
-              textTheme: GoogleFonts.pressStart2pTextTheme().apply(
-                bodyColor: palette.text.color,
-                displayColor: palette.text.color,
               ),
             ),
             routeInformationProvider: router.routeInformationProvider,
