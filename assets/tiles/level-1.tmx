@@ -95,7 +95,7 @@
   <object id="92" type="one way platform" x="1055.33" y="403.699" width="44.6376" height="11.2927"/>
   <object id="96" x="1136" y="432" width="128" height="48"/>
   <object id="97" x="1200" y="384" width="144" height="48"/>
-  <object id="98" x="1760" y="384" width="64.4724" height="92.2466"/>
+  <object id="98" x="1760" y="384" width="64.4724" height="131.138"/>
   <object id="104" x="1696.81" y="416.677" width="48" height="16"/>
   <object id="128" name="One Way Platform" type="One Way Platform" x="784.389" y="416" width="47.0154" height="17.4843"/>
   <object id="139" x="959.764" y="96.7453" width="175.551" height="94.8232"/>
@@ -107,7 +107,7 @@
   <object id="161" name="one way platform" type="one way platform" x="1984" y="288" width="48" height="16"/>
   <object id="163" x="2176" y="304" width="144" height="48"/>
   <object id="165" x="2208" y="256" width="80" height="48"/>
-  <object id="167" x="576" y="448" width="48" height="32"/>
+  <object id="167" x="569.876" y="448" width="54.124" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="73" type="Coin" x="432" y="368" width="16" height="16"/>
@@ -135,7 +135,7 @@
   <object id="145" type="Coin" x="1712" y="400" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="2" name="enemies">
-  <object id="48" name="Bottle Enemy" type="Bottle Enemy" x="799.235" y="454.827" width="18" height="25">
+  <object id="48" name="Bottle Enemy" type="Bottle Enemy" x="799.235" y="453.285" width="18" height="25">
    <properties>
     <property name="Off Neg" type="float" value="2.9"/>
     <property name="Off Pos" type="float" value="2.9"/>

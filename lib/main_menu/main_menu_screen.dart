@@ -17,7 +17,6 @@ class MainMenuScreen extends StatelessWidget {
     final audioController = context.watch<AudioController>();
 
     return RawKeyboardListener(
-        autofocus: true, // Ensure the widget has focus
         focusNode: FocusNode(),
         onKey: (RawKeyEvent event) {
           if (event.logicalKey == LogicalKeyboardKey.space) {

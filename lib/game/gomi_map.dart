@@ -20,15 +20,19 @@ class GomiWorldMap extends FlameGame<Map> {
 }
 
 class Map extends World with HasGameRef<GomiWorldMap> {
+  // Variables
   late TiledComponent map;
   final PlayerProgress playerProgress;
   Map({required this.playerProgress});
   late final CameraComponent cam;
+  final Vector2 _visibleGameArea = Vector2(1500, 1500);
   Vector2 get size => (parent as FlameGame).size;
   final cameraParallax = ParallaxBackground(speed: 0, layers: [
     ParallaxImageData('scenery/water.png'),
   ]);
   final int mapTileSize = 64;
+
+  // Functions
   @override
   Future<void> onLoad() async {
     //load the tiled level
@@ -63,12 +67,11 @@ class Map extends World with HasGameRef<GomiWorldMap> {
     game.camera = CameraComponent(
         world: this, viewport: FixedAspectRatioViewport(aspectRatio: 16 / 10))
       ..viewport.size = size
-      ..viewfinder.visibleGameSize = Vector2(1500, 1500)
+      ..viewfinder.visibleGameSize = _visibleGameArea
       ..viewfinder.anchor = Anchor.topLeft;
 
     PositionComponent pc = PositionComponent(position: Vector2(0, 0));
     game.camera.follow(pc);
-    // game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }
 }

@@ -23,13 +23,17 @@ class GameWinDialog extends StatelessWidget {
   /// How many seconds that the level was completed in.
   final int stars;
 
+  //NesContainer Height and Width
+  final double cwidth = 420;
+  final double cheight = 284;
+
   @override
   Widget build(BuildContext context) {
     final palette = context.read<Palette>();
     return Center(
       child: NesContainer(
-        width: 420,
-        height: 280,
+        width: cwidth,
+        height: cheight,
         backgroundColor: palette.backgroundPlaySession.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

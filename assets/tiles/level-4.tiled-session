@@ -1,0 +1,93 @@
+{
+    "activeFile": "level-3.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "gomi.tsx": {
+            "scaleInDock": 1.312
+        },
+        "gomi_2.tsx": {
+            "scaleInDock": 1
+        },
+        "kitchen-sink.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.009,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 1456.8880079286423,
+                "y": 383.0525272547077
+            }
+        },
+        "level-1.tmx": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 1.9595,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 446.5424853278898,
+                "y": 472.31436590967087
+            }
+        },
+        "level-2.tmx": {
+            "expandedObjectLayers": [
+                6,
+                5
+            ],
+            "scale": 1.8051,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1600.4653481801563,
+                "y": 391.39105866710986
+            }
+        },
+        "level-3.tmx": {
+            "expandedObjectLayers": [
+                6,
+                4,
+                5,
+                2,
+                3
+            ],
+            "scale": 2.5847,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 440.2832050141215,
+                "y": 429.6436723797732
+            }
+        },
+        "level-4.tmx": {
+            "expandedObjectLayers": [
+                6,
+                4,
+                5,
+                2
+            ],
+            "scale": 2.0691,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 278.8652070948722,
+                "y": 356.4351650476052
+            }
+        }
+    },
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "level-1.tmx",
+        "level-2.tmx",
+        "level-3.tmx",
+        "level-4.tmx"
+    ],
+    "project": "level-4.tiled-project",
+    "recentFiles": [
+        "level-1.tmx",
+        "level-2.tmx",
+        "level-4.tmx",
+        "level-3.tmx",
+        "kitchen-sink.tmx"
+    ]
+}

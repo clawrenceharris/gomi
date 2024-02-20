@@ -60,7 +60,7 @@ class SyringeEnemy extends Enemy {
 
   @override
   void collideWithPlayer() {
-    if (isStomped()) {
+    if (isStomped() && playerIsCorrectColor()) {
       hit();
     } else {
       world.player.hit();
