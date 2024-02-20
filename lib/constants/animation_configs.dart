@@ -94,7 +94,7 @@ class GomiAnimationConfigs {
       Flame.images.fromCache(
           'gomi/${color.toLowerCase()}_gomi/${AnimationConfigs.hit}.png'),
       SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 4,
           stepTime: AnimationConfigs.gomiStepTime,
           textureSize: AnimationConfigs.gomiTextureSize));
 }
