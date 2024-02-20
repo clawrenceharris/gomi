@@ -15,6 +15,7 @@ class Seed extends Collectible {
   late final SpriteAnimation growingAnimation;
   late final MoveEffect idleMoveEffect;
   late final MoveEffect plantedMoveEffect;
+  final int points = 500;
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
@@ -44,7 +45,7 @@ class Seed extends Collectible {
   Future<void> collideWithPlayer() async {
     if (world.activeEnemies.isEmpty) {
       world.player.seedCollected = true;
-
+      world.playerScore.addScore(points);
       add(plantedMoveEffect);
       plantedMoveEffect.onComplete = () async {
         animation = growingAnimation;

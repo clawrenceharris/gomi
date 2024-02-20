@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flame/effects.dart';
+import 'package:flame/text.dart';
+import 'package:flutter/material.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
-import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
 import 'package:gomi/game/components/custom_hitbox.dart';
 import 'package:gomi/game/gomi_game.dart';
+import 'package:gomi/player_stats/player_health.dart';
+import 'package:gomi/player_stats/player_score.dart';
 
 enum PlayerState {
   idle,
@@ -30,33 +33,19 @@ enum GomiColor {
   final String color;
 }
 
-class PlayerLives extends ChangeNotifier {
-  int _count = Globals.maxLives;
-
-  int get count => _count;
-  ValueNotifier<int> getValueNotifier() {
-    return ValueNotifier<int>(_count);
-  }
-
-  /// Resets the player's progress so it's like if they just started
-  /// playing the game for the first time.
-  void reset() {
-    _count = Globals.maxLives;
-    notifyListeners();
-  }
-
-  void decrease() {
-    _count -= 1;
-    notifyListeners();
-  }
-}
-
 class Player extends SpriteAnimationGroupComponent
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
-  Player({required this.color, super.position})
-      : super(anchor: Anchor.topCenter);
+  Player(
+      {required this.color,
+      required this.playerHealth,
+      required this.playerScore,
+      super.position})
+      : super(anchor: Anchor.topCenter) {
+    startingPosition = Vector2(position.x, position.y);
+  }
 
   GomiColor color;
+
   int _jumpCount = 0;
   final int maxLives = 3;
   final double _gravity = 9.8;
@@ -68,9 +57,11 @@ class Player extends SpriteAnimationGroupComponent
   double directionX = 0;
   double moveSpeed = 100;
   late final Vector2 startingPosition;
+  final PlayerHealth playerHealth;
+  final PlayerScore playerScore;
+
   Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
-  final PlayerLives lives = PlayerLives();
   double jumpCooldown = 1.5;
   double lastJumpTimestamp = 0.0;
   double fixedDeltaTime = 1 / 60;
@@ -82,14 +73,12 @@ class Player extends SpriteAnimationGroupComponent
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    // debugMode = true;
-
+    playerScore.score.addListener(onScoreIncrease);
     // Prevents player from going out of bounds of level.
     // Since anchor is top center, split size in half for calculation.
     _minClamp = game.world.levelBounds.topLeft;
     _maxClamp = game.world.levelBounds.bottomRight + (size / 2);
     hitbox = CustomHitbox(width: width - 8, height: height, offsetX: 4);
-    startingPosition = Vector2(position.x, position.y);
     add(RectangleHitbox(
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
@@ -144,6 +133,13 @@ class Player extends SpriteAnimationGroupComponent
     current = PlayerState.idle;
   }
 
+  void onScoreIncrease() {
+    AnimatedScoreText text = AnimatedScoreText(
+        text: playerScore.pointsAdded.toString(), position: position);
+
+    game.world.add(text);
+  }
+
   void changeColor(GomiColor color) {
     this.color = color;
     _loadAllAnimations();
@@ -176,7 +172,6 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void respawn() async {
-    lives.reset();
     scale.x = 1;
     velocity = Vector2.zero();
     position = Vector2(startingPosition.x, startingPosition.y);
@@ -186,10 +181,10 @@ class Player extends SpriteAnimationGroupComponent
 
   Future<void> hit() async {
     gotHit = true;
-    await Future.delayed(const Duration(seconds: 1));
-    lives.decrease();
-    if (lives.count == 0) game.world.playerDeathNotifier.handlePlayerDeath();
 
+    await Future.delayed(const Duration(seconds: 1));
+
+    playerHealth.decrease();
     current = PlayerState.idle;
     gotHit = false;
   }
@@ -282,5 +277,36 @@ class Player extends SpriteAnimationGroupComponent
         }
       }
     }
+  }
+}
+
+class AnimatedScoreText extends PositionComponent {
+  final String text;
+  double _elapsedTime = 0.0;
+  final double _activeTime = 0.5;
+  AnimatedScoreText({required this.text, super.position});
+  @override
+  FutureOr<void> onLoad() {
+    add(TextComponent(
+        text: text,
+        textRenderer: TextPaint(
+            style: const TextStyle(
+                color: Colors.yellow, fontFamily: 'Pixel', fontSize: 7))));
+    add(MoveEffect.to(Vector2(position.x, position.y - 10),
+        EffectController(duration: 0.6, infinite: false)));
+    //add(OpacityEffect.to(1, EffectController(duration: 2, infinite: false)));
+
+    return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    _elapsedTime += dt;
+    if (_elapsedTime >= _activeTime) {
+      _elapsedTime = 0.0;
+
+      removeFromParent();
+    }
+    super.update(dt);
   }
 }
