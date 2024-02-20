@@ -83,7 +83,7 @@
   <object id="220" x="208" y="448" width="32" height="16"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles">
-  <object id="176" type="Seed" x="2047.97" y="431.151" width="32" height="32"/>
+  <object id="176" type="Seed" x="2048" y="480" width="60" height="53"/>
   <object id="172" type="coin" x="844.04" y="454.644" width="16" height="16"/>
   <object id="175" type="coin" x="871.328" y="454.169" width="16" height="16"/>
   <object id="173" type="coin" x="632.027" y="452.845" width="16" height="16"/>
