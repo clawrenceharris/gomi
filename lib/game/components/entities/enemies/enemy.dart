@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
@@ -35,6 +36,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
 
   void respawn() {
     position = Vector2(startingPosition.x, startingPosition.y);
+    current = EnemyState.attacking;
   }
 
   void loadAllAnimations() {

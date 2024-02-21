@@ -125,6 +125,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
       if (!contains(enemy)) {
         add(enemy);
+
         enemy.respawn();
       }
     }
@@ -225,10 +226,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       switch (obj.class_.toLowerCase()) {
         case 'bulb enemy':
           final direction = obj.properties.getValue("Direction");
-          enemy = BulbEnemy(
-            position: Vector2(obj.x, obj.y),
-            direction: direction,
-          );
+          enemy =
+              BulbEnemy(position: Vector2(obj.x, obj.y), direction: direction);
           break;
         case 'syringe enemy':
           final offNeg = obj.properties.getValue("offNeg");

@@ -9,10 +9,7 @@ import 'package:gomi/game/components/entities/player.dart';
 
 class BulbEnemy extends Enemy {
   int direction;
-  BulbEnemy({
-    required this.direction,
-    super.position,
-  });
+  BulbEnemy({required this.direction, super.position, super.size});
   double _elapsedTime = 0.0;
   double zapCoolDown = 3;
   late final SpriteAnimationComponent sparks;
