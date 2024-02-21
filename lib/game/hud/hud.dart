@@ -1,6 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/widgets/pause_button.dart';
 import 'package:gomi/game/widgets/sound_button.dart';
@@ -11,33 +10,6 @@ import 'package:provider/provider.dart';
 class Hud extends StatelessWidget {
   Hud({super.key});
   final List<SpriteComponent> lifeIndicators = [];
-
-  // void _addLifeIndicators() async {
-  //   final gomiImage = await Flame.images.load("gomi/gomi.png");
-
-  //   for (int i = 0; i < game.world.player.lives.value; i++) {
-  //     final lifeIndicator = SpriteComponent(
-  //         anchor: Anchor.topCenter,
-  //         position: Vector2((game.size.x - 30) - i * 25, 20),
-  //         sprite: Sprite(gomiImage));
-  //     game.world.add(lifeIndicator);
-  //     lifeIndicators.add(lifeIndicator);
-  //   }
-  // }
-
-  // void updateLifeIndicators() async {
-  //   final lives = game.world.player.lives.value as int;
-  //   if (lives < Globals.maxLives) {
-  //     // Calculate the index of the life indicator to remove
-  //     final indexToRemove = lifeIndicators.length - 1 - lives;
-  //     if (indexToRemove >= 0 && indexToRemove < lifeIndicators.length) {
-  //       // Remove the life indicator at the calculated index
-  //       lifeIndicators[indexToRemove].removeFromParent();
-  //     }
-  //   } else {
-  //     _addLifeIndicators();
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
