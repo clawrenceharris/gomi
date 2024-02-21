@@ -42,7 +42,6 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   GomiColor color;
-
   int _jumpCount = 0;
   final int maxLives = 3;
   final double _gravity = 9.8;
@@ -168,15 +167,11 @@ class Player extends SpriteAnimationGroupComponent
     current = playerState;
   }
 
-  void respawn() async {
-    scale.x = 1;
-    velocity = Vector2.zero();
-    position = Vector2(startingPosition.x, startingPosition.y);
-    current = PlayerState.idle;
-    changeColor(GomiColor.black);
-  }
-
   Future<void> hit() async {
+    if (gotHit) {
+      //dont hit if we are currently being hit
+      return;
+    }
     gotHit = true;
 
     await Future.delayed(const Duration(seconds: 1));

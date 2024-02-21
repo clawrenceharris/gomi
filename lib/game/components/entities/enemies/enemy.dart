@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
@@ -71,8 +70,6 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   void collideWithPlayer() async {
     if (isStomped() && playerIsCorrectColor()) {
       hit();
-    } else if (world.player.gotHit) {
-      return;
     } else {
       world.player.hit();
     }
