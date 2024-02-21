@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="199">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="201">
  <tileset firstgid="1" source="gomi.tsx"/>
  <layer id="1" name="tiles" width="100" height="40">
   <data encoding="csv">
@@ -72,24 +72,21 @@
   <object id="189" name="One Way Platform" type="One Way Platform" x="1152.18" y="223.915" width="63.7627" height="15.0775"/>
   <object id="190" name="One Way Platform" type="One Way Platform" x="1168.09" y="271.908" width="63.8491" height="15.0775"/>
   <object id="191" name="One Way Platform" type="One Way Platform" x="160.809" y="448.11" width="141.934" height="49.428"/>
-  <object id="192" x="576.236" y="128.566" width="174.962" height="157.714"/>
-  <object id="193" x="560.598" y="144.61" width="15.442" height="127.019"/>
-  <object id="194" x="751.278" y="144.378" width="15.442" height="127.019"/>
-  <object id="195" x="144.183" y="48.1079" width="190.774" height="143.762"/>
-  <object id="196" x="128.545" y="64.617" width="15.442" height="110.741"/>
-  <object id="197" x="335.503" y="65.3152" width="15.442" height="110.276"/>
+  <object id="192" x="576.236" y="128.566" width="174.962" height="63.0949"/>
+  <object id="193" x="560.598" y="144.61" width="15.442" height="46.7361"/>
+  <object id="194" x="751.278" y="144.378" width="15.442" height="47.3733"/>
   <object id="198" name="One Way Platform" type="One Way Platform" x="399.883" y="447.584" width="48.2635" height="15.0775"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="146" type="coin" x="360.588" y="423.502" width="16" height="16"/>
   <object id="147" type="coin" x="417.728" y="404.245" width="16" height="16"/>
   <object id="148" type="coin" x="475.667" y="421.079" width="16" height="16"/>
-  <object id="149" type="Seed" x="1508.3" y="437.353" width="32" height="32"/>
+  <object id="149" type="Seed" x="1507.14" y="492.068" width="32" height="32"/>
   <object id="153" type="coin" x="601.733" y="96.4287" width="16" height="16"/>
   <object id="154" type="coin" x="655.463" y="95.1946" width="16" height="16"/>
   <object id="155" type="coin" x="704.405" y="95.1776" width="16" height="16"/>
-  <object id="156" type="coin" x="295.315" y="226.197" width="16" height="16"/>
-  <object id="157" type="coin" x="294.644" y="261.091" width="16" height="16"/>
+  <object id="156" type="coin" x="331.249" y="221.947" width="16" height="16"/>
+  <object id="157" type="coin" x="330.578" y="256.068" width="16" height="16"/>
   <object id="159" type="coin" x="896.437" y="286.369" width="16" height="16"/>
   <object id="160" type="coin" x="1024.42" y="287.435" width="16" height="16"/>
   <object id="161" type="coin" x="798.314" y="364.227" width="16" height="16"/>
@@ -111,17 +108,22 @@
     <property name="Off Pos" type="float" value="1"/>
    </properties>
   </object>
-  <object id="166" name="Bulb Enemy" type="Bulb Enemy" x="1077.75" y="181.243" width="19.3434" height="24.7224">
+  <object id="166" name="Bulb Enemy" type="Bulb Enemy" x="1062.62" y="169.602" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
-  <object id="167" name="Bulb Enemy" type="Bulb Enemy" x="1254.17" y="467.327" width="19.3434" height="24.7224">
+  <object id="167" name="Bulb Enemy" type="Bulb Enemy" x="1220.32" y="462.223" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
-  <object id="168" name="Bulb Enemy" type="Bulb Enemy" x="824.441" y="290.217" width="19.3434" height="24.7224">
+  <object id="168" name="Bulb Enemy" type="Bulb Enemy" x="824.441" y="289.053" width="19.3434" height="24.7224">
+   <properties>
+    <property name="Direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="199" name="Bulb Enemy" type="Bulb Enemy" x="329.686" y="287.652" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="1"/>
    </properties>

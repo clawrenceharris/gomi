@@ -23,14 +23,14 @@
         },
         "level-1.tmx": {
             "expandedObjectLayers": [
-                5,
-                2
+                2,
+                5
             ],
-            "scale": 1.1583,
-            "selectedLayer": 3,
+            "scale": 0.6739,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 771.8207718207718,
-                "y": 439.43710610377275
+                "x": 796.8541326606322,
+                "y": 635.8510164712865
             }
         },
         "level-2.tmx": {
@@ -38,55 +38,63 @@
                 5,
                 6
             ],
-            "scale": 1.0407,
+            "scale": 0.9967,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1277.025079273566,
-                "y": 441.04929374459505
+                "x": 302.99989966890746,
+                "y": 399.8194040333099
             }
         },
         "level-3.tmx": {
             "expandedObjectLayers": [
+                2,
                 5,
-                4,
-                6,
                 3,
-                2
+                6,
+                4
             ],
-            "scale": 2.58,
-            "selectedLayer": 1,
+            "scale": 0.8921,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 563.953488372093,
-                "y": 493.41085271317826
+                "x": 782.423495123865,
+                "y": 453.42450397937455
             }
         },
         "level-4.tmx": {
             "expandedObjectLayers": [
+                2,
                 5,
-                4,
                 6,
-                2
+                4
             ],
-            "scale": 1.2994,
-            "selectedLayer": 5,
+            "scale": 1.2281,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 207.78820994305062,
-                "y": 324.7652762813606
+                "x": 787.3951632603208,
+                "y": 458.0245908313655
+            }
+        },
+        "level-5.tmx": {
+            "scale": 0.603,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 809.2868988391378,
+                "y": 445.27363184079604
             }
         },
         "level-6.tmx": {
             "expandedObjectLayers": [
+                2,
                 5,
-                4,
-                6,
                 3,
-                2
+                4,
+                6
             ],
-            "scale": 1.0269,
-            "selectedLayer": 2,
+            "scale": 3.4882,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1535.6899405979161,
-                "y": 264.87486610186
+                "x": 669.6863711943123,
+                "y": 301.44487128031653
             }
         }
     },
@@ -99,11 +107,12 @@
     ],
     "project": "level-4.tiled-project",
     "recentFiles": [
-        "level-3.tmx",
+        "level-5.tmx",
         "level-4.tmx",
-        "level-6.tmx",
-        "level-1.tmx",
+        "level-3.tmx",
         "level-2.tmx",
+        "level-1.tmx",
+        "level-6.tmx",
         "kitchen-sink.tmx"
     ]
 }
