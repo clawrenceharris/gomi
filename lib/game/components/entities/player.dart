@@ -173,10 +173,10 @@ class Player extends SpriteAnimationGroupComponent
       return;
     }
     gotHit = true;
+    playerHealth.decrease();
 
     await Future.delayed(const Duration(seconds: 1));
 
-    playerHealth.decrease();
     current = PlayerState.idle;
     gotHit = false;
   }
