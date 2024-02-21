@@ -5,7 +5,7 @@
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "gomi.tsx": {
-            "scaleInDock": 1.312
+            "scaleInDock": 2.0745
         },
         "gomi_2.tsx": {
             "scaleInDock": 1
@@ -26,52 +26,67 @@
                 5,
                 2
             ],
-            "scale": 1.9595,
+            "scale": 1.1583,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 446.5424853278898,
-                "y": 472.31436590967087
+                "x": 771.8207718207718,
+                "y": 439.43710610377275
             }
         },
         "level-2.tmx": {
             "expandedObjectLayers": [
-                6,
-                5
+                5,
+                6
             ],
-            "scale": 1.8051,
+            "scale": 1.0407,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1600.4653481801563,
-                "y": 391.39105866710986
+                "x": 1277.025079273566,
+                "y": 441.04929374459505
             }
         },
         "level-3.tmx": {
             "expandedObjectLayers": [
-                6,
-                4,
                 5,
-                2,
-                3
+                4,
+                6,
+                3,
+                2
             ],
-            "scale": 2.5847,
-            "selectedLayer": 2,
+            "scale": 2.58,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 440.2832050141215,
-                "y": 429.6436723797732
+                "x": 563.953488372093,
+                "y": 493.41085271317826
             }
         },
         "level-4.tmx": {
             "expandedObjectLayers": [
-                6,
-                4,
                 5,
+                4,
+                6,
                 2
             ],
-            "scale": 2.0691,
-            "selectedLayer": 1,
+            "scale": 1.2994,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 278.8652070948722,
-                "y": 356.4351650476052
+                "x": 207.78820994305062,
+                "y": 324.7652762813606
+            }
+        },
+        "level-6.tmx": {
+            "expandedObjectLayers": [
+                5,
+                4,
+                6,
+                3,
+                2
+            ],
+            "scale": 1.0269,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1535.6899405979161,
+                "y": 264.87486610186
             }
         }
     },
@@ -84,10 +99,11 @@
     ],
     "project": "level-4.tiled-project",
     "recentFiles": [
+        "level-3.tmx",
+        "level-4.tmx",
+        "level-6.tmx",
         "level-1.tmx",
         "level-2.tmx",
-        "level-4.tmx",
-        "level-3.tmx",
         "kitchen-sink.tmx"
     ]
 }
