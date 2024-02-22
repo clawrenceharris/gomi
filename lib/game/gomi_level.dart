@@ -27,6 +27,7 @@ import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import 'package:gomi/player_stats/player_score.dart';
+import 'package:gomi/router.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -44,7 +45,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
   late final Rectangle levelBounds;
   List<Enemy> enemies = [];
-  List<Collectible> collectibles = [];
 
   /// In the [scoreNotifier] we keep track of what the current score is, and if
   /// other parts of the code is interested in when the score is updated they
@@ -101,7 +101,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     playerHealth.lives.addListener(() {
       if (playerHealth.isDead) {
         _restartLevel();
-        print("Died");
       }
     });
   }
@@ -118,28 +117,10 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     game.overlays.remove(GameScreen.hudKey);
   }
 
-  void _restartLevel() {
-    print("restarting");
-    for (final enemy in enemies) {
-      // if the enemy is not in component tree, add it back and respawn
-
-      if (!contains(enemy)) {
-        add(enemy);
-
-        enemy.respawn();
-      }
-    }
-
-    for (final collectible in collectibles) {
-      // if the collectible is not in component tree, add it back and respawn
-      if (!contains(collectible)) {
-        add(collectible);
-        collectible.respawn();
-      }
-    }
-    player.respawn();
+  void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
+    router.replace("/play/session/1");
   }
 
   void _onScoreChange() {}
@@ -281,7 +262,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       final clone =
           GomiClone(color: gomiColor, position: Vector2(obj.x, obj.y));
       add(clone);
-      collectibles.add(clone);
     }
   }
 
@@ -294,15 +274,12 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       switch (obj.class_.toLowerCase()) {
         case "seed":
           collectible = Seed(position: Vector2(obj.x, obj.y));
-          add(collectible);
-          collectibles.add(collectible);
           break;
         case "coin":
           collectible = Coin(position: Vector2(obj.x, obj.y));
-          add(collectible);
-          collectibles.add(collectible);
           break;
       }
+      add(collectible);
     }
   }
 
