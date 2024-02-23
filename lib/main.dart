@@ -2,7 +2,6 @@ import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
-import 'package:nes_ui/nes_ui.dart';
 import 'package:provider/provider.dart';
 import 'router.dart';
 import 'app_lifecycle/app_lifecycle.dart';
@@ -46,16 +45,8 @@ class MyGame extends StatelessWidget {
           ),
         ],
         child: Builder(builder: (context) {
-          final palette = context.watch<Palette>();
-
           return MaterialApp.router(
             title: 'Gomi Hero',
-            theme: flutterNesTheme().copyWith(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: palette.seed.color,
-                background: palette.backgroundMain.color,
-              ),
-            ),
             routeInformationProvider: router.routeInformationProvider,
             routeInformationParser: router.routeInformationParser,
             routerDelegate: router.routerDelegate,
