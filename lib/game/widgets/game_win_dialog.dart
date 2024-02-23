@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/level_selection/levels.dart';
-import 'package:gomi/style/palette.dart';
-import 'package:nes_ui/nes_ui.dart';
-import 'package:provider/provider.dart';
+import './button.dart';
 
 /// This dialog is shown when a level is completed.
 ///
@@ -29,12 +27,10 @@ class GameWinDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.read<Palette>();
     return Center(
-      child: NesContainer(
+      child: Container(
         width: cwidth,
         height: cheight,
-        backgroundColor: palette.backgroundPlaySession.color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -50,21 +46,19 @@ class GameWinDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             if (level.number < gameLevels.length) ...[
-              NesButton(
+              Button(
                 onPressed: () {
                   context.go('/play/session/${level.number + 1}');
                 },
-                type: NesButtonType.primary,
-                child: const Text('Next level'),
+                text: 'Next level',
               ),
               const SizedBox(height: 16),
             ],
-            NesButton(
+            Button(
               onPressed: () {
                 context.go('/play');
               },
-              type: NesButtonType.normal,
-              child: const Text('Level selection'),
+              text: 'Level selection',
             ),
           ],
         ),
