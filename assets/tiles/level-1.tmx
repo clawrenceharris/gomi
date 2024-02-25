@@ -87,7 +87,7 @@
   <object id="52" x="352" y="449.619" width="51.3168" height="30.3809"/>
   <object id="53" x="400" y="418.024" width="173.239" height="59.8708"/>
   <object id="54" x="735.155" y="464" width="16" height="16"/>
-  <object id="56" x="863.155" y="464" width="16" height="16"/>
+  <object id="56" x="863.705" y="463.817" width="16" height="16"/>
   <object id="83" x="1824.64" y="352" width="494.35" height="128"/>
   <object id="89" type="one way platform" x="996.371" y="291.026" width="43.6289" height="12.9739"/>
   <object id="90" type="one way platform" x="1055.66" y="324.95" width="43.9804" height="12.0587"/>
@@ -111,9 +111,9 @@
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="73" type="Coin" x="432" y="368" width="16" height="16"/>
-  <object id="85" type="Seed" x="2224" y="256" width="60" height="53"/>
+  <object id="85" type="Seed" x="2218.01" y="241.023" width="60" height="53"/>
   <object id="99" type="coin" x="1008" y="352" width="16" height="16"/>
-  <object id="109" type="Coin" x="480" y="336" width="16" height="16"/>
+  <object id="109" type="Coin" x="482.59" y="347.223" width="16" height="16"/>
   <object id="166" type="Coin" x="528" y="368" width="16" height="16"/>
   <object id="110" type="coin" x="1072" y="304" width="16" height="16"/>
   <object id="111" type="coin" x="1072" y="384" width="16" height="16"/>

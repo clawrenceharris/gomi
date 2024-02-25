@@ -1,5 +1,5 @@
 {
-    "activeFile": "level-3.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -24,13 +24,14 @@
         "level-1.tmx": {
             "expandedObjectLayers": [
                 5,
+                6,
                 2
             ],
-            "scale": 1.1583,
-            "selectedLayer": 3,
+            "scale": 1.3354,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 771.8207718207718,
-                "y": 439.43710610377275
+                "x": 1943.9868204283362,
+                "y": 426.83840047925725
             }
         },
         "level-2.tmx": {
@@ -39,71 +40,80 @@
                 6
             ],
             "scale": 1.0407,
-            "selectedLayer": 0,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 1277.025079273566,
-                "y": 441.04929374459505
+                "x": 1858.3645623138273,
+                "y": 600.5573171903527
             }
         },
         "level-3.tmx": {
             "expandedObjectLayers": [
-                5,
                 4,
-                6,
+                5,
                 3,
+                6,
                 2
             ],
-            "scale": 2.58,
-            "selectedLayer": 1,
+            "scale": 1.6927,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 563.953488372093,
-                "y": 493.41085271317826
+                "x": 1466.2964494594435,
+                "y": 514.5625332309328
             }
         },
         "level-4.tmx": {
             "expandedObjectLayers": [
-                5,
                 4,
+                5,
                 6,
                 2
             ],
-            "scale": 1.2994,
-            "selectedLayer": 5,
+            "scale": 1.3377,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 207.78820994305062,
-                "y": 324.7652762813606
+                "x": 1054.0479928235031,
+                "y": 477.6855797263961
+            }
+        },
+        "level-5.tmx": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 1.2795,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 959.7499023055881,
+                "y": 329.81633450566625
             }
         },
         "level-6.tmx": {
             "expandedObjectLayers": [
-                5,
                 4,
-                6,
+                5,
                 3,
+                6,
                 2
             ],
-            "scale": 1.0269,
-            "selectedLayer": 2,
+            "scale": 0.86,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1535.6899405979161,
-                "y": 264.87486610186
+                "x": 838.3720930232558,
+                "y": 532.5581395348837
             }
         }
     },
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "level-1.tmx",
-        "level-2.tmx",
-        "level-3.tmx",
-        "level-4.tmx"
     ],
     "project": "level-4.tiled-project",
     "recentFiles": [
-        "level-3.tmx",
-        "level-4.tmx",
         "level-6.tmx",
-        "level-1.tmx",
+        "level-5.tmx",
+        "level-4.tmx",
+        "level-3.tmx",
         "level-2.tmx",
+        "level-1.tmx",
         "kitchen-sink.tmx"
     ]
 }
