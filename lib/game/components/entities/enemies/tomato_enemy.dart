@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
@@ -23,7 +24,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
-
+    sfx = SfxType.compostEnemy;
     attackTime = 10;
     return super.onLoad();
   }
@@ -34,6 +35,11 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
     attackAnimation = AnimationConfigs.tomatoEnemy.attacking();
     current = EnemyState.attacking;
     super.loadAllAnimations();
+  }
+
+  @override
+  void playDeathSfx(SfxType sfx) {
+    game.audioController.playSfx(sfx);
   }
 
   void _applyGravity(double dt) {

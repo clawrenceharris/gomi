@@ -48,18 +48,17 @@
  </layer>
  <objectgroup id="5" name="collisions">
   <object id="7" x="-0.115159" y="496.039" width="591.745" height="145.325"/>
-  <object id="295" x="151.005" y="0.0752374" width="2918.27" height="15.7889"/>
-  <object id="325" x="-0.846129" y="0.747124" width="175.647" height="501.602"/>
-  <object id="326" x="3056.52" y="2.06815" width="143.138" height="497.384"/>
+  <object id="325" x="-0.846129" y="-111.952" width="175.647" height="614.301"/>
+  <object id="326" x="3056.52" y="-75.4122" width="143.138" height="574.864"/>
   <object id="527" x="288.873" y="64.0784" width="46.0082" height="437.696"/>
   <object id="528" x="1088.08" y="95.9042" width="79.7375" height="146.661"/>
   <object id="529" x="1263.67" y="127.817" width="80.0897" height="114.464"/>
   <object id="530" x="1439.87" y="159.586" width="79.991" height="83.7329"/>
-  <object id="531" x="1600.7" y="16.6781" width="79.9291" height="143.311"/>
+  <object id="531" x="1600.7" y="-80.9271" width="79.9291" height="240.916"/>
   <object id="532" x="2176.09" y="63.9092" width="96.0393" height="179.524"/>
-  <object id="533" x="2272.39" y="14.8379" width="16.1379" height="227.632"/>
+  <object id="533" x="2272.39" y="-69.6861" width="16.1379" height="312.156"/>
   <object id="534" x="2255.99" y="269.601" width="15.9725" height="191.637"/>
-  <object id="539" x="2287.82" y="15.8649" width="63.7361" height="160.363"/>
+  <object id="539" x="2287.82" y="-69.6654" width="63.7361" height="245.893"/>
   <object id="540" x="288.538" y="64.0876" width="175.026" height="79.646"/>
   <object id="541" x="511.944" y="64.0851" width="95.9367" height="79.646"/>
   <object id="542" x="656.224" y="64.2506" width="95.9367" height="79.646"/>
@@ -162,7 +161,7 @@
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="443" type="coin" x="256.21" y="320.709" width="16" height="16"/>
-  <object id="447" type="Seed" x="2985.61" y="358.963" width="32" height="32"/>
+  <object id="447" type="Seed" x="2982.71" y="389.825" width="32" height="32"/>
   <object id="449" type="coin" x="255.755" y="92.18" width="16" height="16"/>
   <object id="450" type="coin" x="256.538" y="206.448" width="16" height="16"/>
   <object id="452" type="coin" x="863.348" y="220.037" width="16" height="16"/>
@@ -233,17 +232,17 @@
     <property name="Direction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="605" name="Bulb Enemy" type="Bulb Enemy" x="2814.3" y="395.421" width="19.3434" height="24.7224">
+  <object id="605" name="Bulb Enemy" type="Bulb Enemy" x="2719.89" y="456.644" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="606" name="Bulb Enemy" type="Bulb Enemy" x="2735.46" y="327.231" width="19.3434" height="24.7224">
+  <object id="606" name="Bulb Enemy" type="Bulb Enemy" x="2330.93" y="318.648" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="607" name="Bulb Enemy" type="Bulb Enemy" x="2734.37" y="460.105" width="19.3434" height="24.7224">
+  <object id="607" name="Bulb Enemy" type="Bulb Enemy" x="2776.14" y="394.876" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="1"/>
    </properties>
