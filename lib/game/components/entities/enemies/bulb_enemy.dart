@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -17,7 +17,7 @@ class BulbEnemy extends Enemy {
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
-
+    sfx = SfxType.glassEnemy;
     return super.onLoad();
   }
 
@@ -34,6 +34,11 @@ class BulbEnemy extends Enemy {
           direction: direction));
       _elapsedTime = 0.0;
     }
+  }
+
+  @override
+  void playDeathSfx(SfxType sfx) {
+    game.audioController.playSfx(sfx);
   }
 
   @override

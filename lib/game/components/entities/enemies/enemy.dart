@@ -1,5 +1,7 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
@@ -27,6 +29,8 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   bool gotHit = false;
   bool renderFlipX = false;
   int points = 100;
+  SfxType sfx = SfxType.plasticEnemy;
+
   @override
   FutureOr<void> onLoad() {
     loadAllAnimations();
@@ -70,9 +74,14 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   void collideWithPlayer() async {
     if (isStomped() && playerIsCorrectColor()) {
       hit();
+      playDeathSfx(sfx);
     } else {
       world.player.hit();
     }
+  }
+
+  void playDeathSfx(SfxType sfx) {
+    game.audioController.playSfx(sfx);
   }
 
   @override

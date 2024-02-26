@@ -82,13 +82,13 @@
   <object id="314" x="1311.73" y="255.733" width="80.3227" height="16.0808"/>
   <object id="315" x="1375.79" y="399.633" width="80.8155" height="16.3272"/>
   <object id="316" x="1280.05" y="125.309" width="31.775" height="372.531"/>
-  <object id="318" x="170.873" y="399.589" width="292.18" height="17.1788"/>
-  <object id="319" x="528.674" y="399.808" width="516.496" height="10.6896"/>
+  <object id="318" x="170.873" y="399.589" width="292.18" height="7.21401"/>
+  <object id="319" x="528.674" y="399.808" width="516.496" height="6.55193"/>
   <object id="320" x="1168.91" y="256.047" width="112.242" height="37.3688"/>
   <object id="321" x="1136.85" y="287.869" width="35.2722" height="39.6895"/>
   <object id="322" x="1104.65" y="319.924" width="35.4172" height="39.9796"/>
   <object id="323" x="1072.74" y="351.689" width="35.4172" height="40.2697"/>
-  <object id="324" x="1040.83" y="383.889" width="35.1272" height="26.9317"/>
+  <object id="324" x="1040.83" y="383.889" width="35.1272" height="22.2815"/>
   <object id="325" x="115.537" y="0.747124" width="59.2636" height="496.931"/>
   <object id="326" x="1455.92" y="0.189513" width="58.3344" height="535.94"/>
   <object id="438" name="One Way Platform" type="One Way Platform" x="287.898" y="191.692" width="16.1339" height="16.4468"/>
@@ -185,7 +185,7 @@
   </object>
   <object id="342" name="Tomato Enemy" type="Tomato Enemy" x="558.382" y="221.589" width="32" height="32">
    <properties>
-    <property name="Jump Force" type="float" value="160"/>
+    <property name="Jump Force" type="float" value="180"/>
    </properties>
   </object>
   <object id="343" name="Tomato Enemy" type="Tomato Enemy" x="387.666" y="77.6545" width="32" height="32">
@@ -198,34 +198,34 @@
     <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
-  <object id="350" name="Bulb Enemy" type="Bulb Enemy" x="1431.77" y="230.847" width="19.3434" height="24.7224">
+  <object id="350" name="Bulb Enemy" type="Bulb Enemy" x="1429.77" y="227.847" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
-  <object id="351" name="Bulb Enemy" type="Bulb Enemy" x="1316.48" y="376.978" width="19.3434" height="24.7224">
+  <object id="351" name="Bulb Enemy" type="Bulb Enemy" x="1330.21" y="371.465" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="352" name="Bulb Enemy" type="Bulb Enemy" x="1167.54" y="455.912" width="19.3434" height="24.7224">
+  <object id="352" name="Bulb Enemy" type="Bulb Enemy" x="1164.72" y="457.671" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
-  <object id="353" type="Syringe Enemy" x="376.563" y="217.094" width="32" height="15.5762">
+  <object id="353" type="Syringe Enemy" x="378.567" y="205.473" width="32" height="15.5762">
    <properties>
     <property name="offNeg" type="float" value="7"/>
     <property name="offPos" type="float" value="5"/>
    </properties>
   </object>
-  <object id="354" type="Syringe Enemy" x="733.441" y="235.465" width="32" height="15.5762">
+  <object id="354" type="Syringe Enemy" x="735.445" y="233.461" width="32" height="15.5762">
    <properties>
     <property name="offNeg" type="float" value="7"/>
     <property name="offPos" type="float" value="5"/>
    </properties>
   </object>
-  <object id="441" type="Syringe Enemy" x="832.746" y="232.964" width="32" height="15.5762">
+  <object id="441" type="Syringe Enemy" x="858.392" y="232.964" width="32" height="15.5762">
    <properties>
     <property name="offNeg" type="float" value="7"/>
     <property name="offPos" type="float" value="5"/>

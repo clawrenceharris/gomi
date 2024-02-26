@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -27,7 +28,7 @@ class SyringeEnemy extends Enemy {
   FutureOr<void> onLoad() {
     // debugMode = true;
     add(RectangleHitbox(collisionType: CollisionType.passive));
-
+    sfx = SfxType.biohazardEnemy;
     _calculateRange();
     isAttacking = true;
     return super.onLoad();
@@ -48,6 +49,11 @@ class SyringeEnemy extends Enemy {
     super.loadAllAnimations();
   }
 
+  @override
+  void playDeathSfx(SfxType sfx) {
+    game.audioController.playSfx(sfx);
+  }
+
   void _calculateRange() {
     _rangeNeg = position.x - offNeg * Globals.tileSize;
     _rangePos = position.x + offPos * Globals.tileSize;
@@ -62,6 +68,7 @@ class SyringeEnemy extends Enemy {
   void collideWithPlayer() {
     if (isStomped() && playerIsCorrectColor()) {
       hit();
+      playDeathSfx(sfx);
     } else {
       world.player.hit();
     }

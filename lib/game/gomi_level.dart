@@ -2,6 +2,7 @@ import 'package:flame/camera.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/collectibles/coin.dart';
@@ -101,6 +102,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     //when health changes check if the player has died (ran out of lives) if so restart the level.
     playerHealth.lives.addListener(() {
       if (playerHealth.isDead) {
+        game.audioController.playSfx(SfxType.death);
         _restartLevel();
       }
     });

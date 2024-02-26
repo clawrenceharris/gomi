@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/gomi_game.dart';
 
-class GomiClone extends Collectible {
+class GomiClone extends Collectible with HasGameRef<Gomi> {
   GomiClone({
     super.position,
     required this.color,
@@ -37,6 +39,7 @@ class GomiClone extends Collectible {
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       world.player.changeColor(color);
+      game.audioController.playSfx(SfxType.gomiClone);
     }
     super.onCollisionStart(intersectionPoints, other);
   }

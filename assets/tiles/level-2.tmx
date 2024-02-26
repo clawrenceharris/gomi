@@ -86,7 +86,7 @@
   <object id="223" name="One Way Platform" type="One Way Platform" x="1008.01" y="431.908" width="47.844" height="15.0775"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles">
-  <object id="176" type="Seed" x="2048" y="480" width="60" height="53"/>
+  <object id="176" type="Seed" x="2047.04" y="465.587" width="60" height="53"/>
   <object id="172" type="coin" x="844.04" y="454.644" width="16" height="16"/>
   <object id="175" type="coin" x="871.328" y="454.169" width="16" height="16"/>
   <object id="173" type="coin" x="632.027" y="452.845" width="16" height="16"/>

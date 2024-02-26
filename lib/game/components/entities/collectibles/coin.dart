@@ -9,8 +9,9 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/gomi_game.dart';
 
-class Coin extends Collectible {
+class Coin extends Collectible with HasGameRef<Gomi> {
   Coin({super.position});
   final int points = 10;
   @override
@@ -39,7 +40,7 @@ class Coin extends Collectible {
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       other.playerScore.addCoin(points);
-      world.game.audioController.playSfx(SfxType.score);
+      game.audioController.playSfx(SfxType.coin);
     }
     super.onCollisionStart(intersectionPoints, other);
   }
