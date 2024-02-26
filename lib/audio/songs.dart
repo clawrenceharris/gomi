@@ -1,5 +1,6 @@
 const List<Song> songs = [
-  Song('theme.mp3', 'Theme', artist: 'angel'),
+  Song('theme.mp3', 'Theme', artist: 'NGL'),
+  Song('gomi_groove-alt.mp3', 'Groove', artist: 'NGL'),
 ];
 
 class Song {

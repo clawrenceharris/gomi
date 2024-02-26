@@ -34,6 +34,9 @@ List<String> soundTypeToFilename(SfxType type) {
       return const ['pickup-coin.mp3'];
     case SfxType.seed:
       return const ['level_complete.mp3'];
+    case SfxType.death:
+      return const ['death.mp3'];
+
     case SfxType.plasticEnemy:
       return const ['crunch.mp3'];
     case SfxType.glassEnemy:
@@ -53,12 +56,15 @@ List<String> soundTypeToFilename(SfxType type) {
 double soundTypeToVolume(SfxType type) {
   switch (type) {
     case SfxType.score:
+    case SfxType.death:
     case SfxType.coin:
       return 1.0;
     case SfxType.seed:
       return 1.0;
     case SfxType.jump:
+      return 0.5;
     case SfxType.doubleJump:
+      return 0.5;
     case SfxType.damage:
     case SfxType.gomiClone:
     case SfxType.plasticEnemy:
@@ -78,6 +84,7 @@ double soundTypeToVolume(SfxType type) {
 
 enum SfxType {
   score,
+  death,
   jump,
   doubleJump,
   gomiClone,
