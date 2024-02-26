@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/animation.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/player.dart';
@@ -38,6 +39,7 @@ class Coin extends Collectible {
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       other.playerScore.addCoin(points);
+      world.game.audioController.playSfx(SfxType.score);
     }
     super.onCollisionStart(intersectionPoints, other);
   }

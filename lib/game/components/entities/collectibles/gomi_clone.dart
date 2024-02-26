@@ -28,26 +28,8 @@ class GomiClone extends Collectible {
 
   @override
   void update(double dt) {
-    _checkVerticalCollisions();
     _applyGravity(dt);
     super.update(dt);
-  }
-
-  void _checkVerticalCollisions() {
-    for (final block in world.collisionBlocks) {
-      if (world.checkCollisionTopCenter(this, block)) {
-        if (velocity.y > 0) {
-          velocity.y = 0;
-          position.y = block.y - height;
-
-          break;
-        }
-        if (velocity.y < 0) {
-          velocity.y = 0;
-          position.y = block.y + block.height;
-        }
-      }
-    }
   }
 
   @override

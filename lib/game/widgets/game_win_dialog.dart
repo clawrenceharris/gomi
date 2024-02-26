@@ -4,8 +4,6 @@ import 'package:gomi/level_selection/levels.dart';
 import './button.dart';
 
 /// This dialog is shown when a level is completed.
-///
-/// It shows what time the level was completed in and if there are more levels
 /// it lets the user go to the next level, or otherwise back to the level
 /// selection screen.
 class GameWinDialog extends StatelessWidget {
@@ -21,9 +19,9 @@ class GameWinDialog extends StatelessWidget {
   /// How many seconds that the level was completed in.
   final int stars;
 
-  //NesContainer Height and Width
-  final double cwidth = 420;
-  final double cheight = 284;
+  //Container height and width
+  final double cwidth = 600;
+  final double cheight = 360;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +29,15 @@ class GameWinDialog extends StatelessWidget {
       child: Container(
         width: cwidth,
         height: cheight,
+        decoration: const BoxDecoration(
+          color: Colors.transparent, // Set the background color to transparent
+
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/images/hud/menu_panel.png'), // Replace with your image path
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

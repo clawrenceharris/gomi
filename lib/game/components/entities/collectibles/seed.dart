@@ -43,7 +43,7 @@ class Seed extends Collectible {
 
   @override
   Future<void> collideWithPlayer() async {
-    if (world.activeEnemies.isEmpty) {
+    if (world.activeEnemies.isNotEmpty) {
       world.player.seedCollected = true;
       world.playerScore.addScore(points);
       add(plantedMoveEffect);

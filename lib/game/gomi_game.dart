@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
-
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
@@ -24,10 +23,7 @@ class Gomi extends FlameGame<GomiLevel>
               playerScore: playerScore,
               playerProgress: playerProgress,
               playerHealth: playerHealth),
-        ) {
-    instance = this;
-  }
-  late final Gomi instance;
+        );
   final GameLevel level;
 
   final AudioController audioController;
