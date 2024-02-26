@@ -208,7 +208,7 @@
     <property name="Direction" type="int" value="1"/>
    </properties>
   </object>
-  <object id="352" name="Bulb Enemy" type="Bulb Enemy" x="1128.93" y="452.854" width="19.3434" height="24.7224">
+  <object id="352" name="Bulb Enemy" type="Bulb Enemy" x="1164.72" y="457.671" width="19.3434" height="24.7224">
    <properties>
     <property name="Direction" type="int" value="-1"/>
    </properties>
