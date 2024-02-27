@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -16,12 +17,13 @@ class BulbEnemy extends Enemy {
     _direction = direction;
   }
   double _elapsedTime = 0.0;
-  double zapCoolDown = 3;
-  late final SpriteAnimationComponent sparks;
+  final Random rand = Random();
 
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
+    add(MoveEffect.to(Vector2(position.x, position.y - 14),
+        EffectController(infinite: true, duration: 2, alternate: true)));
     sfx = SfxType.glassEnemy;
     return super.onLoad();
   }
@@ -33,7 +35,7 @@ class BulbEnemy extends Enemy {
 
   void _attack(double dt) {
     _elapsedTime += dt;
-    if (_elapsedTime >= zapCoolDown) {
+    if (_elapsedTime >= rand.nextInt(3) + 3) {
       world.add(Zap(
           position: Vector2(position.x, position.y + height / 2),
           direction: direction));
@@ -80,8 +82,7 @@ class Zap extends SpriteAnimationComponent with CollisionCallbacks {
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox());
-    add(MoveEffect.to(Vector2(position.x, position.y - 6),
-        EffectController(duration: 1.5, infinite: true, alternate: true)));
+
     return super.onLoad();
   }
 
