@@ -12,17 +12,15 @@ import 'package:gomi/game/components/info_tile.dart';
 import 'package:gomi/game/components/parallax_background.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
-import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
-import 'package:gomi/game/components/collision%20blocks/normal_platform.dart';
-import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
-import 'package:gomi/game/components/collision%20blocks/water.dart';
+import 'package:gomi/game/components/collisions/platforms/platform.dart';
+import 'package:gomi/game/components/collisions/platforms/one_way_platform.dart';
+import 'package:gomi/game/components/collisions/platforms/water.dart';
 import 'package:gomi/game/components/entities/collectibles/gomi_clone.dart';
 import 'package:gomi/game/components/entities/collectibles/seed.dart';
 import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/mixins/collision_aware.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
@@ -34,7 +32,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
+class GomiLevel extends World with HasGameRef<Gomi> {
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;
@@ -61,6 +59,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     ParallaxImageData('scenery/trees_2.png'),
     ParallaxImageData('scenery/trees_1.png'),
   ]);
+
+  late final PlayerCameraAnchor playerCameraAnchor;
 
   GomiLevel(
       {required this.playerHealth,
@@ -129,6 +129,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;
+    if ((playerCameraAnchor.position - player.position).length2 > 2) {
+      playerCameraAnchor.position.setFrom(player.position);
+    }
     super.update(dt);
   }
 
@@ -169,11 +172,10 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   }
 
   void _addCollisionBlocks() {
-    final List<CollisionBlock> collisionBlocks = [];
     final layer = getTiledLayer(tiledLevel, 'collisions');
 
     for (final collision in layer.objects) {
-      late final CollisionBlock platform;
+      late final Platform platform;
       switch (collision.class_.toLowerCase()) {
         case "one way platform":
           platform = OneWayPlatform(
@@ -188,15 +190,13 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
           );
 
         default:
-          platform = NormalPlatform(
+          platform = Platform(
             position: Vector2(collision.x, collision.y),
             size: Vector2(collision.width, collision.height),
           );
       }
-      collisionBlocks.add(platform);
       add(platform);
     }
-    setCollisionBlocks(collisionBlocks);
   }
 
   void _addEnemies() {
@@ -293,14 +293,14 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =
           Vector2(Globals.tileSize * 17, Globals.tileSize * 13);
-    final anchor = PlayerCameraAnchor(
+    playerCameraAnchor = PlayerCameraAnchor(
         offsetX: 3 * Globals.tileSize,
         offsetY: -Globals.tileSize * 2,
         player: player);
     //target that will be used to follow the player at a given offset x and y
-    game.add(anchor);
+    game.add(playerCameraAnchor);
 
-    game.camera.follow(anchor, maxSpeed: 600, snap: true);
+    game.camera.follow(playerCameraAnchor, maxSpeed: 600, snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }

@@ -4,10 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
-
 import 'level_selection/level_selection_screen.dart';
 import 'level_selection/levels.dart';
-import 'settings/settings_screen.dart';
 import 'style/page_transition.dart';
 import 'style/palette.dart';
 
@@ -38,12 +36,6 @@ final router = GoRouter(
               },
             ),
           ],
-        ),
-        GoRoute(
-          path: 'settings',
-          builder: (context, state) => const SettingsScreen(
-            key: Key('settings'),
-          ),
         ),
       ],
     ),

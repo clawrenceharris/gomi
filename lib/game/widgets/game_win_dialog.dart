@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/level_selection/levels.dart';
-import 'package:gomi/style/palette.dart';
-import 'package:nes_ui/nes_ui.dart';
-import 'package:provider/provider.dart';
+import './button.dart';
 
 /// This dialog is shown when a level is completed.
-///
-/// It shows what time the level was completed in and if there are more levels
 /// it lets the user go to the next level, or otherwise back to the level
 /// selection screen.
 class GameWinDialog extends StatelessWidget {
@@ -23,18 +19,25 @@ class GameWinDialog extends StatelessWidget {
   /// How many seconds that the level was completed in.
   final int stars;
 
-  //NesContainer Height and Width
-  final double cwidth = 420;
-  final double cheight = 284;
+  //Container height and width
+  final double cwidth = 600;
+  final double cheight = 360;
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.read<Palette>();
     return Center(
-      child: NesContainer(
+      child: Container(
         width: cwidth,
         height: cheight,
-        backgroundColor: palette.backgroundPlaySession.color,
+        decoration: const BoxDecoration(
+          color: Colors.transparent, // Set the background color to transparent
+
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/images/hud/menu_panel.png'), // Replace with your image path
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -50,21 +53,19 @@ class GameWinDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             if (level.number < gameLevels.length) ...[
-              NesButton(
+              Button(
                 onPressed: () {
                   context.go('/play/session/${level.number + 1}');
                 },
-                type: NesButtonType.primary,
-                child: const Text('Next level'),
+                text: 'Next level',
               ),
               const SizedBox(height: 16),
             ],
-            NesButton(
+            Button(
               onPressed: () {
                 context.go('/play');
               },
-              type: NesButtonType.normal,
-              child: const Text('Level selection'),
+              text: 'Level selection',
             ),
           ],
         ),

@@ -72,22 +72,8 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   void update(double dt) {
     super.update(dt);
     _applyGravity(dt);
-    _checkVerticalCollisions();
     _attack(dt);
 
     position.y += velocity.y * dt;
-  }
-
-  void _checkVerticalCollisions() {
-    for (final block in world.collisionBlocks) {
-      if (world.checkCollision(block, this)) {
-        if (velocity.y > 0) {
-          velocity.y = 0;
-          position.y = block.y - height;
-          isGrounded = true;
-          break;
-        }
-      }
-    }
   }
 }

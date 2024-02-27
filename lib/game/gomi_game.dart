@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
-
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
@@ -24,10 +23,7 @@ class Gomi extends FlameGame<GomiLevel>
               playerScore: playerScore,
               playerProgress: playerProgress,
               playerHealth: playerHealth),
-        ) {
-    instance = this;
-  }
-  late final Gomi instance;
+        );
   final GameLevel level;
 
   final AudioController audioController;
@@ -40,7 +36,7 @@ class Gomi extends FlameGame<GomiLevel>
 
   @override
   KeyEventResult onKeyEvent(
-      RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+      KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     world.player.directionX = 0;
     final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
@@ -53,7 +49,6 @@ class Gomi extends FlameGame<GomiLevel>
         keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
       world.player.hasJumped = true;
     }
-
     return super.onKeyEvent(event, keysPressed);
   }
 }
