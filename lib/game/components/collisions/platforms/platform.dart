@@ -1,15 +1,39 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/painting.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class Platform extends PositionComponent with CollisionCallbacks {
-  late final Rect blockRect;
-
   Platform({super.position, super.size}) : super(anchor: Anchor.topLeft) {
     add(RectangleHitbox());
     debugMode = true;
   }
+
+  bool fromLeft(PositionComponent platform, Player other) {
+    return other.velocity.x > 0 &&
+        (other.position.x + other.width - platform.position.x).toInt() <= 1;
+  }
+
+  bool fromRight(PositionComponent platform, Player other) {
+    return other.velocity.x < 0 &&
+        (platform.position.x + platform.width - other.position.x).toInt() <= 1;
+  }
+
+  bool fromAbove(PositionComponent platform, Player other) {
+    return other.velocity.y > 0 &&
+        (platform.position.y - (other.position.y + other.height)).toInt() <=
+            1 &&
+        other.position.x + other.width > platform.x &&
+        other.position.x < platform.x + platform.width;
+  }
+
+  bool fromBelow(PositionComponent platform, Player other) {
+    return (platform.position.y + platform.height - (other.position.y))
+                .toInt() <=
+            1 &&
+        other.position.x + other.width > platform.x &&
+        other.position.x < platform.x + platform.width;
+  }
+
   void resolveCollisionFromAbove(PositionComponent other) {
     // Player is standing on the platform, adjust player's position
     other.position.y = y - other.height;

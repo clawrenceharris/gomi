@@ -30,7 +30,6 @@ class GomiClone extends Collectible with HasGameRef<Gomi> {
 
   @override
   void update(double dt) {
-    _applyGravity(dt);
     super.update(dt);
   }
 

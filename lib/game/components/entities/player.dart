@@ -55,8 +55,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   double fixedDeltaTime = 1 / 60;
   double accumulatedTime = 0;
   bool gotHit = false;
-  late final Vector2 _minClamp;
-  late final Vector2 _maxClamp;
+
   GomiColor color = GomiColor.black;
 
   Player({
@@ -66,8 +65,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     required this.playerScore,
   }) : super(anchor: Anchor.topLeft) {
     debugMode = true;
-    // Prevent Mario from going out of bounds of level.
-    // Since anchor is in the center, split size in half for calculation.
 
     add(RectangleHitbox());
   }
@@ -102,8 +99,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   FutureOr<void> onLoad() {
     debugMode = true;
     _loadAllAnimations();
-    _minClamp = game.world.levelBounds.topLeft + (size / 2);
-    _maxClamp = game.world.levelBounds.bottomRight + (size / 2);
 
     playerScore.score.addListener(onScoreIncrease);
 
@@ -124,18 +119,19 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
   bool fromRight(PositionComponent other) {
     return velocity.x < 0 &&
-        (other.position.x + other.width - position.x).toInt() <= 1;
+        (other.position.x + other.width - position.x).toInt() <= 3;
   }
 
   bool fromAbove(PositionComponent other) {
-    return (other.position.y - (position.y + height)).toInt() <= 1 &&
+    return velocity.y > 0 &&
+        (other.position.y - (position.y + height)).toInt() <= 1 &&
         (other.position.y - (position.y + height)).toInt() >= -height / 2 &&
         x + width > other.x &&
         x < other.x + other.width;
   }
 
   bool fromBelow(PositionComponent other) {
-    return (other.position.y + other.height - (position.y)).toInt() <= 1 &&
+    return (other.position.y + other.height - (position.y)).toInt() <= 2 &&
         x + width > other.x &&
         x < other.x + other.width;
   }
@@ -146,7 +142,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   }
 
   void bounce() {
-    //game.audioController.playSfx(SfxType.jump);
+    game.audioController.playSfx(SfxType.jump);
 
     velocity.y = -_bounceForce;
   }
@@ -165,20 +161,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     gotHit = false;
   }
 
-  void velocityUpdate() {
+  void updateVelocity() {
     velocity.x = moveSpeed * directionX;
-    // Modify Mario's velocity based on inputs and gravity.
     velocity.y += _gravity;
     velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
   }
 
-  void positionUpdate(double dt) {
-    // Distance = velocity * time.
+  void updatePosition(double dt) {
     Vector2 distance = velocity * dt;
     position += distance;
-
-    // Screen boundaries for Mario, top left and bottom right points.
-    position.clamp(_minClamp, _maxClamp);
   }
 
   void _updatePlayerState() {
@@ -227,70 +218,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   @override
   void update(double dt) {
     super.update(dt);
-    velocityUpdate();
-    positionUpdate(dt);
+    updateVelocity();
+    updatePosition(dt);
     _updatePlayerState();
     _updateJump(dt);
-  }
-
-  _resolveCollisionFromLeft(platform) {
-    velocity.x = 0;
-    position.x = platform.x - width / 2;
-  }
-
-  void _resolveCollisionFromRight(platform) {
-    velocity.x = 0;
-    position.x = platform.x + platform.width + width / 2;
-  }
-
-  void _resolveCollsionFromTop(platform) {
-    velocity.y = 0;
-    position.y = platform.y - height;
-    isGrounded = true;
-  }
-
-  void _resolveCollisionFromBottom(platform) {
-    velocity.y = 0;
-    position.y = platform.y + platform.height;
-  }
-
-  void _resolveHorizontalCollisions() {
-    for (final platform in world.platforms) {
-      if (platform.blockRect.overlaps(game.camera.visibleWorldRect)) {
-        if (world.checkCollisionTopCenter(this, platform)) {
-          if (platform.position.x > position.x && velocity.x > 0) {
-            velocity.x = 0;
-            position.x = platform.x - width / 2;
-            break;
-          }
-
-          if (platform.position.x < position.x && velocity.x < 0) {
-            velocity.x = 0;
-            position.x = platform.x + platform.width + width / 2;
-            break;
-          }
-        }
-      }
-    }
-  }
-
-  void _resolveVerticalCollisions() {
-    for (final platform in world.platforms) {
-      if (platform.blockRect.overlaps(game.camera.visibleWorldRect)) {
-        if (world.checkCollisionTopCenter(this, platform)) {
-          if (velocity.y > 0) {
-            velocity.y = 0;
-            position.y = platform.y - height;
-            isGrounded = true;
-            break;
-          }
-          if (velocity.y < 0) {
-            // velocity.y = 0;
-            // position.y = platform.y + platform.height;
-            break;
-          }
-        }
-      }
-    }
   }
 }

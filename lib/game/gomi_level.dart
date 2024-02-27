@@ -21,7 +21,6 @@ import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/components/collisions/collision_aware.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
@@ -33,7 +32,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
+class GomiLevel extends World with HasGameRef<Gomi> {
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;
@@ -173,7 +172,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   }
 
   void _addCollisionBlocks() {
-    final List<Platform> collisionBlocks = [];
     final layer = getTiledLayer(tiledLevel, 'collisions');
 
     for (final collision in layer.objects) {
@@ -197,10 +195,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
             size: Vector2(collision.width, collision.height),
           );
       }
-      collisionBlocks.add(platform);
       add(platform);
     }
-    setCollisionBlocks(collisionBlocks);
   }
 
   void _addEnemies() {
