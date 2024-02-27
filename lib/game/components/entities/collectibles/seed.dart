@@ -45,7 +45,7 @@ class Seed extends Collectible with HasGameRef<Gomi> {
 
   @override
   Future<void> collideWithPlayer() async {
-    if (world.activeEnemies.isNotEmpty) {
+    if (world.activeEnemies.isEmpty) {
       world.player.seedCollected = true;
       world.playerScore.addScore(points);
       add(plantedMoveEffect);

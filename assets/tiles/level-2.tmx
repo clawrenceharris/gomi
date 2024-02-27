@@ -140,7 +140,7 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="player">
-  <object id="1" name="Player" type="Player" x="97.4564" y="324.334" width="22" height="26"/>
+  <object id="1" name="Player" type="Player" x="21.6903" y="340.61" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="4" name="gomi clones">
   <object id="168" name="Blue Gomi" x="499.635" y="275.932" width="22" height="26">
