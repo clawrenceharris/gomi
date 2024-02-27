@@ -1,32 +1,21 @@
-import 'package:flame/components.dart';
 import 'package:gomi/game/components/collisions/platforms/platform.dart';
-import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
 
 class OneWayPlatform extends Platform {
   OneWayPlatform({super.position, super.size});
 
   @override
-  void resolveCollisionFromBelow(PositionComponent other) {
+  void resolveCollisionFromBottom(GomiEntity player) {
     // do nothing
   }
 
   @override
-  void resolveCollisionFromLeft(PositionComponent other) {
+  void resolveCollisionFromRight(GomiEntity player) {
     // do nothing
   }
 
   @override
-  void resolveCollisionFromRight(PositionComponent other) {
+  void resolveCollisionFromLeft(GomiEntity player) {
     // do nothing
-  }
-
-  @override
-  bool fromAbove(PositionComponent platform, Player other) {
-    return (platform.position.y - (other.position.y + other.height)).toInt() <=
-            1 &&
-        (platform.position.y - (other.position.y + other.height)).toInt() >=
-            -other.height / 2 &&
-        other.position.x + other.width > platform.x &&
-        other.position.x < platform.x + platform.width;
   }
 }

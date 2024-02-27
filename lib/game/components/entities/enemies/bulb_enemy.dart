@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
@@ -8,8 +9,12 @@ import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class BulbEnemy extends Enemy {
-  final int direction;
-  BulbEnemy({required this.direction, super.position, super.size});
+  late final int _direction;
+  @override
+  int get direction => _direction;
+  BulbEnemy({required int direction, super.position, super.size}) {
+    _direction = direction;
+  }
   double _elapsedTime = 0.0;
   double zapCoolDown = 3;
   late final SpriteAnimationComponent sparks;
@@ -37,6 +42,10 @@ class BulbEnemy extends Enemy {
   }
 
   @override
+  void swapDirection(Player other) {
+    //dont swap direction
+  }
+  @override
   void playDeathSfx(SfxType sfx) {
     game.audioController.playSfx(sfx);
   }
@@ -52,7 +61,7 @@ class BulbEnemy extends Enemy {
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.bulbEnemy.idle();
     attackAnimation = AnimationConfigs.bulbEnemy.attacking();
-    current = EnemyState.attacking;
+    current = GomiEntityState.attacking;
     super.loadAllAnimations();
   }
 }
@@ -60,27 +69,26 @@ class BulbEnemy extends Enemy {
 class Zap extends SpriteAnimationComponent with CollisionCallbacks {
   final int direction;
   final _speed = 60;
-  late final Vector2 startingPosition;
+  late final Vector2 initialPosition = Vector2(position.x, position.y);
   double elapsedTime = 0.0;
   double activeTime = 9;
   Zap({super.position, required this.direction})
       : super(
             animation: AnimationConfigs.bulbEnemy.zap(),
-            size: Vector2.all(Globals.tileSize)) {
-    startingPosition = Vector2(position.x, position.y);
-  }
+            size: Vector2.all(Globals.tileSize));
 
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox());
-
+    add(MoveEffect.to(Vector2(position.x, position.y - 6),
+        EffectController(duration: 1.5, infinite: true, alternate: true)));
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     position.x += direction * _speed * dt;
-    if ((position.x - startingPosition.x).abs() >= 15 * Globals.tileSize) {
+    if ((position.x - initialPosition.x).abs() >= 15 * Globals.tileSize) {
       removeFromParent();
     }
     super.update(dt);

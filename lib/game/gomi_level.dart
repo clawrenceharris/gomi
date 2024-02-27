@@ -4,6 +4,7 @@ import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/collisions/collision_aware.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/collectibles/coin.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -32,7 +33,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-class GomiLevel extends World with HasGameRef<Gomi> {
+class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;
@@ -88,8 +89,9 @@ class GomiLevel extends World with HasGameRef<Gomi> {
 
     add(tiledLevel);
     _addEnemies();
+    _addPlatforms();
+
     _addPlayer();
-    _addCollisionBlocks();
     _addGomiClones();
     _addCollectibles();
     if (level.hasInfoTiles) _addInfoTiles();
@@ -161,19 +163,9 @@ class GomiLevel extends World with HasGameRef<Gomi> {
     add(player);
   }
 
-  /// Gives the player points
-  void addScore({required int amount}) {
-    scoreNotifier.value += amount;
-  }
-
-  /// Sets the player's score to 0 again.
-  void resetScore() {
-    scoreNotifier.value = 0;
-  }
-
-  void _addCollisionBlocks() {
+  void _addPlatforms() {
     final layer = getTiledLayer(tiledLevel, 'collisions');
-
+    List<Platform> platforms = [];
     for (final collision in layer.objects) {
       late final Platform platform;
       switch (collision.class_.toLowerCase()) {
@@ -195,8 +187,23 @@ class GomiLevel extends World with HasGameRef<Gomi> {
             size: Vector2(collision.width, collision.height),
           );
       }
+      platforms.add(platform);
       add(platform);
     }
+    setPlatforms(platforms);
+  }
+
+  Iterable<Platform> visiblePlatforms() => platforms
+      .where((element) => element.rect.overlaps(game.camera.visibleWorldRect));
+
+  /// Gives the player points
+  void addScore({required int amount}) {
+    scoreNotifier.value += amount;
+  }
+
+  /// Sets the player's score to 0 again.
+  void resetScore() {
+    scoreNotifier.value = 0;
   }
 
   void _addEnemies() {

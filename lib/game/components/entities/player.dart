@@ -1,22 +1,25 @@
+import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/constants/animation_configs.dart';
-import 'package:gomi/game/gomi_game.dart';
-import 'dart:async';
+import 'package:flutter/painting.dart';
 import 'package:gomi/audio/sounds.dart';
+import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
 
-enum PlayerState {
+enum GomiEntityState {
   idle,
   walking,
   jumping,
   falling,
   hit,
   disappearing,
-  appearing
+  appearing,
+  attacking,
 }
 
 enum GomiColor {
@@ -25,48 +28,64 @@ enum GomiColor {
   red("red"),
   blue("blue");
 
-  final String color;
   const GomiColor(this.color);
+  final String color;
 }
 
-class Player extends SpriteAnimationGroupComponent<PlayerState>
+class Player extends GomiEntity
     with
-        CollisionCallbacks,
-        KeyboardHandler,
         HasGameRef<Gomi>,
+        KeyboardHandler,
+        CollisionCallbacks,
         HasWorldReference<GomiLevel> {
-  final double _gravity = 7;
-  final Vector2 velocity = Vector2.zero();
+  Player(
+      {required this.color,
+      required this.playerHealth,
+      required this.playerScore,
+      super.position})
+      : super(anchor: Anchor.topCenter) {
+    rect = Rect.fromPoints(Offset(position.x, position.y),
+        Offset(position.x + width, position.y + height));
+  }
 
+  GomiColor color;
   int _jumpCount = 0;
-  final double _jumpForce = 200;
-  final double _maxVelocity = 150;
-  final double _bounceForce = 200;
+  late final Rect rect;
+  final double _speed = 100;
+  @override
+  double get speed => _speed;
   bool hasJumped = false;
   bool seedCollected = false;
-  double directionX = 0;
-  double moveSpeed = 100;
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
-
-  bool isGrounded = false;
-  double jumpCooldown = 1.5;
-  double lastJumpTimestamp = 0.0;
-  double fixedDeltaTime = 1 / 60;
-  double accumulatedTime = 0;
-  bool gotHit = false;
-
-  GomiColor color = GomiColor.black;
-
-  Player({
-    super.position,
-    required this.color,
-    required this.playerHealth,
-    required this.playerScore,
-  }) : super(anchor: Anchor.topLeft) {
-    debugMode = true;
-
+  late final Vector2 _minClamp;
+  late final Vector2 _maxClamp;
+  @override
+  FutureOr<void> onLoad() {
+    _loadAllAnimations();
+    playerScore.score.addListener(onScoreIncrease);
+    // Prevents player from going out of bounds of level.
+    // Since anchor is top center, split size in half for calculation.
+    _minClamp = game.world.levelBounds.topLeft;
+    _maxClamp = game.world.levelBounds.bottomRight + (size / 2);
     add(RectangleHitbox());
+    return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    _updatePlayerState();
+    world.checkHorizontalCollisions(this, world.visiblePlatforms());
+    _applyGravity(dt);
+    world.checkVerticalCollisions(this, world.visiblePlatforms());
+
+    if (!seedCollected) {
+      _updatePlayerMovement(dt);
+    } else {
+      velocity.x = 0;
+    }
+
+    super.update(dt);
   }
 
   void _loadAllAnimations() {
@@ -82,58 +101,23 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     // List of all animations
     animations = {
-      PlayerState.idle: idleAnimation,
-      PlayerState.walking: walkingAnimation,
-      PlayerState.jumping: jumpingAnimation,
-      PlayerState.disappearing: disappearingAnimation,
-      PlayerState.appearing: appearingAnimation,
-      PlayerState.hit: hitAnimation
+      GomiEntityState.idle: idleAnimation,
+      GomiEntityState.walking: walkingAnimation,
+      GomiEntityState.jumping: jumpingAnimation,
+      GomiEntityState.disappearing: disappearingAnimation,
+      GomiEntityState.appearing: appearingAnimation,
+      GomiEntityState.hit: hitAnimation
     };
 
     // Set current animation
-    current = PlayerState.idle;
-  }
-
-  @override
-  @override
-  FutureOr<void> onLoad() {
-    debugMode = true;
-    _loadAllAnimations();
-
-    playerScore.score.addListener(onScoreIncrease);
-
-    return super.onLoad();
+    current = GomiEntityState.idle;
   }
 
   void onScoreIncrease() {
     AnimatedScoreText text = AnimatedScoreText(
         text: playerScore.pointsAdded.toString(), position: position);
 
-    world.add(text);
-  }
-
-  bool fromLeft(PositionComponent other) {
-    return velocity.x > 0 &&
-        (position.x + width - other.position.x).toInt() <= 1;
-  }
-
-  bool fromRight(PositionComponent other) {
-    return velocity.x < 0 &&
-        (other.position.x + other.width - position.x).toInt() <= 3;
-  }
-
-  bool fromAbove(PositionComponent other) {
-    return velocity.y > 0 &&
-        (other.position.y - (position.y + height)).toInt() <= 1 &&
-        (other.position.y - (position.y + height)).toInt() >= -height / 2 &&
-        x + width > other.x &&
-        x < other.x + other.width;
-  }
-
-  bool fromBelow(PositionComponent other) {
-    return (other.position.y + other.height - (position.y)).toInt() <= 2 &&
-        x + width > other.x &&
-        x < other.x + other.width;
+    game.world.add(text);
   }
 
   void changeColor(GomiColor color) {
@@ -144,7 +128,27 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   void bounce() {
     game.audioController.playSfx(SfxType.jump);
 
-    velocity.y = -_bounceForce;
+    velocity.y = -bounceForce;
+  }
+
+  void _updatePlayerState() {
+    GomiEntityState playerState = GomiEntityState.idle;
+    if (velocity.x != 0) {
+      playerState = GomiEntityState.walking;
+    }
+    if (velocity.y < 0 && !isGrounded) {
+      playerState = GomiEntityState.jumping;
+    }
+
+    if (gotHit) {
+      playerState = GomiEntityState.hit;
+    }
+
+    if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0) {
+      flipHorizontallyAroundCenter();
+    }
+
+    current = playerState;
   }
 
   Future<void> hit() async {
@@ -157,39 +161,16 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     await Future.delayed(const Duration(seconds: 1));
 
-    current = PlayerState.idle;
+    current = GomiEntityState.idle;
     gotHit = false;
   }
 
-  void updateVelocity() {
-    velocity.x = moveSpeed * directionX;
-    velocity.y += _gravity;
-    velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
-  }
-
-  void updatePosition(double dt) {
-    Vector2 distance = velocity * dt;
-    position += distance;
-  }
-
-  void _updatePlayerState() {
-    PlayerState playerState = PlayerState.idle;
-    if (velocity.x != 0) {
-      playerState = PlayerState.walking;
-    }
-    if (velocity.y < 0 && !isGrounded) {
-      playerState = PlayerState.jumping;
-    }
-
-    if (gotHit) {
-      playerState = PlayerState.hit;
-    }
-
-    current = playerState;
-  }
-
-  void _updateJump(double dt) {
+  void _updatePlayerMovement(double dt) {
     if (hasJumped) _jump(dt);
+
+    velocity.x = direction * _speed;
+    position.x += velocity.x * dt;
+    position.clamp(_minClamp, _maxClamp);
   }
 
   void _jump(double dt) {
@@ -197,7 +178,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
 
     if (isGrounded) {
       // Player is grounded, perform a regular jump
-      velocity.y = -_jumpForce;
+      velocity.y = -jumpForce;
       position.y += velocity.y * dt;
       _jumpCount = 1;
       game.audioController.playSfx(SfxType.jump);
@@ -207,7 +188,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       // Perform a double jump
       game.audioController.playSfx(SfxType.doubleJump);
 
-      velocity.y = -_jumpForce;
+      velocity.y = -jumpForce;
       position.y += velocity.y * dt;
 
       // Set jump count to 2 to indicate a double jump has been used
@@ -215,12 +196,9 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     }
   }
 
-  @override
-  void update(double dt) {
-    super.update(dt);
-    updateVelocity();
-    updatePosition(dt);
-    _updatePlayerState();
-    _updateJump(dt);
+  void _applyGravity(double dt) {
+    velocity.y += gravity;
+    velocity.y = velocity.y.clamp(-jumpForce, maxVelocity);
+    position.y += velocity.y * dt;
   }
 }

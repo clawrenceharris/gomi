@@ -1,34 +1,26 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/audio/sounds.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/gomi_level.dart';
 
-enum EnemyState {
-  idle,
-  attacking,
-  hit;
-}
-
-abstract class Enemy extends SpriteAnimationGroupComponent
+abstract class Enemy extends GomiEntity
     with HasGameRef<Gomi>, HasWorldReference<GomiLevel>, CollisionCallbacks {
-  Enemy({super.position, super.size, super.anchor}) {
-    startingPosition = Vector2(position.x, position.y);
-  }
+  Enemy({super.position, super.size, super.anchor});
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
   double idleTime = 5; // Time to stay in idle state (in seconds)
   double attackTime = 5; // Time to stay in attacking state (in seconds)
   double elapsedTime = 0.0; // Accumulated time for the current state
   bool isAttacking = false;
-  late final Vector2 startingPosition;
-  bool gotHit = false;
   bool renderFlipX = false;
   int points = 100;
   SfxType sfx = SfxType.plasticEnemy;
+  late final Vector2 initialPosition = Vector2(position.x, position.y);
 
   @override
   FutureOr<void> onLoad() {
@@ -37,21 +29,21 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   }
 
   void respawn() {
-    position = Vector2(startingPosition.x, startingPosition.y);
-    current = EnemyState.attacking;
+    current = GomiEntityState.attacking;
+    position = Vector2(initialPosition.x, initialPosition.y);
   }
 
   void loadAllAnimations() {
     //list of all animations
     animations = {
-      EnemyState.idle: idleAnimation,
-      EnemyState.attacking: attackAnimation
+      GomiEntityState.idle: idleAnimation,
+      GomiEntityState.attacking: attackAnimation
     };
   }
 
   @override
   void update(double dt) {
-    _swapDirection(world.player);
+    swapDirection(world.player);
     super.update(dt);
   }
 
@@ -64,7 +56,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
   bool playerIsCorrectColor();
   void hit() {
     gotHit = true;
-    current = EnemyState.hit;
+    current = GomiEntityState.hit;
     world.player.bounce();
     world.player.playerScore.addScore(points);
     removeFromParent();
@@ -91,7 +83,7 @@ abstract class Enemy extends SpriteAnimationGroupComponent
     super.onCollision(intersectionPoints, other);
   }
 
-  void _swapDirection(Player other) {
+  void swapDirection(Player other) {
     bool lastState = renderFlipX;
 
     if (other.x < position.x) {

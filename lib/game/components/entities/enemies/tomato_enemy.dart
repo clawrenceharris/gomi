@@ -3,23 +3,26 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
+import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_game.dart';
 
 class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
-  final double _gravity = 10;
-  final double jumpForce;
   final double enemyHeight = 32;
-  final double _maxVelocity = 200;
+  late final double _jumpForce;
+
+  @override
+  double get jumpForce => _jumpForce;
+
   double _elapsedTime = 0.0;
   final double bounceCoolDown = 1;
-  bool isGrounded = true;
-  Vector2 velocity = Vector2.zero();
   TomatoEnemy({
+    required double jumpForce,
     super.position,
-    this.jumpForce = 360,
-  });
+  }) {
+    _jumpForce = jumpForce;
+  }
 
   @override
   FutureOr<void> onLoad() {
@@ -33,7 +36,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.tomatoEnemy.idle();
     attackAnimation = AnimationConfigs.tomatoEnemy.attacking();
-    current = EnemyState.attacking;
+    current = GomiEntityState.attacking;
     super.loadAllAnimations();
   }
 
@@ -42,9 +45,22 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
     game.audioController.playSfx(sfx);
   }
 
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Platform) {
+      if (world.checkCollisionTopCenter(this, other)) {
+        position.y = other.y - height;
+        velocity.y = 0;
+        isGrounded = true;
+      }
+    }
+
+    super.onCollision(intersectionPoints, other);
+  }
+
   void _applyGravity(double dt) {
-    velocity.y += _gravity;
-    velocity.y = velocity.y.clamp(-jumpForce, _maxVelocity);
+    velocity.y += gravity;
+    velocity.y = velocity.y.clamp(-_jumpForce, maxVelocity);
   }
 
   void _attack(dt) {
@@ -58,7 +74,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   }
 
   void _jump(double dt) {
-    velocity.y = -jumpForce;
+    velocity.y = -_jumpForce;
 
     isGrounded = false;
   }
