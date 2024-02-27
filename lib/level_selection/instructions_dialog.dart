@@ -1,6 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nes_ui/nes_ui.dart';
 
 class InstructionsDialog extends StatefulWidget {
   const InstructionsDialog({super.key});
@@ -17,16 +19,30 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
+        Text(
           'Instructions',
           style: TextStyle(
-            fontFamily: 'Pixel',
+            fontFamily: GoogleFonts.pressStart2p().fontFamily,
             fontSize: 25,
           ),
         ),
         const SizedBox(height: 30),
         Row(
           children: [
+            SizedBox(
+              width: 30,
+              child: _currentPage != 0
+                  ? NesIconButton(
+                      icon: NesIcons.leftArrowIndicator,
+                      onPress: () {
+                        _pageController.previousPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    )
+                  : null,
+            ),
             SizedBox(
               width: 350,
               height: 100,
@@ -115,6 +131,20 @@ class _InstructionsDialogState extends State<InstructionsDialog> {
                   ),
                 ],
               ),
+            ),
+            SizedBox(
+              width: 30,
+              child: _currentPage != 2
+                  ? NesIconButton(
+                      icon: NesIcons.rightArrowIndicator,
+                      onPress: () {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    )
+                  : null,
             ),
           ],
         ),

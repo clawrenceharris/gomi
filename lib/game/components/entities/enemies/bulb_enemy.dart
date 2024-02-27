@@ -8,7 +8,7 @@ import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class BulbEnemy extends Enemy {
-  final int direction;
+  int direction;
   BulbEnemy({required this.direction, super.position, super.size});
   double _elapsedTime = 0.0;
   double zapCoolDown = 3;
@@ -44,6 +44,7 @@ class BulbEnemy extends Enemy {
   @override
   void update(double dt) {
     _attack(dt);
+    direction = renderFlipX ? 1 : -1;
 
     super.update(dt);
   }
