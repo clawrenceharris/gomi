@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/constants/animation_configs.dart';
@@ -12,18 +11,22 @@ class BottleEnemy extends Enemy {
   double rangePos = 0;
   final double offNeg;
   final double offPos;
-  double _direction = 1;
   final double _speed = 70;
 
+  @override
+  double get speed => _speed;
+
   BottleEnemy({required this.offNeg, required this.offPos, super.position})
-      : super(anchor: Anchor.topLeft);
+      : super(anchor: Anchor.topLeft) {
+    direction = 1;
+  }
 
   @override
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.bottleEnemy.idle();
 
     attackAnimation = AnimationConfigs.bottleEnemy.attacking();
-    current = EnemyState.attacking;
+    current = GomiEntityState.attacking;
     super.loadAllAnimations();
   }
 
@@ -50,10 +53,10 @@ class BottleEnemy extends Enemy {
 
   void _attack(double dt) {
     if (position.x >= rangePos) {
-      _direction = -1;
+      direction = -1;
     } else if (position.x <= rangeNeg) {
-      _direction = 1;
+      direction = 1;
     }
-    position.x += _direction * _speed * dt;
+    position.x += direction * speed * dt;
   }
 }

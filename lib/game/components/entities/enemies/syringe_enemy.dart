@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flame/collisions.dart';
-import 'package:flame/components.dart';
-import 'package:flame/game.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -11,9 +10,10 @@ import 'package:gomi/game/components/entities/player.dart';
 class SyringeEnemy extends Enemy {
   double _rangeNeg = 0;
   double _rangePos = 0;
-  Vector2 velocity = Vector2.zero();
-  int _targetDirection = -1;
   final double _speed = 100;
+  int _targetDirection = -1;
+  @override
+  double get speed => _speed;
   final double offNeg; //alloted spaces to the left the eneymy can move
   final double offPos; //alloted spaces to the right the eneymy can move
   double moveDirection = 1;
@@ -27,7 +27,7 @@ class SyringeEnemy extends Enemy {
   FutureOr<void> onLoad() {
     // debugMode = true;
     add(RectangleHitbox(collisionType: CollisionType.passive));
-
+    sfx = SfxType.biohazardEnemy;
     _calculateRange();
     isAttacking = true;
     return super.onLoad();
@@ -44,8 +44,13 @@ class SyringeEnemy extends Enemy {
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.syringeEnemy.idle();
     attackAnimation = AnimationConfigs.syringeEnemy.attacking();
-    current = EnemyState.attacking;
+    current = GomiEntityState.attacking;
     super.loadAllAnimations();
+  }
+
+  @override
+  void playDeathSfx(SfxType sfx) {
+    game.audioController.playSfx(sfx);
   }
 
   void _calculateRange() {
@@ -62,6 +67,7 @@ class SyringeEnemy extends Enemy {
   void collideWithPlayer() {
     if (isStomped() && playerIsCorrectColor()) {
       hit();
+      playDeathSfx(sfx);
     } else {
       world.player.hit();
     }
@@ -88,7 +94,8 @@ class SyringeEnemy extends Enemy {
   }
 
   void _updateState() {
-    current = (velocity.x != 0) ? EnemyState.attacking : EnemyState.idle;
+    current =
+        (velocity.x != 0) ? GomiEntityState.attacking : GomiEntityState.idle;
 
     if (moveDirection > 0 && scale.x > 0 || moveDirection < 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();

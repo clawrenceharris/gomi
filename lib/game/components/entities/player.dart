@@ -1,23 +1,25 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/painting.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
-import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
-import 'package:gomi/game/components/custom_hitbox.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
+import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
 
-enum PlayerState {
+enum GomiEntityState {
   idle,
   walking,
   jumping,
   falling,
   hit,
   disappearing,
-  appearing
+  appearing,
+  attacking,
 }
 
 enum GomiColor {
@@ -30,42 +32,34 @@ enum GomiColor {
   final String color;
 }
 
-class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
+class Player extends GomiEntity
+    with
+        HasGameRef<Gomi>,
+        KeyboardHandler,
+        CollisionCallbacks,
+        HasWorldReference<GomiLevel> {
   Player(
       {required this.color,
       required this.playerHealth,
       required this.playerScore,
       super.position})
       : super(anchor: Anchor.topCenter) {
-    startingPosition = Vector2(position.x, position.y);
+    rect = Rect.fromPoints(Offset(position.x, position.y),
+        Offset(position.x + width, position.y + height));
   }
 
   GomiColor color;
   int _jumpCount = 0;
-  final int maxLives = 3;
-  final double _gravity = 9.8;
-  final double _jumpForce = 200;
-  final double _maxVelocity = 300;
-  final double _bounceForce = 200;
+  late final Rect rect;
+  final double _speed = 100;
+  @override
+  double get speed => _speed;
   bool hasJumped = false;
   bool seedCollected = false;
-  double directionX = 0;
-  double moveSpeed = 100;
-  late final Vector2 startingPosition;
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
-
-  Vector2 velocity = Vector2.zero();
-  bool isGrounded = false;
-  double jumpCooldown = 1.5;
-  double lastJumpTimestamp = 0.0;
-  double fixedDeltaTime = 1 / 60;
-  double accumulatedTime = 0;
-  bool gotHit = false;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
-  late final CustomHitbox hitbox;
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
@@ -74,31 +68,21 @@ class Player extends SpriteAnimationGroupComponent
     // Since anchor is top center, split size in half for calculation.
     _minClamp = game.world.levelBounds.topLeft;
     _maxClamp = game.world.levelBounds.bottomRight + (size / 2);
-    hitbox = CustomHitbox(width: width - 8, height: height, offsetX: 4);
-    add(RectangleHitbox(
-      position: Vector2(hitbox.offsetX, hitbox.offsetY),
-      size: Vector2(hitbox.width, hitbox.height),
-    ));
+    add(RectangleHitbox());
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    accumulatedTime += dt;
+    _updatePlayerState();
+    world.checkHorizontalCollisions(this, world.visiblePlatforms());
+    _applyGravity(dt);
+    world.checkVerticalCollisions(this, world.visiblePlatforms());
 
-    while (accumulatedTime >= fixedDeltaTime) {
-      _updatePlayerState();
-      _checkHorizontalCollisions();
-      _applyGravity(fixedDeltaTime);
-      _checkVerticalCollisions();
-
-      if (!seedCollected) {
-        _updatePlayerMovement(fixedDeltaTime);
-      } else {
-        velocity.x = 0;
-      }
-
-      accumulatedTime -= fixedDeltaTime;
+    if (!seedCollected) {
+      _updatePlayerMovement(dt);
+    } else {
+      velocity.x = 0;
     }
 
     super.update(dt);
@@ -117,16 +101,16 @@ class Player extends SpriteAnimationGroupComponent
 
     // List of all animations
     animations = {
-      PlayerState.idle: idleAnimation,
-      PlayerState.walking: walkingAnimation,
-      PlayerState.jumping: jumpingAnimation,
-      PlayerState.disappearing: disappearingAnimation,
-      PlayerState.appearing: appearingAnimation,
-      PlayerState.hit: hitAnimation
+      GomiEntityState.idle: idleAnimation,
+      GomiEntityState.walking: walkingAnimation,
+      GomiEntityState.jumping: jumpingAnimation,
+      GomiEntityState.disappearing: disappearingAnimation,
+      GomiEntityState.appearing: appearingAnimation,
+      GomiEntityState.hit: hitAnimation
     };
 
     // Set current animation
-    current = PlayerState.idle;
+    current = GomiEntityState.idle;
   }
 
   void onScoreIncrease() {
@@ -144,20 +128,20 @@ class Player extends SpriteAnimationGroupComponent
   void bounce() {
     game.audioController.playSfx(SfxType.jump);
 
-    velocity.y = -_bounceForce;
+    velocity.y = -bounceForce;
   }
 
   void _updatePlayerState() {
-    PlayerState playerState = PlayerState.idle;
+    GomiEntityState playerState = GomiEntityState.idle;
     if (velocity.x != 0) {
-      playerState = PlayerState.walking;
+      playerState = GomiEntityState.walking;
     }
     if (velocity.y < 0 && !isGrounded) {
-      playerState = PlayerState.jumping;
+      playerState = GomiEntityState.jumping;
     }
 
     if (gotHit) {
-      playerState = PlayerState.hit;
+      playerState = GomiEntityState.hit;
     }
 
     if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0) {
@@ -177,14 +161,14 @@ class Player extends SpriteAnimationGroupComponent
 
     await Future.delayed(const Duration(seconds: 1));
 
-    current = PlayerState.idle;
+    current = GomiEntityState.idle;
     gotHit = false;
   }
 
   void _updatePlayerMovement(double dt) {
     if (hasJumped) _jump(dt);
 
-    velocity.x = directionX * moveSpeed;
+    velocity.x = direction * _speed;
     position.x += velocity.x * dt;
     position.clamp(_minClamp, _maxClamp);
   }
@@ -194,7 +178,7 @@ class Player extends SpriteAnimationGroupComponent
 
     if (isGrounded) {
       // Player is grounded, perform a regular jump
-      velocity.y = -_jumpForce;
+      velocity.y = -jumpForce;
       position.y += velocity.y * dt;
       _jumpCount = 1;
       game.audioController.playSfx(SfxType.jump);
@@ -204,7 +188,7 @@ class Player extends SpriteAnimationGroupComponent
       // Perform a double jump
       game.audioController.playSfx(SfxType.doubleJump);
 
-      velocity.y = -_jumpForce;
+      velocity.y = -jumpForce;
       position.y += velocity.y * dt;
 
       // Set jump count to 2 to indicate a double jump has been used
@@ -213,61 +197,8 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _applyGravity(double dt) {
-    velocity.y += _gravity;
-    velocity.y = velocity.y.clamp(-_jumpForce, _maxVelocity);
+    velocity.y += gravity;
+    velocity.y = velocity.y.clamp(-jumpForce, maxVelocity);
     position.y += velocity.y * dt;
-  }
-
-  void _checkHorizontalCollisions() {
-    for (final block in game.world.collisionBlocks) {
-      if (block.blockRect.overlaps(game.camera.visibleWorldRect)) {
-        if (block is OneWayPlatform == false) {
-          if (game.world.checkCollisionTopCenter(this, block)) {
-            if (velocity.x > 0) {
-              velocity.x = 0;
-              position.x = block.x - width / 2;
-              break;
-            }
-            if (velocity.x < 0) {
-              velocity.x = 0;
-              position.x = block.x + block.width + width / 2;
-              break;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  void _checkVerticalCollisions() {
-    var topCollisionPaddingY = 0.2;
-
-    for (final block in game.world.collisionBlocks) {
-      if (block.blockRect.overlaps(game.camera.visibleWorldRect)) {
-        if (block is OneWayPlatform) {
-          if (game.world.isCollisionFromTopPlayer(this, block)) {
-            if (velocity.y > 0) {
-              velocity.y = 0;
-              position.y = block.y - hitbox.height - topCollisionPaddingY;
-              isGrounded = true;
-              break;
-            }
-          }
-        } else {
-          if (game.world.checkCollisionTopCenter(this, block)) {
-            if (velocity.y > 0) {
-              velocity.y = 0;
-              position.y = block.y - hitbox.height;
-              isGrounded = true;
-              break;
-            }
-            if (velocity.y < 0) {
-              velocity.y = 0;
-              position.y = block.y + block.height;
-            }
-          }
-        }
-      }
-    }
   }
 }

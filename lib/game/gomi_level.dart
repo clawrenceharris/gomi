@@ -2,7 +2,9 @@ import 'package:flame/camera.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/collisions/collision_aware.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/collectibles/coin.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -11,17 +13,15 @@ import 'package:gomi/game/components/info_tile.dart';
 import 'package:gomi/game/components/parallax_background.dart';
 import 'package:gomi/game/components/entities/enemies/bottle_enemy.dart';
 import 'package:gomi/game/components/entities/enemies/syringe_enemy.dart';
-import 'package:gomi/game/components/collision%20blocks/collision_block.dart';
-import 'package:gomi/game/components/collision%20blocks/normal_platform.dart';
-import 'package:gomi/game/components/collision%20blocks/one_way_platform.dart';
-import 'package:gomi/game/components/collision%20blocks/water.dart';
+import 'package:gomi/game/components/collisions/platforms/platform.dart';
+import 'package:gomi/game/components/collisions/platforms/one_way_platform.dart';
+import 'package:gomi/game/components/collisions/platforms/water.dart';
 import 'package:gomi/game/components/entities/collectibles/gomi_clone.dart';
 import 'package:gomi/game/components/entities/collectibles/seed.dart';
 import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/mixins/collision_aware.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
@@ -61,6 +61,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     ParallaxImageData('scenery/trees_1.png'),
   ]);
 
+  late final PlayerCameraAnchor playerCameraAnchor;
+
   GomiLevel(
       {required this.playerHealth,
       required this.level,
@@ -87,8 +89,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
     add(tiledLevel);
     _addEnemies();
+    _addPlatforms();
+
     _addPlayer();
-    _addCollisionBlocks();
     _addGomiClones();
     _addCollectibles();
     if (level.hasInfoTiles) _addInfoTiles();
@@ -100,6 +103,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     //when health changes check if the player has died (ran out of lives) if so restart the level.
     playerHealth.lives.addListener(() {
       if (playerHealth.isDead) {
+        game.audioController.playSfx(SfxType.death);
         _restartLevel();
       }
     });
@@ -120,13 +124,17 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
-    router.replace("/play/session/1");
+    // router.replace("/play/session/${level.number}");
+    router.replace("/play/session/${2}");
   }
 
   void _onScoreChange() {}
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;
+    if ((playerCameraAnchor.position - player.position).length2 > 2) {
+      playerCameraAnchor.position.setFrom(player.position);
+    }
     super.update(dt);
   }
 
@@ -156,22 +164,11 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     add(player);
   }
 
-  /// Gives the player points
-  void addScore({required int amount}) {
-    scoreNotifier.value += amount;
-  }
-
-  /// Sets the player's score to 0 again.
-  void resetScore() {
-    scoreNotifier.value = 0;
-  }
-
-  void _addCollisionBlocks() {
-    final List<CollisionBlock> collisionBlocks = [];
+  void _addPlatforms() {
     final layer = getTiledLayer(tiledLevel, 'collisions');
-
+    List<Platform> platforms = [];
     for (final collision in layer.objects) {
-      late final CollisionBlock platform;
+      late final Platform platform;
       switch (collision.class_.toLowerCase()) {
         case "one way platform":
           platform = OneWayPlatform(
@@ -186,15 +183,28 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
           );
 
         default:
-          platform = NormalPlatform(
+          platform = Platform(
             position: Vector2(collision.x, collision.y),
             size: Vector2(collision.width, collision.height),
           );
       }
-      collisionBlocks.add(platform);
+      platforms.add(platform);
       add(platform);
     }
-    setCollisionBlocks(collisionBlocks);
+    setPlatforms(platforms);
+  }
+
+  Iterable<Platform> visiblePlatforms() => platforms
+      .where((element) => element.rect.overlaps(game.camera.visibleWorldRect));
+
+  /// Gives the player points
+  void addScore({required int amount}) {
+    scoreNotifier.value += amount;
+  }
+
+  /// Sets the player's score to 0 again.
+  void resetScore() {
+    scoreNotifier.value = 0;
   }
 
   void _addEnemies() {
@@ -291,14 +301,14 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =
           Vector2(Globals.tileSize * 17, Globals.tileSize * 13);
-    final anchor = PlayerCameraAnchor(
+    playerCameraAnchor = PlayerCameraAnchor(
         offsetX: 3 * Globals.tileSize,
         offsetY: -Globals.tileSize * 2,
         player: player);
     //target that will be used to follow the player at a given offset x and y
-    game.add(anchor);
+    game.add(playerCameraAnchor);
 
-    game.camera.follow(anchor, maxSpeed: 600, snap: true);
+    game.camera.follow(playerCameraAnchor, maxSpeed: 600, snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }

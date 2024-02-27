@@ -3,11 +3,13 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
+import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/widgets/game_screen.dart';
 
-class Seed extends Collectible {
+class Seed extends Collectible with HasGameRef<Gomi> {
   Seed({
     super.position,
   }) : super(anchor: Anchor.bottomCenter);
@@ -43,13 +45,14 @@ class Seed extends Collectible {
 
   @override
   Future<void> collideWithPlayer() async {
-    if (world.activeEnemies.isEmpty) {
+    if (world.activeEnemies.isNotEmpty) {
       world.player.seedCollected = true;
       world.playerScore.addScore(points);
       add(plantedMoveEffect);
       plantedMoveEffect.onComplete = () async {
         animation = growingAnimation;
         remove(idleMoveEffect);
+        playSeedSfx();
         await animationTicker?.completed;
         if (world.playerProgress.levels.length + 1 == world.level.number) {
           world.playerProgress.setLevelFinished(world.level.number, 3);
@@ -62,5 +65,9 @@ class Seed extends Collectible {
   void _loadAllAnimations() {
     idleAnimation = AnimationConfigs.seed.idle();
     growingAnimation = AnimationConfigs.seed.growing();
+  }
+
+  void playSeedSfx() {
+    game.audioController.playSfx(SfxType.seed);
   }
 }

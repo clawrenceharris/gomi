@@ -39,6 +39,7 @@ class Hud extends StatelessWidget {
                         "x${coins.toString().padLeft(2, '0')}",
                         style: TextStyle(
                           fontSize: 22,
+                          fontFamily: 'Pixel',
                           foreground: Paint()
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 5
@@ -50,6 +51,7 @@ class Hud extends StatelessWidget {
                         "x${coins.toString().padLeft(2, '0')}",
                         style: const TextStyle(
                           fontSize: 22,
+                          fontFamily: 'Pixel',
                           color: Colors.white,
                         ),
                       ),
