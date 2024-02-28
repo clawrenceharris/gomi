@@ -124,7 +124,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
-    // router.replace("/play/session/${level.number}");
     router.replace("/play/session/${level.number}");
   }
 
