@@ -75,12 +75,13 @@ class Player extends GomiEntity
   @override
   void update(double dt) {
     _updatePlayerState();
-    world.checkHorizontalCollisions(this, world.visiblePlatforms());
     _applyGravity(dt);
+
+    world.checkHorizontalCollisions(this, world.visiblePlatforms());
     world.checkVerticalCollisions(this, world.visiblePlatforms());
 
     if (!seedCollected) {
-      _updatePlayerMovement(dt);
+      _updateMovement(dt);
     } else {
       velocity.x = 0;
     }
@@ -165,7 +166,7 @@ class Player extends GomiEntity
     gotHit = false;
   }
 
-  void _updatePlayerMovement(double dt) {
+  void _updateMovement(double dt) {
     if (hasJumped) _jump(dt);
 
     velocity.x = direction * _speed;
