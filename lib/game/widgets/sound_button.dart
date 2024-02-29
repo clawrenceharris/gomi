@@ -14,7 +14,8 @@ class SoundButton extends StatelessWidget {
           return // Handle hover events
               TextButton(
                   onPressed: () {
-                    settingsController.toggleAudioOn();
+                    settingsController.toggleSoundsOn();
+                    settingsController.toggleMusicOn();
 
                     // Add your button's action here
                   },

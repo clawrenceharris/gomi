@@ -5,7 +5,7 @@ import 'package:flame/components.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_level.dart';
 
-class Collectible extends SpriteAnimationComponent
+abstract class Collectible extends SpriteAnimationComponent
     with CollisionCallbacks, HasWorldReference<GomiLevel> {
   late final Vector2 startingPosition;
   Collectible(
@@ -16,7 +16,8 @@ class Collectible extends SpriteAnimationComponent
     return super.onLoad();
   }
 
-  void collideWithPlayer() {
+  void collideWithPlayer(Player player) {
+    playSfx();
     removeFromParent();
   }
 
@@ -24,7 +25,7 @@ class Collectible extends SpriteAnimationComponent
   void onCollisionStart(
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
-      collideWithPlayer();
+      collideWithPlayer(other);
     }
     super.onCollisionStart(intersectionPoints, other);
   }
@@ -32,4 +33,6 @@ class Collectible extends SpriteAnimationComponent
   void respawn() {
     position = Vector2(startingPosition.x, startingPosition.y);
   }
+
+  void playSfx();
 }
