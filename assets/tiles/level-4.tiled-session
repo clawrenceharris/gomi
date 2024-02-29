@@ -36,14 +36,14 @@
         },
         "level-2.tmx": {
             "expandedObjectLayers": [
-                5,
-                6
+                6,
+                5
             ],
-            "scale": 0.5589,
-            "selectedLayer": 4,
+            "scale": 1.6978,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 1488.6383968509572,
-                "y": 619.9677938808375
+                "x": 624.3373777830134,
+                "y": 462.06855931205087
             }
         },
         "level-3.tmx": {
@@ -102,15 +102,31 @@
                 "y": 395.7841981132076
             }
         },
+        "level-bonus.tmx": {
+            "expandedObjectLayers": [
+                4,
+                2,
+                6,
+                8,
+                5,
+                3
+            ],
+            "scale": 1.6878,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 80.57826756724728,
+                "y": 7673.598767626496
+            }
+        },
         "level_map.tmx": {
             "expandedObjectLayers": [
                 5
             ],
-            "scale": 0.5944,
+            "scale": 0.5912,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1734.522207267833,
-                "y": 996.8034993270525
+                "x": 1145.128552097429,
+                "y": 792.4560216508796
             }
         }
     },
@@ -126,5 +142,6 @@
         "level-3.tmx",
         "level-1.tmx",
         "kitchen-sink.tmx"
-    ]
+    ],
+    "resizeMap.removeObjects": true
 }
