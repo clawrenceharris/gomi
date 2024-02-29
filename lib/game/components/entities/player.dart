@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
@@ -43,43 +43,43 @@ class Player extends GomiEntity
       required this.playerHealth,
       required this.playerScore,
       super.position})
-      : super(anchor: Anchor.topCenter) {
-    rect = Rect.fromPoints(Offset(position.x, position.y),
-        Offset(position.x + width, position.y + height));
-  }
+      : super(anchor: Anchor.topCenter);
 
   GomiColor color;
   int _jumpCount = 0;
-  late final Rect rect;
   final double _speed = 100;
   @override
   double get speed => _speed;
   bool hasJumped = false;
-  bool seedCollected = false;
+  late final ValueNotifier<bool> seedCollected;
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     playerScore.score.addListener(onScoreIncrease);
+    add(RectangleHitbox());
+    seedCollected = ValueNotifier(false);
+
     // Prevents player from going out of bounds of level.
     // Since anchor is top center, split size in half for calculation.
     _minClamp = game.world.levelBounds.topLeft;
     _maxClamp = game.world.levelBounds.bottomRight + (size / 2);
-    add(RectangleHitbox());
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     _updatePlayerState();
-
+    world.checkHorizontalCollisions(this, world.visiblePlatforms);
     _applyGravity(dt);
+    world.checkVerticalCollisions(this, world.visiblePlatforms);
 
-    if (!seedCollected) {
-      _updatePlayerMovement(dt);
+    if (!seedCollected.value) {
+      _updateMovement(dt);
     } else {
       velocity.x = 0;
     }
@@ -164,7 +164,7 @@ class Player extends GomiEntity
     gotHit = false;
   }
 
-  void _updatePlayerMovement(double dt) {
+  void _updateMovement(double dt) {
     if (hasJumped) _jump(dt);
 
     velocity.x = direction * _speed;

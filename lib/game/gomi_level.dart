@@ -31,26 +31,26 @@ import 'package:gomi/router.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart';
 
 class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   late final Player player;
   final GameLevel level;
   late TiledComponent tiledLevel;
-  // Used to see what the current progress of the player is and to update the
+
+  /// Used to see what the current progress of the player is and to update the
   // progress if a level is finished.
   final PlayerProgress playerProgress;
+
+  ///Used to keep track of and manage how many lives the player has
   final PlayerHealth playerHealth;
+
+  ///used to keep track of the player's overall score and coins colleced for a single level
   final PlayerScore playerScore;
 
   late final Rectangle levelBounds;
-  List<Enemy> enemies = [];
 
-  /// In the [scoreNotifier] we keep track of what the current score is, and if
-  /// other parts of the code is interested in when the score is updated they
-  /// can listen to it and act on the updated value.
-  final scoreNotifier = ValueNotifier(0);
-  final ValueNotifier<bool> playerHitNotifier = ValueNotifier<bool>(false);
+  ///all enemies in the level
+  List<Enemy> enemies = [];
 
   final cameraParallax = ParallaxBackground(speed: 0, layers: [
     ParallaxImageData('scenery/background_1a.png'),
@@ -61,8 +61,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     ParallaxImageData('scenery/trees_1.png'),
   ]);
 
-  late final PlayerCameraAnchor playerCameraAnchor;
-
   GomiLevel(
       {required this.playerHealth,
       required this.level,
@@ -72,15 +70,21 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   Iterable<Enemy> get activeEnemies =>
       enemies.where((element) => contains(element));
 
-  //the stars earned for the level
+  /// all platforms that are visible in the camera
+  Iterable<Platform> get visiblePlatforms => platforms
+      .where((element) => element.rect.overlaps(game.camera.visibleWorldRect));
+
+  ///the stars earned for the level
   int stars = 0;
   @override
   Future<void> onLoad() async {
+    playerScore.reset();
+    playerHealth.reset();
     //load the tiled level
     tiledLevel = await TiledComponent.load(
         level.pathname, Vector2.all(Globals.tileSize));
 
-    //level bounds will start 5 tiles to the right
+    ///the bounds of the level. It will start will start 8 tiles to the right
     levelBounds = Rectangle.fromPoints(
         Vector2(8 * Globals.tileSize, 0),
         Vector2(
@@ -94,17 +98,28 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     _addPlayer();
     _addGomiClones();
     _addCollectibles();
+
     if (level.hasInfoTiles) _addInfoTiles();
 
     _setUpCamera();
-
-    scoreNotifier.addListener(_onScoreChange);
 
     //when health changes check if the player has died (ran out of lives) if so restart the level.
     playerHealth.lives.addListener(() {
       if (playerHealth.isDead) {
         game.audioController.playSfx(SfxType.death);
         _restartLevel();
+      } else {
+        game.audioController.playSfx(SfxType.hit);
+      }
+    });
+
+    //when level is won, add the win dialogue and set the level to finished in player progrees
+    player.seedCollected.addListener(() {
+      if (player.seedCollected.value == true) {
+        game.overlays.add(GameScreen.winDialogKey);
+        if (playerProgress.levels.length + 1 == level.number) {
+          playerProgress.setLevelFinished(level.number, 3);
+        }
       }
     });
   }
@@ -124,17 +139,13 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
-    // router.replace("/play/session/${level.number}");
-    router.replace("/play/session/${2}");
+    print(level.number);
+    router.replace("/play/session/${level.number}");
   }
 
-  void _onScoreChange() {}
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;
-
-    checkHorizontalCollisions(player, visiblePlatforms);
-    checkVerticalCollisions(player, visiblePlatforms);
 
     super.update(dt);
   }
@@ -193,19 +204,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       add(platform);
     }
     setPlatforms(platforms);
-  }
-
-  Iterable<Platform> get visiblePlatforms => platforms
-      .where((element) => element.rect.overlaps(game.camera.visibleWorldRect));
-
-  /// Gives the player points
-  void addScore({required int amount}) {
-    scoreNotifier.value += amount;
-  }
-
-  /// Sets the player's score to 0 again.
-  void resetScore() {
-    scoreNotifier.value = 0;
   }
 
   void _addEnemies() {
@@ -302,12 +300,14 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       ..viewfinder.anchor = Anchor.center
       ..viewfinder.visibleGameSize =
           Vector2(Globals.tileSize * 17, Globals.tileSize * 13);
-    playerCameraAnchor = PlayerCameraAnchor(
+    PlayerCameraAnchor playerCameraAnchor = PlayerCameraAnchor(
         offsetX: 3 * Globals.tileSize,
         offsetY: -Globals.tileSize * 2,
         player: player);
+    //target that will be used to follow the player at a given offset x and y
+    game.add(playerCameraAnchor);
 
-    game.camera.follow(player, maxSpeed: 600, snap: true);
+    game.camera.follow(playerCameraAnchor, maxSpeed: 600, snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }

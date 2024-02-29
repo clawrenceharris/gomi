@@ -4,8 +4,13 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"version.json": "3ed5a342b5e4a3f21fe29e92abfb7ee4",
+<<<<<<< HEAD
 "index.html": "7fc2ab3c90df42a5477b2838010a51bd",
 "/": "7fc2ab3c90df42a5477b2838010a51bd",
+=======
+"index.html": "ea603f061b231d1d17ba9b7bc463cedd",
+"/": "ea603f061b231d1d17ba9b7bc463cedd",
+>>>>>>> 96ed55ae7895e43b8fd6da911aa449fc6500db54
 "main.dart.js": "d8fa6649734c5d1e4bc77191756c1394",
 "flutter.js": "c71a09214cb6f5f8996a531350400a9a",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
@@ -14,6 +19,7 @@ const RESOURCES = {"version.json": "3ed5a342b5e4a3f21fe29e92abfb7ee4",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "manifest.json": "696fd0cadbc6aa5dc1a1efb667d23602",
+<<<<<<< HEAD
 "assets/AssetManifest.json": "de809eeac8e3aaed331297b7816c8112",
 "assets/NOTICES": "7769db183170ce776d1db64b2d7560dc",
 "assets/FontManifest.json": "8d03bf0076e389be2835f7be5a73f727",
@@ -21,6 +27,15 @@ const RESOURCES = {"version.json": "3ed5a342b5e4a3f21fe29e92abfb7ee4",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
 "assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
 "assets/AssetManifest.bin": "0a1901ff14bcc5558dd8ab223ff474ca",
+=======
+"assets/AssetManifest.json": "a6356d880684748da1ca654c7fe11bff",
+"assets/NOTICES": "7769db183170ce776d1db64b2d7560dc",
+"assets/FontManifest.json": "8d03bf0076e389be2835f7be5a73f727",
+"assets/AssetManifest.bin.json": "5f000913f6651cae8ece94a51452edd4",
+"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
+"assets/shaders/ink_sparkle.frag": "ecc85a2e95f5e9f53123dcaf8cb9b6ce",
+"assets/AssetManifest.bin": "5432091130fe2a49a00b1a4599a380f6",
+>>>>>>> 96ed55ae7895e43b8fd6da911aa449fc6500db54
 "assets/fonts/MaterialIcons-Regular.otf": "e7069dfd19b331be16bed984668fe080",
 "assets/assets/music/free_run.mp3": "c700cf7861e33436a916cdf7e5da4e5b",
 "assets/assets/music/gomi_groove-alt.mp3": "804a6c78989ae75ec388147c6c74b8dc",

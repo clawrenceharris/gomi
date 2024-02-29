@@ -41,6 +41,10 @@ class BulbEnemy extends Enemy {
           direction: direction));
       _elapsedTime = 0.0;
     }
+
+    if (scale.x > 1 && direction < 0) {
+      flipHorizontallyAroundCenter();
+    }
   }
 
   @override

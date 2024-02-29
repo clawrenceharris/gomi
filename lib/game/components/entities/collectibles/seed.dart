@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
+import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/widgets/game_screen.dart';
 
 class Seed extends Collectible with HasGameRef<Gomi> {
   Seed({
@@ -44,20 +44,16 @@ class Seed extends Collectible with HasGameRef<Gomi> {
   }
 
   @override
-  Future<void> collideWithPlayer() async {
-    if (world.activeEnemies.isNotEmpty) {
-      world.player.seedCollected = true;
-      world.playerScore.addScore(points);
+  Future<void> collideWithPlayer(Player player) async {
+    if (world.activeEnemies.isEmpty) {
+      playSfx();
+      player.playerScore.addScore(points);
       add(plantedMoveEffect);
       plantedMoveEffect.onComplete = () async {
         animation = growingAnimation;
         remove(idleMoveEffect);
-        playSeedSfx();
         await animationTicker?.completed;
-        if (world.playerProgress.levels.length + 1 == world.level.number) {
-          world.playerProgress.setLevelFinished(world.level.number, 3);
-        }
-        world.game.overlays.add(GameScreen.winDialogKey);
+        player.seedCollected.value = true;
       };
     }
   }
@@ -67,7 +63,8 @@ class Seed extends Collectible with HasGameRef<Gomi> {
     growingAnimation = AnimationConfigs.seed.growing();
   }
 
-  void playSeedSfx() {
+  @override
+  void playSfx() {
     game.audioController.playSfx(SfxType.seed);
   }
 }
