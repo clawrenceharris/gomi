@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/game/gomi_map.dart';
 import 'package:gomi/game/widgets/sound_button.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +12,14 @@ class LevelSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
+    final audioController = context.watch<AudioController>();
+
     return Stack(
       children: [
         GameWidget<GomiWorldMap>(
-            game: GomiWorldMap(playerProgress: playerProgress),
+            game: GomiWorldMap(
+                playerProgress: playerProgress,
+                audioController: audioController),
             key: const Key("level selection")),
 
         // Button positioned in the top right corner

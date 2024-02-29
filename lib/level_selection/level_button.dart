@@ -4,18 +4,23 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
+import 'package:gomi/audio/audio_controller.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/game/gomi_map.dart';
 import 'package:gomi/router.dart';
 
 class LevelButton extends SpriteComponent
     with TapCallbacks, HasWorldReference<Map> {
   bool isLocked;
-  int levelNumber;
-  LevelButton(
-      {super.size,
-      required this.levelNumber,
-      super.position,
-      required this.isLocked});
+  final int levelNumber;
+  final AudioController audioController;
+  LevelButton({
+    required this.levelNumber,
+    required this.isLocked,
+    required this.audioController,
+    super.size,
+    super.position,
+  });
   @override
   FutureOr<void> onLoad() async {
     final levelButtonImage = await Flame.images.load("level_button.png");
@@ -39,6 +44,7 @@ class LevelButton extends SpriteComponent
   @override
   void onTapUp(TapUpEvent event) {
     if (!isLocked) router.go('/play/session/$levelNumber');
+    audioController.playSfx(SfxType.buttonTap);
     super.onTapUp(event);
   }
 }

@@ -19,7 +19,7 @@ abstract class Enemy extends GomiEntity
   bool isAttacking = false;
   bool renderFlipX = false;
   int points = 100;
-  SfxType sfx = SfxType.plasticEnemy;
+  late final SfxType sfx;
   late final Vector2 initialPosition = Vector2(position.x, position.y);
 
   @override

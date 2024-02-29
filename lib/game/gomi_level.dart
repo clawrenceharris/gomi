@@ -46,10 +46,12 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   late final Rectangle levelBounds;
   List<Enemy> enemies = [];
 
-  /// In the [scoreNotifier] we keep track of what the current score is, and if
-  /// other parts of the code is interested in when the score is updated they
-  /// can listen to it and act on the updated value.
-  final scoreNotifier = ValueNotifier(0);
+  //keep track of what the current score is
+  final scoreNotifier = ValueNotifier<int>(0);
+
+  //keep track of if the player won the level
+  final levelWon = ValueNotifier<bool>(false);
+
   final ValueNotifier<bool> playerHitNotifier = ValueNotifier<bool>(false);
 
   final cameraParallax = ParallaxBackground(speed: 0, layers: [
@@ -76,6 +78,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   int stars = 0;
   @override
   Future<void> onLoad() async {
+    playerScore.reset();
+    playerHealth.reset();
     //load the tiled level
     tiledLevel = await TiledComponent.load(
         level.pathname, Vector2.all(Globals.tileSize));
@@ -105,6 +109,15 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       if (playerHealth.isDead) {
         game.audioController.playSfx(SfxType.death);
         _restartLevel();
+      } else {
+        game.audioController.playSfx(SfxType.hit);
+      }
+    });
+
+    levelWon.addListener(() {
+      if (levelWon.value == true) {
+        levelWon.value = false;
+        game.overlays.add(GameScreen.winDialogKey);
       }
     });
   }
@@ -124,8 +137,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
-    // router.replace("/play/session/${level.number}");
-    router.replace("/play/session/${2}");
+    print(level.number);
+    router.replace("/play/session/${level.number}");
   }
 
   void _onScoreChange() {}
