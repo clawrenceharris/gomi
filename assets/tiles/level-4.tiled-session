@@ -102,16 +102,27 @@
                 "y": 395.7841981132076
             }
         },
+        "level-bonus.tmx": {
+            "scale": 0.2236328125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 321.95633187772955,
+                "y": 1196.1572052401746
+            }
+        },
         "level_map.tmx": {
             "expandedObjectLayers": [
                 5
             ],
-            "scale": 0.5944,
-            "selectedLayer": 2,
+            "scale": 0.57,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 1734.522207267833,
-                "y": 996.8034993270525
+                "x": 1180.7017543859652,
+                "y": 806.140350877193
             }
+        },
+        "level_map.tsx": {
+            "scaleInDock": 1
         }
     },
     "map.lastUsedFormat": "tmx",
@@ -119,6 +130,8 @@
     ],
     "project": "level-4.tiled-project",
     "recentFiles": [
+        "level_map.tmx",
+        "level-bonus.tmx",
         "level-2.tmx",
         "level-4.tmx",
         "level-5.tmx",
