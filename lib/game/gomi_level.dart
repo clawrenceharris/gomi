@@ -143,7 +143,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     router.replace("/play/session/${level.number}");
   }
 
-  void _onScoreChange() {}
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;

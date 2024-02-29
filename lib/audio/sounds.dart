@@ -43,26 +43,19 @@ double soundTypeToVolume(SfxType type) {
   switch (type) {
     case SfxType.death:
     case SfxType.coin:
-      return 1.0;
-    case SfxType.seed:
-      return 1.0;
-    case SfxType.jump:
-      return 0.5;
-    case SfxType.doubleJump:
-      return 0.5;
     case SfxType.gomiClone:
     case SfxType.plasticEnemy:
-      return 1.0;
     case SfxType.glassEnemy:
-      return 1.0;
     case SfxType.biohazardEnemy:
-      return 1.0;
     case SfxType.compostEnemy:
-      return 1.0;
-    case SfxType.hit:
-      return 0.4;
     case SfxType.buttonTap:
+    case SfxType.seed:
+    case SfxType.hit:
       return 1.0;
+    case SfxType.jump:
+    case SfxType.doubleJump:
+    default:
+      return 0;
   }
 }
 

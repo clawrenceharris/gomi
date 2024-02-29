@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
@@ -44,14 +43,10 @@ class Player extends GomiEntity
       required this.playerHealth,
       required this.playerScore,
       super.position})
-      : super(anchor: Anchor.topCenter) {
-    rect = Rect.fromPoints(Offset(position.x, position.y),
-        Offset(position.x + width, position.y + height));
-  }
+      : super(anchor: Anchor.topCenter);
 
   GomiColor color;
   int _jumpCount = 0;
-  late final Rect rect;
   final double _speed = 100;
   @override
   double get speed => _speed;

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
@@ -19,6 +20,7 @@ class BottleEnemy extends Enemy {
   BottleEnemy({required this.offNeg, required this.offPos, super.position})
       : super(anchor: Anchor.topLeft) {
     direction = 1;
+    sfx = SfxType.plasticEnemy;
   }
 
   @override

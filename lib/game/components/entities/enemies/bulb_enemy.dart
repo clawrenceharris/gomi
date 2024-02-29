@@ -15,6 +15,7 @@ class BulbEnemy extends Enemy {
   int get direction => _direction;
   BulbEnemy({required int direction, super.position, super.size}) {
     _direction = direction;
+    sfx = SfxType.glassEnemy;
   }
   double _elapsedTime = 0.0;
   final Random rand = Random();
@@ -24,7 +25,7 @@ class BulbEnemy extends Enemy {
     add(RectangleHitbox(collisionType: CollisionType.passive));
     add(MoveEffect.to(Vector2(position.x, position.y - 14),
         EffectController(infinite: true, duration: 2, alternate: true)));
-    sfx = SfxType.glassEnemy;
+
     return super.onLoad();
   }
 

@@ -65,7 +65,7 @@ class GameWinDialog extends StatelessWidget {
               onPressed: () {
                 context.go('/play');
               },
-              text: 'Level selection',
+              text: 'Go Back',
             ),
           ],
         ),
