@@ -132,9 +132,10 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   @override
   void update(double dt) {
     cameraParallax.speed = player.velocity.x / 2;
-    if ((playerCameraAnchor.position - player.position).length2 > 2) {
-      playerCameraAnchor.position.setFrom(player.position);
-    }
+
+    checkHorizontalCollisions(player, visiblePlatforms);
+    checkVerticalCollisions(player, visiblePlatforms);
+
     super.update(dt);
   }
 
@@ -194,7 +195,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     setPlatforms(platforms);
   }
 
-  Iterable<Platform> visiblePlatforms() => platforms
+  Iterable<Platform> get visiblePlatforms => platforms
       .where((element) => element.rect.overlaps(game.camera.visibleWorldRect));
 
   /// Gives the player points
@@ -305,10 +306,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
         offsetX: 3 * Globals.tileSize,
         offsetY: -Globals.tileSize * 2,
         player: player);
-    //target that will be used to follow the player at a given offset x and y
-    game.add(playerCameraAnchor);
 
-    game.camera.follow(playerCameraAnchor, maxSpeed: 600, snap: true);
+    game.camera.follow(player, maxSpeed: 600, snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }

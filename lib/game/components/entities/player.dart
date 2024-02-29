@@ -75,9 +75,8 @@ class Player extends GomiEntity
   @override
   void update(double dt) {
     _updatePlayerState();
-    world.checkHorizontalCollisions(this, world.visiblePlatforms());
+
     _applyGravity(dt);
-    world.checkVerticalCollisions(this, world.visiblePlatforms());
 
     if (!seedCollected) {
       _updatePlayerMovement(dt);
