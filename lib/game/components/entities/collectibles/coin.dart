@@ -44,4 +44,9 @@ class Coin extends Collectible with HasGameRef<Gomi> {
     }
     super.onCollisionStart(intersectionPoints, other);
   }
+
+  @override
+  void playSfx() {
+    game.audioController.playSfx(SfxType.coin);
+  }
 }

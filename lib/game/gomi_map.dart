@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/game/components/parallax_background.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/level_selection/level_button.dart';
@@ -10,9 +11,14 @@ import 'package:gomi/player_progress/player_progress.dart';
 
 class GomiWorldMap extends FlameGame<Map> {
   final PlayerProgress playerProgress;
+  final AudioController audioController;
   GomiWorldMap({
+    required this.audioController,
     required this.playerProgress,
-  }) : super(world: Map(playerProgress: playerProgress));
+  }) : super(
+            world: Map(
+                playerProgress: playerProgress,
+                audioController: audioController));
   @override
   Future<void> onLoad() async {
     await images.loadAllImages();
@@ -23,7 +29,8 @@ class Map extends World with HasGameRef<GomiWorldMap> {
   // Variables
   late TiledComponent map;
   final PlayerProgress playerProgress;
-  Map({required this.playerProgress});
+  final AudioController audioController;
+  Map({required this.playerProgress, required this.audioController});
   late final CameraComponent cam;
   final Vector2 _visibleGameArea = Vector2(1500, 1500);
   Vector2 get size => (parent as FlameGame).size;
@@ -56,6 +63,7 @@ class Map extends World with HasGameRef<GomiWorldMap> {
         isLocked = false;
       }
       add(LevelButton(
+          audioController: audioController,
           position: Vector2(obj.x, obj.y),
           levelNumber: levelNumber,
           size: Vector2(obj.width, obj.height),
