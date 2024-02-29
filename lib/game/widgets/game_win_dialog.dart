@@ -41,15 +41,17 @@ class GameWinDialog extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Well done!',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const Text(
+              'Well Done!',
+              style: TextStyle(
+                  fontSize: 22, fontFamily: 'Pixel', color: Colors.white),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
-              'You completed level ${level.number} and earned $stars.',
+              'You completed the level and earned $stars stars!',
               textAlign: TextAlign.center,
+              style: const TextStyle(fontFamily: 'Pixel', color: Colors.white),
             ),
             const SizedBox(height: 16),
             if (level.number < gameLevels.length) ...[
