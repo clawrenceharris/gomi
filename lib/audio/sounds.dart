@@ -54,6 +54,7 @@ double soundTypeToVolume(SfxType type) {
       return 1.0;
     case SfxType.jump:
     case SfxType.doubleJump:
+      return 0.5;
     default:
       return 0;
   }
