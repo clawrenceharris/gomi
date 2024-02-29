@@ -11,7 +11,6 @@ class Platform extends PositionComponent with CollisionCallbacks {
       Offset(x + width, y + height), // Bottom-right corner
     );
     add(RectangleHitbox());
-    debugMode = true;
   }
 
   void resolveCollisionFromRight(GomiEntity other) {

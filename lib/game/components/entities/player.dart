@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
@@ -56,6 +57,7 @@ class Player extends GomiEntity
   final PlayerScore playerScore;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
+  late final Vector2 initialPosition = Vector2(position.x, position.y);
 
   @override
   FutureOr<void> onLoad() {
@@ -63,7 +65,6 @@ class Player extends GomiEntity
     playerScore.score.addListener(onScoreIncrease);
     add(RectangleHitbox());
     seedCollected = ValueNotifier(false);
-
     // Prevents player from going out of bounds of level.
     // Since anchor is top center, split size in half for calculation.
     _minClamp = game.world.levelBounds.topLeft;
@@ -78,13 +79,17 @@ class Player extends GomiEntity
     _applyGravity(dt);
     world.checkVerticalCollisions(this, world.visiblePlatforms);
 
-    if (!seedCollected.value) {
+    if (!seedCollected.value && !gotHit) {
       _updateMovement(dt);
     } else {
       velocity.x = 0;
     }
 
     super.update(dt);
+  }
+
+  void respawn() {
+    position = Vector2.zero();
   }
 
   void _loadAllAnimations() {

@@ -52,6 +52,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   ///all enemies in the level
   List<Enemy> enemies = [];
 
+  ///all coins in the level
+  List<Collectible> coins = [];
+
   final cameraParallax = ParallaxBackground(speed: 0, layers: [
     ParallaxImageData('scenery/background_1a.png'),
     ParallaxImageData('scenery/sun.png'),
@@ -99,7 +102,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     _addGomiClones();
     _addCollectibles();
 
-    if (level.hasInfoTiles) _addInfoTiles();
+    if (level.number == 1) _addInfoTiles();
 
     _setUpCamera();
 
@@ -116,12 +119,28 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     //when level is won, add the win dialogue and set the level to finished in player progrees
     player.seedCollected.addListener(() {
       if (player.seedCollected.value == true) {
+        stars = getStarsEarned();
         game.overlays.add(GameScreen.winDialogKey);
         if (playerProgress.levels.length + 1 == level.number) {
-          playerProgress.setLevelFinished(level.number, 3);
+          playerProgress.setLevelFinished(level.number, getStarsEarned());
         }
       }
     });
+  }
+
+  int getStarsEarned() {
+    int coinCount = coins.length;
+    double percentage = playerScore.coins.value / coinCount * 100;
+
+    if (percentage >= 1 && percentage <= 20) {
+      return 1;
+    } else if (percentage >= 21 && percentage <= 99) {
+      return 2;
+    } else if (percentage >= 100) {
+      return 3;
+    } else {
+      return 0;
+    }
   }
 
   @override
@@ -139,8 +158,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
+    player.respawn();
     print(level.number);
-    router.replace("/play/session/${level.number}");
   }
 
   @override
@@ -286,6 +305,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
           break;
         case "coin":
           collectible = Coin(position: Vector2(obj.x, obj.y));
+          coins.add(collectible);
           break;
       }
       add(collectible);

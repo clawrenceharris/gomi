@@ -7,6 +7,7 @@ class PlayerScore {
   ValueNotifier<int> get coins => _coins;
   ValueNotifier<int> get score => _score;
   int pointsAdded = 0;
+
   void addCoin(int points) {
     pointsAdded = points;
     _coins.value += 1;
