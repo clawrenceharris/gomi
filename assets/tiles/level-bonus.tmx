@@ -586,7 +586,7 @@
   <object id="867" type="coin" x="296.55" y="1727" width="16" height="16"/>
   <object id="870" type="coin" x="225.987" y="2499.48" width="16" height="16"/>
   <object id="871" type="coin" x="274.425" y="2618.76" width="16" height="16"/>
-  <object id="873" type="Seed" x="400.231" y="7850.06" width="39.8554" height="48.2601"/>
+  <object id="873" type="Seed" x="394.474" y="7886.04" width="39.8554" height="39.3369"/>
  </objectgroup>
  <objectgroup id="2" name="enemies">
   <object id="874" name="Bottle Enemy" type="Bottle Enemy" x="310.389" y="7861.59" width="16" height="25">

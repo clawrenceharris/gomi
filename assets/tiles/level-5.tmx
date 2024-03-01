@@ -52,7 +52,7 @@
   <object id="279" name="One Way Platform" type="One Way Platform" x="443.078" y="447.796" width="105.591" height="15.0775"/>
   <object id="281" name="One Way Platform" type="One Way Platform" x="623.91" y="368.031" width="159.916" height="15.0775"/>
   <object id="283" name="One Way Platform" type="One Way Platform" x="319.578" y="95.7476" width="16.5558" height="16.4468"/>
-  <object id="284" name="One Way Platform" type="One Way Platform" x="784.264" y="143.79" width="31.6099" height="32.1624"/>
+  <object id="284" name="One Way Platform" type="One Way Platform" x="786.678" y="145.6" width="26.7826" height="5.58743"/>
   <object id="285" name="One Way Platform" type="One Way Platform" x="751.975" y="175.792" width="95.9011" height="16.3019"/>
   <object id="286" name="One Way Platform" type="One Way Platform" x="879.788" y="207.816" width="64.262" height="16.4468"/>
   <object id="287" name="One Way Platform" type="One Way Platform" x="939.002" y="223.922" width="36.966" height="16.4468"/>
@@ -94,7 +94,7 @@
   <object id="438" name="One Way Platform" type="One Way Platform" x="287.898" y="191.692" width="16.1339" height="16.4468"/>
  </objectgroup>
  <objectgroup id="6" name="collectibles">
-  <object id="268" type="Seed" x="1405.45" y="445.457" width="32" height="32"/>
+  <object id="268" type="Seed" x="1392.06" y="493.728" width="32" height="32"/>
   <object id="360" type="coin" x="629.367" y="344.149" width="16" height="16"/>
   <object id="365" type="coin" x="655.766" y="344.028" width="16" height="16"/>
   <object id="366" type="coin" x="656.009" y="311.18" width="16" height="16"/>
