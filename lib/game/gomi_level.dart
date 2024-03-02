@@ -27,7 +27,6 @@ import 'package:gomi/game/widgets/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import 'package:gomi/player_stats/player_score.dart';
-import 'package:gomi/router.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -53,8 +52,8 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   List<Enemy> enemies = [];
 
   ///all coins in the level
-  List<Collectible> coins = [];
-
+  List<Collectible> collectibles = [];
+  List get _coins => collectibles.whereType<Coin>().toList();
   final cameraParallax = ParallaxBackground(speed: 0, layers: [
     ParallaxImageData('scenery/background_1a.png'),
     ParallaxImageData('scenery/sun.png'),
@@ -129,8 +128,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   }
 
   int getStarsEarned() {
-    int coinCount = coins.length;
-    double percentage = playerScore.coins.value / coinCount * 100;
+    double percentage = playerScore.coins.value / _coins.length * 100;
 
     if (percentage >= 1 && percentage <= 20) {
       return 1;
@@ -146,7 +144,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   @override
   void onMount() {
     super.onMount();
-
     game.overlays.add(GameScreen.hudKey);
   }
 
@@ -159,7 +156,17 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     playerScore.reset();
     playerHealth.reset();
     player.respawn();
-    print(level.number);
+    for (Collectible collectible in collectibles) {
+      if (!contains(collectible)) {
+        add(collectible);
+      }
+    }
+    for (Enemy enemy in enemies) {
+      if (!contains(enemy)) {
+        add(enemy);
+        enemy.respawn();
+      }
+    }
   }
 
   @override
@@ -184,9 +191,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
   void _addPlayer() {
     final layer = getTiledLayer(tiledLevel, "player");
-
     //there can only be one player in the level so get the first and only one
     final obj = layer.objects[0];
+
     player = Player(
         playerScore: playerScore,
         playerHealth: playerHealth,
@@ -290,6 +297,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       final clone =
           GomiClone(color: gomiColor, position: Vector2(obj.x, obj.y));
       add(clone);
+      collectibles.add(clone);
     }
   }
 
@@ -305,10 +313,10 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
           break;
         case "coin":
           collectible = Coin(position: Vector2(obj.x, obj.y));
-          coins.add(collectible);
           break;
       }
       add(collectible);
+      collectibles.add(collectible);
     }
   }
 
@@ -327,7 +335,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     //target that will be used to follow the player at a given offset x and y
     game.add(playerCameraAnchor);
 
-    game.camera.follow(playerCameraAnchor, maxSpeed: 600, snap: true);
+    game.camera.follow(playerCameraAnchor, maxSpeed: 2000, snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }
