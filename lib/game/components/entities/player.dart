@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
@@ -44,7 +43,9 @@ class Player extends GomiEntity
       required this.playerHealth,
       required this.playerScore,
       super.position})
-      : super(anchor: Anchor.topCenter);
+      : super(anchor: Anchor.topCenter) {
+    initialPosition = Vector2(position.x, position.y);
+  }
 
   GomiColor color;
   int _jumpCount = 0;
@@ -57,7 +58,6 @@ class Player extends GomiEntity
   final PlayerScore playerScore;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
-  late final Vector2 initialPosition = Vector2(position.x, position.y);
 
   @override
   FutureOr<void> onLoad() {
@@ -79,7 +79,7 @@ class Player extends GomiEntity
     _applyGravity(dt);
     world.checkVerticalCollisions(this, world.visiblePlatforms);
 
-    if (!seedCollected.value && !gotHit) {
+    if (!seedCollected.value) {
       _updateMovement(dt);
     } else {
       velocity.x = 0;
@@ -89,7 +89,11 @@ class Player extends GomiEntity
   }
 
   void respawn() {
-    position = Vector2.zero();
+    position = Vector2(initialPosition.x, initialPosition.y);
+    direction = 1;
+    current = GomiEntityState.idle;
+    changeColor(GomiColor.black);
+    _loadAllAnimations();
   }
 
   void _loadAllAnimations() {
