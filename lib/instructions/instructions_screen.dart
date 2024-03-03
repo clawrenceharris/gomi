@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/game/widgets/button.dart';
+import 'package:gomi/instructions/instructions_text.dart';
 
-class InstructionsText {
-  static getStyle(Color color) {
-    return TextStyle(fontFamily: 'Pixel', color: color, fontSize: 16);
-  }
+class InstructionsScreen extends StatefulWidget {
+  const InstructionsScreen({super.key});
+
+  @override
+  State<InstructionsScreen> createState() => _InstructionsScreenState();
 }
 
-class InstructionsScreen extends StatelessWidget {
-  const InstructionsScreen({super.key});
+class _InstructionsScreenState extends State<InstructionsScreen> {
+  int currentIndex = 0;
+
+  void showNextInstruction() {
+    setState(() {
+      currentIndex = (currentIndex + 1) % instructionTexts.length;
+    });
+  }
+
+  void showPreviousInstruction() {
+    setState(() {
+      currentIndex = (currentIndex - 1) % instructionTexts.length;
+      if (currentIndex < 0) {
+        currentIndex = instructionTexts.length - 1;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,112 +45,88 @@ class InstructionsScreen extends StatelessWidget {
           width: 700,
           height: 400,
           decoration: const BoxDecoration(
-            color:
-                Colors.transparent, // Set the background color to transparent
-
+            color: Colors.transparent,
             image: DecorationImage(
-              image: AssetImage(
-                  'assets/images/hud/menu_panel.png'), // Replace with your image path
+              image: AssetImage('assets/images/hud/menu_panel.png'),
               fit: BoxFit.fill,
             ),
           ),
           child: Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                Padding(
-                  padding: const EdgeInsets.all(40),
-                  child: RichText(
-                    text: TextSpan(
-                      style: InstructionsText.getStyle(
-                          Colors.white), // Default text style
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text:
-                              'Help Gomi collect Litter Critters that have polluted the land.\n\n Discard water bottles with  ',
-                        ), // Regular text
-                        TextSpan(
-                            text: 'Blue Gomi.',
-                            style: InstructionsText.getStyle(Colors.blue)),
-
-                        const TextSpan(
-                          text: '\n\nDispose of syringes with ',
-                        ),
-
-                        TextSpan(
-                            text: 'Red Gomi.',
-                            style: InstructionsText.getStyle(Colors.red)),
-                        const TextSpan(
-                          text: '\n\nCompost tomatoes with  ',
-                        ),
-                        TextSpan(
-                            text: 'Green Gomi.',
-                            style: InstructionsText.getStyle(Colors.green)),
-                        const TextSpan(
-                            text:
-                                '\n\nAnd collect of broken light bulbs with '),
-
-                        TextSpan(
-                            text: 'Black Gomi.',
-                            style: InstructionsText.getStyle(Colors.black54)),
-
-                        const TextSpan(
-                          text:
-                              '\n\nWin by collecting the seed at the end of the level when all Litters Critters have been defeated',
-                        ),
-                      ],
-                    ),
-                  ),
-                  // child: Text(
-                  //     style: TextStyle( , .,
-                  //         fontFamily: 'Pixel',
-                  //         fontSize: 18,
-                  //         color: Colors.white,
-                  //         decoration: TextDecoration.none,
-                  //         height: 2),
-                  //     ""),
-                ),
-              ]))
-          // Add more options as necessary
-          ,
+            child: Padding(
+                padding: const EdgeInsets.all(40),
+                child: instructionTexts[currentIndex]),
+          ),
         ),
       ),
-      Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-              padding: const EdgeInsets.only(top: 120),
-              child: Stack(
-                children: [
-                  Text(
-                    "how to play",
-                    style: TextStyle(
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 5
-                          ..color = Colors.lightBlue,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'Pixel',
-                        fontSize: 26),
-                  ),
-                  const Text(
-                    "how to play",
-                    style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'Pixel',
-                        fontSize: 26),
-                  ),
-                ],
-              ))),
-      Padding(
-        padding: const EdgeInsets.only(bottom: 40),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Button(
-              onPressed: () {
-                GoRouter.of(context).go('/main_menu');
-              },
-              text: "back"),
+      Positioned(
+        top: 50,
+        left: 0,
+        right: 0,
+        child: SizedBox(
+          height: 26,
+          child: Text(
+            "how to play",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 5
+                ..color = Colors.lightBlue,
+              decoration: TextDecoration.none,
+              fontFamily: 'Pixel',
+              fontSize: 26,
+            ),
+          ),
+        ),
+      ),
+      const Positioned(
+        top: 50,
+        left: 0,
+        right: 0,
+        child: SizedBox(
+          height: 26,
+          child: Text(
+            "how to play",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              decoration: TextDecoration.none,
+              fontFamily: 'Pixel',
+              fontSize: 26,
+            ),
+          ),
+        ),
+      ),
+      SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Button(
+                onPressed: () {
+                  if (currentIndex > 0) {
+                    showPreviousInstruction();
+                  } else {
+                    GoRouter.of(context).go('/main_menu');
+                  }
+                },
+                text: "back"),
+          ),
+        ),
+      ),
+      SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: Button(
+                onPressed: () {
+                  if (currentIndex < instructionTexts.length - 1) {
+                    showNextInstruction();
+                  }
+                },
+                text: "next"),
+          ),
         ),
       )
     ]);

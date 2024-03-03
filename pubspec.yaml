@@ -69,6 +69,8 @@ flutter:
     - assets/sfx/
     - assets/music/
     - assets/images/gomi/
+    - assets/images/instructions/
+
     - assets/images/tutorials/
     - assets/images/hud/
     - assets/images/scenery/

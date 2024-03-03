@@ -37,24 +37,16 @@ class CreditsScreen extends StatelessWidget {
                   children: [
                 Padding(
                   padding: EdgeInsets.all(40),
-                  child: Text("Created by:\n\n Caleb Harris\nAngel Santiago",
+                  child: Text(
+                      textAlign: TextAlign.center,
+                      "Created by:\n\n Caleb Harris and Angel Santiago",
                       style: TextStyle(
                           fontFamily: 'Pixel',
                           fontSize: 18,
                           decoration: TextDecoration.none,
                           color: Colors.white)),
                 ),
-                // child: Text(
-                //     style: TextStyle( , .,
-                //         fontFamily: 'Pixel',
-                //         fontSize: 18,
-                //         color: Colors.white,
-                //         decoration: TextDecoration.none,
-                //         height: 2),
-                //     ""),
-              ]))
-          // Add more options as necessary
-          ,
+              ])),
         ),
       ),
       Align(

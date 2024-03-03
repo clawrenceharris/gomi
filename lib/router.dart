@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/credits/credits_screen.dart';
-import 'package:gomi/game/widgets/game_screen.dart';
-import 'package:gomi/level_selection/instructions_screen.dart';
+import 'package:gomi/game/game_screen.dart';
+import 'package:gomi/instructions/instructions_screen.dart';
 import 'package:gomi/main_menu/main_menu_screen.dart';
 import 'package:gomi/splash/splash_screen.dart';
 import 'level_selection/level_selection_screen.dart';
