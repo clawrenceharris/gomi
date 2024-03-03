@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/widgets/button.dart';
+import 'package:gomi/router.dart';
 
 class PauseMenuDialog extends StatelessWidget {
   const PauseMenuDialog({super.key});
   void _handleQuitButtonPress(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    router.go('/main_menu');
   }
 
   void _handleResumeButtonPress(BuildContext context) {
@@ -14,10 +15,10 @@ class PauseMenuDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
         autofocus: true, // Ensure the widget has focus
         focusNode: FocusNode(),
-        onKey: (RawKeyEvent event) {
+        onKeyEvent: (KeyEvent event) {
           if (event.logicalKey == LogicalKeyboardKey.space) {
             Navigator.of(context).pop();
           }

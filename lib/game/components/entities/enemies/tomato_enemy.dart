@@ -27,7 +27,6 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
-    sfx = SfxType.compostEnemy;
     attackTime = 10;
     return super.onLoad();
   }
@@ -41,8 +40,8 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   }
 
   @override
-  void playDeathSfx(SfxType sfx) {
-    game.audioController.playSfx(sfx);
+  void playHitSfx() {
+    game.audioController.playSfx(SfxType.compostEnemy);
   }
 
   @override

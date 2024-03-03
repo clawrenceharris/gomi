@@ -32,7 +32,7 @@ class Seed extends Collectible with HasGameRef<Gomi> {
             curve: Curves.easeInOut));
 
     plantedMoveEffect = MoveEffect.to(
-        Vector2(position.x, position.y + 14),
+        Vector2(position.x, position.y + 18),
         EffectController(
             duration: 2,
             alternate: false,
@@ -46,12 +46,12 @@ class Seed extends Collectible with HasGameRef<Gomi> {
   @override
   Future<void> collideWithPlayer(Player player) async {
     if (world.activeEnemies.isEmpty) {
-      playSfx();
       player.playerScore.addScore(points);
       add(plantedMoveEffect);
       plantedMoveEffect.onComplete = () async {
         animation = growingAnimation;
         remove(idleMoveEffect);
+        playSfx();
         await animationTicker?.completed;
         player.seedCollected.value = true;
       };

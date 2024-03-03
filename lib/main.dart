@@ -34,6 +34,7 @@ class MyGame extends StatelessWidget {
           ProxyProvider2<SettingsController, AppLifecycleStateNotifier,
               AudioController>(
             // Ensures that music starts immediately.
+
             lazy: false,
             create: (context) => AudioController(),
             update: (context, settings, lifecycleNotifier, audio) {

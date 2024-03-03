@@ -49,7 +49,7 @@ class Player extends GomiEntity
 
   GomiColor color;
   int _jumpCount = 0;
-  final double _speed = 100;
+  final double _speed = 120;
   @override
   double get speed => _speed;
   bool hasJumped = false;

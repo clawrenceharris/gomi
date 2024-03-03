@@ -15,10 +15,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioController = context.watch<AudioController>();
 
-    return RawKeyboardListener(
+    return KeyboardListener(
         autofocus: true, // Ensure the widget has focus
         focusNode: FocusNode(),
-        onKey: (RawKeyEvent event) {
+        onKeyEvent: (KeyEvent event) {
           if (event.logicalKey == LogicalKeyboardKey.space) {
             audioController.playSfx(SfxType.buttonTap);
             GoRouter.of(context).go('/play');
@@ -64,36 +64,4 @@ class SplashScreen extends StatelessWidget {
   }
 
   static const _gap = SizedBox(height: 40);
-}
-
-class GradientTextWidget extends StatelessWidget {
-  final String text;
-  final List<Color> gradientColors;
-  final double fontSize;
-
-  const GradientTextWidget(
-      {required this.text,
-      required this.gradientColors,
-      required this.fontSize,
-      super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return LinearGradient(
-          colors: gradientColors,
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ).createShader(bounds);
-      },
-      child: Text(
-        text,
-        style: TextStyle(
-          fontSize: fontSize,
-          color: Colors.white, // Text color on the gradient text
-        ),
-      ),
-    );
-  }
 }

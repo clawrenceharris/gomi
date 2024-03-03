@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
-
-import 'package:audioplayers/audioplayers.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logging/logging.dart';
@@ -40,8 +39,9 @@ class AudioController {
   /// of [_sfxPlayers] to learn why this is the case.
   ///
   /// Background music does not count into the [polyphony] limit. Music will
-  /// never be overridden by sound effects because that would be silly.
-  AudioController({int polyphony = 2})
+  /// never be overridden by sound effects.
+
+  AudioController({int polyphony = 10})
       : assert(polyphony >= 1),
         _musicPlayer = AudioPlayer(playerId: 'musicPlayer'),
         _sfxPlayers = Iterable.generate(

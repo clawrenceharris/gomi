@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gomi/main_menu/main_menu_screen.dart';
+import 'package:gomi/game/widgets/gradient_text.dart';
 
 class AnimatedTextMovement extends StatefulWidget {
   const AnimatedTextMovement({required this.text, super.key});

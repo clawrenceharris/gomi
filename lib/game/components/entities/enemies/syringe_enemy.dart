@@ -27,7 +27,6 @@ class SyringeEnemy extends Enemy {
   FutureOr<void> onLoad() {
     // debugMode = true;
     add(RectangleHitbox(collisionType: CollisionType.passive));
-    sfx = SfxType.biohazardEnemy;
     _calculateRange();
     isAttacking = true;
     return super.onLoad();
@@ -48,11 +47,6 @@ class SyringeEnemy extends Enemy {
     super.loadAllAnimations();
   }
 
-  @override
-  void playDeathSfx(SfxType sfx) {
-    game.audioController.playSfx(sfx);
-  }
-
   void _calculateRange() {
     _rangeNeg = position.x - offNeg * Globals.tileSize;
     _rangePos = position.x + offPos * Globals.tileSize;
@@ -67,10 +61,14 @@ class SyringeEnemy extends Enemy {
   void collideWithPlayer() {
     if (isStomped() && playerIsCorrectColor()) {
       hit();
-      playDeathSfx(sfx);
     } else {
       world.player.hit();
     }
+  }
+
+  @override
+  void playHitSfx() {
+    game.audioController.playSfx(SfxType.biohazardEnemy);
   }
 
   void _attack(double dt) {
@@ -78,7 +76,7 @@ class SyringeEnemy extends Enemy {
     double offset = (scale.x > 0) ? 0 : -width;
 
     if (playerInRange()) {
-      //if the world.player is to the right of the enemy set direction to the right and vise versa
+      //if the player is to the right of the enemy set direction to the right and vise versa
       _targetDirection = (world.player.x < position.x + offset) ? -1 : 1;
       velocity.x = _targetDirection * _speed;
     }

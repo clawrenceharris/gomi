@@ -31,7 +31,7 @@ class AnimationConfigs {
   static const double stepTime = 0.1;
 
   static const double gomiStepTime = 0.1;
-  static const double seedStepTime = 0.3;
+  static const double seedStepTime = 0.2;
 
   static BottleEnemyAnimationConfigs bottleEnemy =
       BottleEnemyAnimationConfigs();
