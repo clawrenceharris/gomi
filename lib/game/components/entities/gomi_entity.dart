@@ -15,4 +15,5 @@ abstract class GomiEntity
   double lastJumpTimestamp = 0.0;
   final double maxVelocity = 300;
   final double bounceForce = 200;
+  late final Vector2 initialPosition;
 }
