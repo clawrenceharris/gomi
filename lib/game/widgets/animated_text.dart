@@ -5,18 +5,14 @@ class AnimatedTextMovement extends StatefulWidget {
   const AnimatedTextMovement({required this.text, super.key});
   final String text;
   @override
-  // ignore: library_private_types_in_public_api, no_logic_in_create_state
-  _AnimatedTextMovementState createState() =>
-      // ignore: no_logic_in_create_state
-      _AnimatedTextMovementState(text: text);
+  State<AnimatedTextMovement> createState() => _AnimatedTextMovementState();
 }
 
 class _AnimatedTextMovementState extends State<AnimatedTextMovement>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  _AnimatedTextMovementState({required this.text});
-  final String text;
+  _AnimatedTextMovementState();
 
   @override
   void initState() {
@@ -52,7 +48,7 @@ class _AnimatedTextMovementState extends State<AnimatedTextMovement>
             child: GradientTextWidget(
                 fontSize: 22,
                 gradientColors: const [Colors.blue, Colors.purple],
-                text: text));
+                text: widget.text));
       },
     );
   }

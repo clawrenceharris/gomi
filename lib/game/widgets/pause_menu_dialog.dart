@@ -45,12 +45,25 @@ class PauseMenuDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox(height: 40),
-                    const Text("Game Paused",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontFamily: 'Pixel',
-                            fontWeight: FontWeight.bold)),
+
+                    Stack(children: [
+                      Text("game paused",
+                          style: TextStyle(
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 5
+                                ..color = Colors.lightBlue,
+                              fontSize: 22,
+                              fontFamily: 'Pixel',
+                              fontWeight: FontWeight.bold)),
+                      const Text("game paused",
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'Pixel',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    ]),
+
                     _gap,
 
                     Center(
@@ -60,10 +73,10 @@ class PauseMenuDialog extends StatelessWidget {
                           Button(
                               onPressed: () =>
                                   _handleResumeButtonPress(context),
-                              text: "Resume"),
+                              text: "resume"),
                           Button(
                               onPressed: () => _handleQuitButtonPress(context),
-                              text: "Quit"),
+                              text: "quit"),
                           _gap,
                           const Text("press space to resume",
                               style: TextStyle(
