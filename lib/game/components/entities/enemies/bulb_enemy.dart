@@ -15,7 +15,6 @@ class BulbEnemy extends Enemy {
   int get direction => _direction;
   BulbEnemy({required int direction, super.position, super.size}) {
     _direction = direction;
-    sfx = SfxType.glassEnemy;
   }
   double _elapsedTime = 0.0;
   final Random rand = Random();
@@ -53,8 +52,8 @@ class BulbEnemy extends Enemy {
     //dont swap direction
   }
   @override
-  void playDeathSfx(SfxType sfx) {
-    game.audioController.playSfx(sfx);
+  void playHitSfx() {
+    game.audioController.playSfx(SfxType.glassEnemy);
   }
 
   @override

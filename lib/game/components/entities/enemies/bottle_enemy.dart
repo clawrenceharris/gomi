@@ -8,8 +8,8 @@ import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class BottleEnemy extends Enemy {
-  double rangeNeg = 0;
-  double rangePos = 0;
+  late final double rangeNeg;
+  late final double rangePos;
   final double offNeg;
   final double offPos;
   final double _speed = 70;
@@ -20,7 +20,6 @@ class BottleEnemy extends Enemy {
   BottleEnemy({required this.offNeg, required this.offPos, super.position})
       : super(anchor: Anchor.topLeft) {
     direction = 1;
-    sfx = SfxType.plasticEnemy;
   }
 
   @override
@@ -60,5 +59,10 @@ class BottleEnemy extends Enemy {
       direction = 1;
     }
     position.x += direction * speed * dt;
+  }
+
+  @override
+  void playHitSfx() {
+    game.audioController.playSfx(SfxType.plasticEnemy);
   }
 }

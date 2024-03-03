@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
@@ -19,7 +18,7 @@ abstract class Enemy extends GomiEntity
   bool isAttacking = false;
   bool renderFlipX = false;
   int points = 100;
-  late final SfxType sfx;
+
   late final Vector2 initialPosition = Vector2(position.x, position.y);
 
   @override
@@ -59,21 +58,20 @@ abstract class Enemy extends GomiEntity
     current = GomiEntityState.hit;
     world.player.bounce();
     world.player.playerScore.addScore(points);
+    playHitSfx();
+
     removeFromParent();
   }
 
   void collideWithPlayer() async {
     if (isStomped() && playerIsCorrectColor()) {
       hit();
-      playDeathSfx(sfx);
     } else {
       world.player.hit();
     }
   }
 
-  void playDeathSfx(SfxType sfx) {
-    game.audioController.playSfx(sfx);
-  }
+  void playHitSfx();
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
