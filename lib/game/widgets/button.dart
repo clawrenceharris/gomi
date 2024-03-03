@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gomi/audio/audio_controller.dart';
+import 'package:gomi/audio/sounds.dart';
+import 'package:provider/provider.dart';
 
 class ButtonModel {}
 
@@ -6,11 +9,15 @@ class Button extends StatelessWidget {
   const Button({required this.text, required this.onPressed, super.key});
   final String text;
   final void Function() onPressed;
-
   @override
   Widget build(BuildContext context) {
+    final audioController = context.watch<AudioController>();
+
     return TextButton(
-        onPressed: onPressed,
+        onPressed: () {
+          onPressed();
+          audioController.playSfx(SfxType.buttonTap);
+        },
         style: ButtonStyle(
             overlayColor: MaterialStateProperty.all(Colors.transparent)),
         child: Stack(
