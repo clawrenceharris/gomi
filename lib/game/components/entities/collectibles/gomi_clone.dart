@@ -11,7 +11,7 @@ class GomiClone extends Collectible with HasGameRef<Gomi> {
   GomiClone({
     super.position,
     required this.color,
-  }) : super(anchor: Anchor.topCenter);
+  });
   GomiColor color;
   @override
   FutureOr<void> onLoad() {
