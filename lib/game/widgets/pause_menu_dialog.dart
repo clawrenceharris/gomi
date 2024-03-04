@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/widgets/button.dart';
@@ -78,12 +80,16 @@ class PauseMenuDialog extends StatelessWidget {
                               onPressed: () => _handleQuitButtonPress(context),
                               text: "quit"),
                           _gap,
-                          const Text("press space to resume",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Pixel',
-                                  fontWeight: FontWeight.normal)),
+                          Platform.isMacOS ||
+                                  Platform.isWindows ||
+                                  Platform.isLinux
+                              ? const Text("press space to resume",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: 'Pixel',
+                                      fontWeight: FontWeight.normal))
+                              : const SizedBox(width: 0, height: 0),
                           _gap
                         ]))
                     // Add more options as necessary
