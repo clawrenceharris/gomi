@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -34,12 +36,19 @@ class MainMenuScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   child: Image.asset(
                     "assets/images/title.png",
-                    width: 500,
+                    width: Platform.isMacOS ||
+                            Platform.isWindows ||
+                            Platform.isLinux
+                        ? 400
+                        : 300,
                     height: 100,
                   )),
               Container(
                 width: 600,
-                height: 360,
+                height:
+                    Platform.isMacOS || Platform.isWindows || Platform.isLinux
+                        ? 360
+                        : 200,
                 decoration: const BoxDecoration(
                   color: Colors
                       .transparent, // Set the background color to transparent
@@ -47,7 +56,7 @@ class MainMenuScreen extends StatelessWidget {
                   image: DecorationImage(
                     image: AssetImage(
                         'assets/images/hud/menu_panel.png'), // Replace with your image path
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 child: Center(
