@@ -18,7 +18,10 @@ class BulbEnemy extends Enemy {
   }
   double _elapsedTime = 0.0;
   final Random rand = Random();
-
+  @override
+  void applyGravity(double dt) {
+    // don't apply gravity for this enemy
+  }
   @override
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));

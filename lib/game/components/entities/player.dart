@@ -5,9 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
-import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/components/entities/gomi_physics_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
 
@@ -32,20 +31,14 @@ enum GomiColor {
   final String color;
 }
 
-class Player extends GomiEntity
-    with
-        HasGameRef<Gomi>,
-        KeyboardHandler,
-        CollisionCallbacks,
-        HasWorldReference<GomiLevel> {
+class Player extends GomiPhysicsEntity
+    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   Player(
       {required this.color,
       required this.playerHealth,
       required this.playerScore,
       super.position})
-      : super(anchor: Anchor.topCenter) {
-    initialPosition = Vector2(position.x, position.y);
-  }
+      : super(anchor: Anchor.topCenter);
 
   GomiColor color;
   int _jumpCount = 0;
@@ -75,9 +68,6 @@ class Player extends GomiEntity
   @override
   void update(double dt) {
     _updatePlayerState();
-    world.checkHorizontalCollisions(this, world.visiblePlatforms);
-    _applyGravity(dt);
-    world.checkVerticalCollisions(this, world.visiblePlatforms);
 
     if (!seedCollected.value) {
       _updateMovement(dt);
@@ -91,6 +81,7 @@ class Player extends GomiEntity
   void respawn() {
     position = Vector2(initialPosition.x, initialPosition.y);
     direction = 1;
+    velocity = Vector2.zero();
     current = GomiEntityState.idle;
     changeColor(GomiColor.black);
     _loadAllAnimations();
@@ -202,11 +193,5 @@ class Player extends GomiEntity
       // Set jump count to 2 to indicate a double jump has been used
       _jumpCount = 2;
     }
-  }
-
-  void _applyGravity(double dt) {
-    velocity.y += gravity;
-    velocity.y = velocity.y.clamp(-jumpForce, maxVelocity);
-    position.y += velocity.y * dt;
   }
 }
