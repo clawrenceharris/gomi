@@ -161,7 +161,7 @@
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="443" type="coin" x="256.21" y="320.709" width="16" height="16"/>
-  <object id="447" type="Seed" x="2982.71" y="389.825" width="32" height="32"/>
+  <object id="447" type="Seed" x="2982.83" y="398.052" width="32" height="32"/>
   <object id="449" type="coin" x="255.755" y="92.18" width="16" height="16"/>
   <object id="450" type="coin" x="256.538" y="206.448" width="16" height="16"/>
   <object id="452" type="coin" x="863.348" y="220.037" width="16" height="16"/>
@@ -219,22 +219,22 @@
  <objectgroup id="2" name="enemies">
   <object id="602" name="Bulb Enemy" type="Bulb Enemy" x="254.626" y="367.256" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="603" name="Bulb Enemy" type="Bulb Enemy" x="252.695" y="270.697" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="604" name="Bulb Enemy" type="Bulb Enemy" x="253.798" y="173.585" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="605" name="Bulb Enemy" type="Bulb Enemy" x="2719.89" y="456.644" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="606" name="Bulb Enemy" type="Bulb Enemy" x="2330.93" y="318.648" width="19.3434" height="24.7224">
@@ -244,7 +244,7 @@
   </object>
   <object id="607" name="Bulb Enemy" type="Bulb Enemy" x="2776.14" y="394.876" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="608" type="Tomato Enemy" x="471.99" y="62.953" width="32" height="32">
@@ -269,12 +269,12 @@
   </object>
   <object id="612" name="Bulb Enemy" type="Bulb Enemy" x="2097.01" y="209.167" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="613" name="Bulb Enemy" type="Bulb Enemy" x="2135.19" y="156.22" width="19.3434" height="24.7224">
    <properties>
-    <property name="Direction" type="int" value="1"/>
+    <property name="Direction" type="int" value="-1"/>
    </properties>
   </object>
   <object id="614" name="Bottle Enemy" type="Bottle Enemy" x="504.302" y="406.974" width="16" height="25">
