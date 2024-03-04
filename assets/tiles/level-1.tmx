@@ -162,12 +162,12 @@
   <object id="1" name="Player" type="Player" x="83.1295" y="404.425" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="4" name="gomi clones">
-  <object id="67" name="Gomi Clone" x="797.581" y="383.064" width="22" height="30.3038">
+  <object id="67" name="Gomi Clone" x="799.35" y="390.395" width="22" height="26">
    <properties>
     <property name="Color" value="Blue"/>
    </properties>
   </object>
-  <object id="88" x="1008" y="256" width="22" height="26">
+  <object id="88" x="1008" y="265.353" width="22" height="26">
    <properties>
     <property name="Color" value="Green"/>
    </properties>
