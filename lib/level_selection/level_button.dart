@@ -14,7 +14,10 @@ class LevelButton extends SpriteComponent
   bool isLocked;
   final int levelNumber;
   final AudioController audioController;
+
+  final bool isBonusLevel;
   LevelButton({
+    required this.isBonusLevel,
     required this.levelNumber,
     required this.isLocked,
     required this.audioController,
@@ -23,21 +26,28 @@ class LevelButton extends SpriteComponent
   });
   @override
   FutureOr<void> onLoad() async {
-    final levelButtonImage = await Flame.images.load("level_button.png");
-    final emptyLevelButtonImage =
-        await Flame.images.load("empty_level_button.png");
+    final levelBtn = await Flame.images.load("level_button.png");
+    final bonusLevelBtn = await Flame.images.load("bonus_level_button.png");
 
-    sprite = Sprite(isLocked ? emptyLevelButtonImage : levelButtonImage);
+    final emptyLevelBtn = await Flame.images.load("empty_level_button.png");
+
+    //if it is locked, use the empty level button, otherwise
+    //if it is a bonus level use the bonus level button
+    //if not show the regualr level button
+    sprite = Sprite(isLocked
+        ? emptyLevelBtn
+        : isBonusLevel
+            ? bonusLevelBtn
+            : levelBtn);
     final text = TextComponent(
       textRenderer: TextPaint(
-          style: const TextStyle(
-              fontFamily: "Press Start 2P", color: Colors.lightBlue)),
+          style: const TextStyle(fontFamily: "Pixel", color: Colors.lightBlue)),
       scale: Vector2(5, 5),
       anchor: Anchor.center,
       text: levelNumber.toString(),
     );
     text.position = Vector2(x + width / 2, y + height / 2 - text.height);
-    if (!isLocked) world.add(text);
+    if (!isLocked && !isBonusLevel) world.add(text);
     return super.onLoad();
   }
 
