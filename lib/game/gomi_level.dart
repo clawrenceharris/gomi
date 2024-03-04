@@ -23,7 +23,7 @@ import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/utils.dart';
-import 'package:gomi/game/widgets/game_screen.dart';
+import 'package:gomi/game/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import 'package:gomi/player_stats/player_score.dart';
@@ -80,8 +80,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   int stars = 0;
   @override
   Future<void> onLoad() async {
-    playerScore.reset();
-    playerHealth.reset();
     //load the tiled level
     tiledLevel = await TiledComponent.load(
         level.pathname, Vector2.all(Globals.tileSize));
