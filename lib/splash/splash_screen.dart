@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
@@ -15,52 +14,30 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioController = context.watch<AudioController>();
 
-    return KeyboardListener(
-        autofocus: true, // Ensure the widget has focus
-        focusNode: FocusNode(),
-        onKeyEvent: (KeyEvent event) {
-          if (event.logicalKey == LogicalKeyboardKey.space) {
-            audioController.playSfx(SfxType.buttonTap);
-            GoRouter.of(context).go('/play');
-          }
+    return GestureDetector(
+        onTapUp: (details) {
+          audioController.playSfx(SfxType.buttonTap);
+          GoRouter.of(context).go('/play');
         },
         child: Scaffold(
+            backgroundColor: Colors.lightBlue,
             body: Stack(
-          children: [
-            Positioned(
-                child: Align(
-              alignment: Alignment.topCenter,
-              child: Image.asset(
-                  fit: BoxFit.cover,
-                  width: 1920,
-                  height: 1080,
-                  "assets/images/splash.png"),
-            )),
-
-            // Button positioned in the top right corner
-            const Positioned(
-              top: 10,
-              right: 70,
-              child: PauseButton(),
-              //onPressed: () => GoRouter.of(context).push('/settings')
-            ),
-
-            const Positioned(
-              top: 10,
-              right: 10,
-              child: SoundButton(),
-            ),
-
-            const Align(
-              alignment: Alignment.bottomCenter,
-              child: AnimatedTextMovement(
-                text: "press space to play",
-              ),
-            ),
-
-            _gap,
-          ],
-        )));
+              children: [
+                Positioned(
+                    child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Image.asset(
+                      fit: BoxFit.contain, "assets/images/splash.png"),
+                )),
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: AnimatedTextMovement(
+                    text: "tap to play",
+                  ),
+                ),
+                _gap,
+              ],
+            )));
   }
 
   static const _gap = SizedBox(height: 40);

@@ -18,75 +18,68 @@ class CreditsScreen extends StatelessWidget {
             "assets/images/main_menu_bg.png"),
       )),
       Center(
-        child: Container(
-          width: 700,
-          height: 360,
-          decoration: const BoxDecoration(
-            color:
-                Colors.transparent, // Set the background color to transparent
+          child: Container(
+              width: 700,
+              height: 360,
+              decoration: const BoxDecoration(
+                color: Colors
+                    .transparent, // Set the background color to transparent
 
-            image: DecorationImage(
-              image: AssetImage(
-                  'assets/images/hud/menu_panel.png'), // Replace with your image path
-              fit: BoxFit.fill,
-            ),
-          ),
-          child: const Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                Padding(
-                  padding: EdgeInsets.all(40),
-                  child: Text(
-                      textAlign: TextAlign.center,
-                      "Created by:\n\n Caleb Harris and Angel Santiago",
-                      style: TextStyle(
-                          fontFamily: 'Pixel',
-                          fontSize: 18,
-                          decoration: TextDecoration.none,
-                          color: Colors.white)),
+                image: DecorationImage(
+                  image: AssetImage(
+                      'assets/images/hud/menu_panel.png'), // Replace with your image path
+                  fit: BoxFit.fill,
                 ),
-              ])),
-        ),
-      ),
-      Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-              padding: const EdgeInsets.only(top: 120),
-              child: Stack(
-                children: [
-                  Text(
-                    "credits",
-                    style: TextStyle(
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 5
-                          ..color = Colors.lightBlue,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'Pixel',
-                        fontSize: 26),
-                  ),
-                  const Text(
-                    "credits",
-                    style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.none,
-                        fontFamily: 'Pixel',
-                        fontSize: 26),
-                  ),
-                ],
-              ))),
-      Padding(
-        padding: const EdgeInsets.only(bottom: 40),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Button(
-              onPressed: () {
-                GoRouter.of(context).go('/main_menu');
-              },
-              text: "back"),
-        ),
-      )
+              ),
+              child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Stack(
+                          children: [
+                            Text(
+                              "credits",
+                              style: TextStyle(
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 5
+                                    ..color = Colors.lightBlue,
+                                  decoration: TextDecoration.none,
+                                  fontFamily: 'Pixel',
+                                  fontSize: 26),
+                            ),
+                            const Text(
+                              "credits",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontFamily: 'Pixel',
+                                  fontSize: 26),
+                            ),
+                          ],
+                        )),
+                    const Text(
+                        textAlign: TextAlign.center,
+                        "Created by:\n\n Caleb Harris and Angel Santiago",
+                        style: TextStyle(
+                            fontFamily: 'Pixel',
+                            fontSize: 18,
+                            decoration: TextDecoration.none,
+                            color: Colors.white)),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Button(
+                            onPressed: () {
+                              GoRouter.of(context).go('/main_menu');
+                            },
+                            text: "back"),
+                      ),
+                    )
+                  ]))))
     ]);
   }
 }

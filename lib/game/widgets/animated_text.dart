@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gomi/game/widgets/gradient_text.dart';
 
 class AnimatedTextMovement extends StatefulWidget {
   const AnimatedTextMovement({required this.text, super.key});
@@ -45,10 +44,29 @@ class _AnimatedTextMovementState extends State<AnimatedTextMovement>
       builder: (context, child) {
         return Transform.translate(
             offset: Offset(0, _animation.value),
-            child: GradientTextWidget(
-                fontSize: 22,
-                gradientColors: const [Colors.blue, Colors.purple],
-                text: widget.text));
+            child: Stack(
+              children: [
+                Text(
+                  widget.text,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontFamily: 'Pixel',
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 4
+                      ..color = Colors.white,
+                  ),
+                ),
+                Text(
+                  widget.text,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontFamily: 'Pixel',
+                    color: Colors.lightBlue,
+                  ),
+                ),
+              ],
+            ));
       },
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/game/widgets/button.dart';
@@ -43,7 +45,9 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
       Center(
         child: Container(
           width: 700,
-          height: 400,
+          height: Platform.isMacOS || Platform.isWindows || Platform.isLinux
+              ? 400
+              : 300,
           decoration: const BoxDecoration(
             color: Colors.transparent,
             image: DecorationImage(
@@ -52,49 +56,45 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
             ),
           ),
           child: Center(
-            child: Padding(
+              child: Column(
+            children: [
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: Stack(
+                        children: [
+                          Text(
+                            "how to play",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 5
+                                ..color = Colors.lightBlue,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'Pixel',
+                              fontSize: 26,
+                            ),
+                          ),
+                          const Text(
+                            "how to play",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'Pixel',
+                              fontSize: 26,
+                            ),
+                          ),
+                        ],
+                      ))),
+              Padding(
                 padding: const EdgeInsets.all(40),
-                child: instructionTexts[currentIndex]),
-          ),
-        ),
-      ),
-      Positioned(
-        top: 50,
-        left: 0,
-        right: 0,
-        child: SizedBox(
-          height: 26,
-          child: Text(
-            "how to play",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              foreground: Paint()
-                ..style = PaintingStyle.stroke
-                ..strokeWidth = 5
-                ..color = Colors.lightBlue,
-              decoration: TextDecoration.none,
-              fontFamily: 'Pixel',
-              fontSize: 26,
-            ),
-          ),
-        ),
-      ),
-      const Positioned(
-        top: 50,
-        left: 0,
-        right: 0,
-        child: SizedBox(
-          height: 26,
-          child: Text(
-            "how to play",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              decoration: TextDecoration.none,
-              fontFamily: 'Pixel',
-              fontSize: 26,
-            ),
-          ),
+                child: instructionTexts[currentIndex],
+              )
+            ],
+          )),
         ),
       ),
       SizedBox(
