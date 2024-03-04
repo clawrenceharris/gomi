@@ -1,14 +1,13 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/components/entities/gomi_physics_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/gomi_level.dart';
 
-abstract class Enemy extends GomiEntity
-    with HasGameRef<Gomi>, HasWorldReference<GomiLevel>, CollisionCallbacks {
+abstract class Enemy extends GomiPhysicsEntity
+    with HasGameRef<Gomi>, CollisionCallbacks {
   Enemy({super.position, super.size, super.anchor});
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
@@ -18,8 +17,6 @@ abstract class Enemy extends GomiEntity
   bool isAttacking = false;
   bool renderFlipX = false;
   int points = 100;
-
-  late final Vector2 initialPosition = Vector2(position.x, position.y);
 
   @override
   FutureOr<void> onLoad() {
