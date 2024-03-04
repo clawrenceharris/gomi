@@ -31,12 +31,12 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
-  flame_tiled: 1.19.0
-  flame: 1.16.0
-  flame_audio: 2.10.0
-  audioplayers:
-  go_router: 13.2.0
-  shared_preferences: 2.2.2
+  flame_tiled: ^1.19.0
+  flame: ^1.16.0
+  flame_audio: ^2.10.0
+  audioplayers: ^5.2.1
+  go_router: ^13.2.0
+  shared_preferences: ^2.2.2
   provider: ^6.1.1
   flame_behaviors: ^1.1.0
   logging: ^1.2.0
