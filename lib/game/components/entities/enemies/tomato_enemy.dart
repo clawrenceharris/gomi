@@ -6,9 +6,8 @@ import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
-import 'package:gomi/game/gomi_game.dart';
 
-class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
+class TomatoEnemy extends Enemy {
   final double enemyHeight = 32;
   late final double _jumpForce;
 
@@ -57,11 +56,6 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
     super.onCollision(intersectionPoints, other);
   }
 
-  void _applyGravity(double dt) {
-    velocity.y += gravity;
-    velocity.y = velocity.y.clamp(-_jumpForce, maxVelocity);
-  }
-
   void _attack(dt) {
     _elapsedTime += dt;
 
@@ -86,9 +80,7 @@ class TomatoEnemy extends Enemy with HasGameReference<Gomi> {
   @override
   void update(double dt) {
     super.update(dt);
-    _applyGravity(dt);
+    applyPhysics(dt);
     _attack(dt);
-
-    position.y += velocity.y * dt;
   }
 }

@@ -48,7 +48,6 @@ class BottleEnemy extends Enemy {
   @override
   void update(double dt) {
     _attack(dt);
-
     super.update(dt);
   }
 
