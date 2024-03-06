@@ -1,5 +1,5 @@
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_level.dart';
@@ -10,7 +10,7 @@ import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 
 class Gomi extends FlameGame<GomiLevel>
-    with HasCollisionDetection, KeyboardEvents {
+    with HasCollisionDetection, KeyboardEvents, TapCallbacks {
   Gomi({
     required this.level,
     required PlayerProgress playerProgress,
@@ -25,13 +25,12 @@ class Gomi extends FlameGame<GomiLevel>
               playerHealth: playerHealth),
         );
   final GameLevel level;
-
+  bool showControls = true;
   final AudioController audioController;
 
   @override
   Future<void> onLoad() async {
-    //Load all images into cache
-    await images.loadAllImages();
+    await images.loadAllImages(); //Load all images into cache
   }
 
   @override

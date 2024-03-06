@@ -26,7 +26,6 @@ class GameScreen extends StatelessWidget {
     final playerHealth = context.read<PlayerHealth>();
     final playerScore = context.read<PlayerScore>();
     final playerProgress = context.read<PlayerProgress>();
-
     return Scaffold(
       body: GameWidget<Gomi>(
         key: const Key('play session'),
@@ -39,7 +38,7 @@ class GameScreen extends StatelessWidget {
         ),
         overlayBuilderMap: {
           hudKey: (BuildContext context, Gomi game) {
-            return Hud();
+            return Hud(player: game.world.player);
           },
           winDialogKey: (BuildContext context, Gomi game) {
             return GameWinDialog(

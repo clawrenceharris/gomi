@@ -92,6 +92,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
             tiledLevel.tileMap.map.height.toDouble() * Globals.tileSize));
 
     add(tiledLevel);
+
     _addEnemies();
     _addPlatforms();
 
@@ -151,6 +152,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   }
 
   void _restartLevel() async {
+    print("Restarting");
     playerScore.reset();
     playerHealth.reset();
     player.respawn();
