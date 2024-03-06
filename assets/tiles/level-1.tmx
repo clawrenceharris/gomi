@@ -111,7 +111,11 @@
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="73" type="Coin" x="432" y="368" width="16" height="16"/>
+<<<<<<< HEAD
   <object id="85" type="Seed" x="2246.53" y="257.313" width="60" height="53"/>
+=======
+  <object id="85" type="Seed" x="2220.11" y="253.79" width="60" height="53"/>
+>>>>>>> c177805d65da5a938d792843b4634c073f575ee0
   <object id="99" type="coin" x="1008" y="352" width="16" height="16"/>
   <object id="109" type="Coin" x="480" y="336" width="16" height="16"/>
   <object id="166" type="Coin" x="528" y="368" width="16" height="16"/>
