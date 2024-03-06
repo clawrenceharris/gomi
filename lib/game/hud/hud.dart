@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/hud/controls.dart';
+import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/pause_button.dart';
 import 'package:gomi/game/widgets/sound_button.dart';
 import 'package:gomi/player_stats/player_health.dart';
@@ -28,7 +27,7 @@ class Hud extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: Container(
             padding: const EdgeInsets.only(bottom: 16.0),
-            child: !Platform.isMacOS && !Platform.isLinux && !Platform.isWindows
+            child: isMobile()
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -23,6 +23,8 @@ class MyGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Play audio when the game starts
+
     return AppLifecycleObserver(
       child: MultiProvider(
         providers: [

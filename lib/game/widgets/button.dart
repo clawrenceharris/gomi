@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
+import 'package:gomi/game/utils.dart';
 import 'package:provider/provider.dart';
 
 class ButtonModel {}
@@ -28,12 +27,8 @@ class Button extends StatelessWidget {
             // Background image
             Image.asset(
               'assets/images/hud/menu_button.png',
-              width: Platform.isMacOS || Platform.isWindows || Platform.isLinux
-                  ? 200
-                  : 150,
-              height: Platform.isMacOS || Platform.isWindows || Platform.isLinux
-                  ? 60
-                  : 50,
+              width: isMobile() ? 150 : 200,
+              height: isMobile() ? 50 : 60,
               fit: BoxFit.contain,
             ),
 

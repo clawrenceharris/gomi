@@ -18,7 +18,7 @@ class GomiEntity extends SpriteAnimationGroupComponent<GomiEntityState>
   final double bounceForce = 200;
   double lastJumpTimestamp = 0.0;
   final double jumpForce = 200;
-  final double maxVelocity = 300;
+  final double maxVelocity = 200;
   Vector2 velocity = Vector2.zero();
 
   void applyPhysics(double dt) {
