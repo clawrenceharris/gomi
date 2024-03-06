@@ -1,6 +1,6 @@
 import 'package:gomi/game/components/collisions/platforms/one_way_platform.dart';
 import 'package:gomi/game/components/collisions/platforms/platform.dart';
-import 'package:gomi/game/components/entities/gomi_physics_entity.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
 
 mixin CollisionAware {
   List<Platform> platforms = [];
@@ -9,7 +9,7 @@ mixin CollisionAware {
   }
 
   void checkHorizontalCollisions(
-      GomiPhysicsEntity other, Iterable<Platform> platforms) {
+      GomiEntity other, Iterable<Platform> platforms) {
     for (final platform in platforms) {
       if (checkCollisionTopCenter(other, platform)) {
         platform.resolveCollisionFromLeft(other);
@@ -18,8 +18,7 @@ mixin CollisionAware {
     }
   }
 
-  void checkVerticalCollisions(
-      GomiPhysicsEntity other, Iterable<Platform> platforms) {
+  void checkVerticalCollisions(GomiEntity other, Iterable<Platform> platforms) {
     for (final platform in platforms) {
       if (checkCollisionTopCenter(other, platform)) {
         platform.resolveCollisionFromTop(other);
@@ -29,7 +28,7 @@ mixin CollisionAware {
   }
 
   ///checks collision from all sides based on top center anchor
-  bool checkCollisionTopCenter(GomiPhysicsEntity other, Platform platform) {
+  bool checkCollisionTopCenter(GomiEntity other, Platform platform) {
     final topCenterX = other.scale.x > 0
         ? other.position.x - (other.width / 2)
         : other.position.x + other.width / 2;
