@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
-import 'package:gomi/game/components/entities/gomi_physics_entity.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
@@ -31,14 +31,16 @@ enum GomiColor {
   final String color;
 }
 
-class Player extends GomiPhysicsEntity
+class Player extends GomiEntity
     with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
   Player(
       {required this.color,
       required this.playerHealth,
       required this.playerScore,
       super.position})
-      : super(anchor: Anchor.topCenter);
+      : super(anchor: Anchor.topCenter) {
+    initialPosition = Vector2(position.x, position.y);
+  }
 
   GomiColor color;
   int _jumpCount = 0;
@@ -68,7 +70,7 @@ class Player extends GomiPhysicsEntity
   @override
   void update(double dt) {
     _updatePlayerState();
-
+    applyPhysics(dt);
     if (!seedCollected.value) {
       _updateMovement(dt);
     } else {
@@ -80,7 +82,7 @@ class Player extends GomiPhysicsEntity
 
   void respawn() {
     position = Vector2(initialPosition.x, initialPosition.y);
-    direction = 1;
+    direction = 0;
     velocity = Vector2.zero();
     current = GomiEntityState.idle;
     changeColor(GomiColor.black);

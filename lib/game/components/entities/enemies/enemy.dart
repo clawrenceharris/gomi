@@ -1,14 +1,16 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/game/components/entities/gomi_physics_entity.dart';
+import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
 import 'package:gomi/game/gomi_game.dart';
 
-abstract class Enemy extends GomiPhysicsEntity
+abstract class Enemy extends GomiEntity
     with HasGameRef<Gomi>, CollisionCallbacks {
-  Enemy({super.position, super.size, super.anchor});
+  Enemy({super.position, super.size, super.anchor}) {
+    initialPosition = Vector2(position.x, position.y);
+  }
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation attackAnimation;
   double idleTime = 5; // Time to stay in idle state (in seconds)
