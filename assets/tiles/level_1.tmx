@@ -111,13 +111,9 @@
  </objectgroup>
  <objectgroup id="6" name="collectibles">
   <object id="73" type="Coin" x="432" y="368" width="16" height="16"/>
-<<<<<<< HEAD
-  <object id="85" type="Seed" x="2246.53" y="257.313" width="60" height="53"/>
-=======
-  <object id="85" type="Seed" x="2220.11" y="253.79" width="60" height="53"/>
->>>>>>> c177805d65da5a938d792843b4634c073f575ee0
+  <object id="85" type="Seed" x="2240" y="256" width="60" height="53"/>
   <object id="99" type="coin" x="1008" y="352" width="16" height="16"/>
-  <object id="109" type="Coin" x="480" y="336" width="16" height="16"/>
+  <object id="109" type="Coin" x="482.59" y="347.223" width="16" height="16"/>
   <object id="166" type="Coin" x="528" y="368" width="16" height="16"/>
   <object id="110" type="coin" x="1072" y="304" width="16" height="16"/>
   <object id="111" type="coin" x="1072" y="384" width="16" height="16"/>
@@ -139,10 +135,10 @@
   <object id="145" type="Coin" x="1712" y="400" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="2" name="enemies">
-  <object id="48" name="Bottle Enemy" type="bottle enemy" x="800" y="454.694" width="16" height="25">
+  <object id="48" name="Bottle Enemy" type="Bottle Enemy" x="799.235" y="453.285" width="18" height="25">
    <properties>
-    <property name="Off Neg" type="float" value="3"/>
-    <property name="Off Pos" type="float" value="3"/>
+    <property name="Off Neg" type="float" value="2.9"/>
+    <property name="Off Pos" type="float" value="2.9"/>
    </properties>
   </object>
   <object id="76" type="Tomato Enemy" x="1280" y="336" width="32" height="32">
@@ -163,7 +159,7 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="player">
-  <object id="1" name="Player" type="Player" x="83.1295" y="404.425" width="22" height="26"/>
+  <object id="1" name="Player" type="Player" x="82.2824" y="451.015" width="22" height="26"/>
  </objectgroup>
  <objectgroup id="4" name="gomi clones">
   <object id="67" name="Gomi Clone" x="799.35" y="390.395" width="22" height="26">
