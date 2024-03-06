@@ -50,8 +50,8 @@ double soundTypeToVolume(SfxType type) {
     case SfxType.compostEnemy:
     case SfxType.buttonTap:
     case SfxType.seed:
-    case SfxType.hit:
       return 1.0;
+    case SfxType.hit:
     case SfxType.jump:
     case SfxType.doubleJump:
       return 0.5;
