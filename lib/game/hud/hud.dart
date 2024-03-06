@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/entities/player.dart';
+import 'package:gomi/game/hud/controls.dart';
 import 'package:gomi/game/widgets/pause_button.dart';
 import 'package:gomi/game/widgets/sound_button.dart';
 import 'package:gomi/player_stats/player_health.dart';
@@ -8,7 +12,8 @@ import 'package:gomi/player_stats/player_score.dart';
 import 'package:provider/provider.dart';
 
 class Hud extends StatelessWidget {
-  Hud({super.key});
+  Hud({super.key, required this.player});
+  final Player player;
   final List<SpriteComponent> lifeIndicators = [];
 
   @override
@@ -19,6 +24,46 @@ class Hud extends StatelessWidget {
     const int margin = 10;
     const int padding = 5;
     return Stack(children: [
+      Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: !Platform.isMacOS && !Platform.isLinux && !Platform.isWindows
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 16.0),
+                      ControlButton(
+                        image: 'assets/images/hud/left_arrow.png',
+                        onTapDown: (TapDownDetails details) {
+                          player.direction = -1;
+                        },
+                        onTapUp: (TapUpDetails details) {
+                          player.direction = 0;
+                        },
+                      ),
+                      ControlButton(
+                        image: 'assets/images/hud/right_arrow.png',
+                        onTapDown: (TapDownDetails details) {
+                          player.direction = 1;
+                        },
+                        onTapUp: (TapUpDetails details) {
+                          player.direction = 0;
+                        },
+                      ),
+                      ControlButton(
+                        image: 'assets/images/hud/up_arrow.png',
+                        onTapDown: (TapDownDetails details) {
+                          player.hasJumped = true;
+                        },
+                        onTapUp: (TapUpDetails details) {
+                          player.hasJumped = false;
+                        },
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
+          )),
       ValueListenableBuilder<int>(
           valueListenable: playerScore.coins,
           builder: (context, coins, child) {
