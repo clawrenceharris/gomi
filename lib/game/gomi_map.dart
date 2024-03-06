@@ -44,7 +44,7 @@ class Map extends World with HasGameRef<GomiWorldMap> {
   Future<void> onLoad() async {
     //load the tiled level
     map = await TiledComponent.load(
-        'level_map.tmx', Vector2.all(mapTileSize.toDouble()));
+        'world_map.tmx', Vector2.all(mapTileSize.toDouble()));
     add(map);
 
     _setUpCamera();
