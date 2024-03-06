@@ -55,14 +55,17 @@ class Map extends World with HasGameRef<GomiWorldMap> {
     final layer = getTiledLayer(map, "level buttons");
 
     for (final obj in layer.objects) {
-      final levelNumber = obj.properties.getValue("Level Number");
+      final int levelNumber = obj.properties.getValue("Level Number");
+
       late final bool isLocked;
+
       if (playerProgress.levels.length < levelNumber - 1) {
         isLocked = true;
       } else if (playerProgress.levels.length >= levelNumber - 1) {
         isLocked = false;
       }
       add(LevelButton(
+          isBonusLevel: obj.class_.toLowerCase() == "bonus level",
           audioController: audioController,
           position: Vector2(obj.x, obj.y),
           levelNumber: levelNumber,
@@ -78,8 +81,6 @@ class Map extends World with HasGameRef<GomiWorldMap> {
       ..viewfinder.visibleGameSize = _visibleGameArea
       ..viewfinder.anchor = Anchor.topLeft;
 
-    PositionComponent pc = PositionComponent(position: Vector2(0, 0));
-    game.camera.follow(pc);
     game.camera.backdrop.add(cameraParallax);
   }
 }

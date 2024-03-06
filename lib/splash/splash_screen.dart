@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
+import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/animated_text.dart';
+import 'package:gomi/settings/settings.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -11,6 +13,8 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioController = context.watch<AudioController>();
+    final settingsController = context.watch<SettingsController>();
+    settingsController.toggleAudioOn();
 
     return GestureDetector(
         onTapUp: (details) {
@@ -27,10 +31,10 @@ class SplashScreen extends StatelessWidget {
                   child: Image.asset(
                       fit: BoxFit.contain, "assets/images/splash.png"),
                 )),
-                const Align(
+                Align(
                   alignment: Alignment.bottomCenter,
                   child: AnimatedTextMovement(
-                    text: "tap to play",
+                    text: isMobile() ? "tap to play" : "click to play",
                   ),
                 ),
                 _gap,

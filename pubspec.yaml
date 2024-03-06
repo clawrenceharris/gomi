@@ -40,7 +40,6 @@ dependencies:
   provider: ^6.1.1
   flame_behaviors: ^1.1.0
   logging: ^1.2.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
