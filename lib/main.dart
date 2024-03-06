@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/player_stats/player_health.dart';
@@ -14,9 +13,7 @@ import 'style/palette.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
-  if (Platform.isMacOS || Platform.isAndroid || Platform.isIOS) {
-    await Flame.device.setLandscape();
-  }
+  await Flame.device.setLandscape();
 
   runApp(const MyGame());
 }
