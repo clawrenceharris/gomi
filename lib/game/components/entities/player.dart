@@ -5,24 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
+import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
-
-enum GomiEntityState {
-  idle,
-  walking,
-  jumping,
-  falling,
-  hit,
-  disappearing,
-  appearing,
-  attacking,
-  ground,
-  rising,
-  apex,
-}
 
 enum GomiColor {
   black("black"),
