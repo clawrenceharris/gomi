@@ -19,6 +19,9 @@ enum GomiEntityState {
   disappearing,
   appearing,
   attacking,
+  ground,
+  rising,
+  apex,
 }
 
 enum GomiColor {
@@ -107,7 +110,7 @@ class Player extends GomiEntity
       GomiEntityState.jumping: jumpingAnimation,
       GomiEntityState.disappearing: disappearingAnimation,
       GomiEntityState.appearing: appearingAnimation,
-      GomiEntityState.hit: hitAnimation
+      GomiEntityState.hit: hitAnimation,
     };
 
     // Set current animation

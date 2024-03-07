@@ -8,6 +8,10 @@ class AnimationConfigs {
   static const String idle = "idle";
   static const String attack = "attack";
   static const String walking = "walk";
+  static const String ground = "ground";
+  static const String rising = "rising";
+  static const String apex = "apex";
+  static const String falling = "falling";
   static const String jump = "jump";
   static const String zap = "zap";
   static String sparks = "sparks";
@@ -23,7 +27,7 @@ class AnimationConfigs {
   static final Vector2 bottleEnemyTextureSize = Vector2(16, 25);
 
   static final Vector2 bulbEnemyTextureSize = Vector2(17, 26);
-  static final Vector2 tomatoEnemyTextureSize = Vector2(32, 26);
+  static final Vector2 tomatoEnemyTextureSize = Vector2(32, 32);
   static final Vector2 bulbEnemyAttackingTextureSize = Vector2(30, 32);
   static final Vector2 syringeEnemyTextureSize = Vector2(51, 22);
   static final Vector2 seedTextureSize = Vector2(44, 52);
@@ -136,19 +140,32 @@ class SyringeEnemyAnimationConfigs {
 }
 
 class TomatoEnemyAnimationConfigs {
-  SpriteAnimation idle() => SpriteAnimation.fromFrameData(
-      Flame.images
-          .fromCache('enemies/${Globals.tomato}/${AnimationConfigs.idle}.png'),
+  SpriteAnimation ground() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'enemies/${Globals.tomato}/${AnimationConfigs.ground}.png'),
       SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 1,
           stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
-
-  SpriteAnimation attacking() => SpriteAnimation.fromFrameData(
+  SpriteAnimation rising() => SpriteAnimation.fromFrameData(
       Flame.images.fromCache(
-          'enemies/${Globals.tomato}/${AnimationConfigs.attack}.png'),
+          'enemies/${Globals.tomato}/${AnimationConfigs.rising}.png'),
       SpriteAnimationData.sequenced(
-          amount: 6,
+          amount: 1,
+          stepTime: AnimationConfigs.stepTime,
+          textureSize: AnimationConfigs.tomatoEnemyTextureSize));
+  SpriteAnimation apex() => SpriteAnimation.fromFrameData(
+      Flame.images
+          .fromCache('enemies/${Globals.tomato}/${AnimationConfigs.apex}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 1,
+          stepTime: AnimationConfigs.stepTime,
+          textureSize: AnimationConfigs.tomatoEnemyTextureSize));
+  SpriteAnimation falling() => SpriteAnimation.fromFrameData(
+      Flame.images.fromCache(
+          'enemies/${Globals.tomato}/${AnimationConfigs.falling}.png'),
+      SpriteAnimationData.sequenced(
+          amount: 1,
           stepTime: AnimationConfigs.stepTime,
           textureSize: AnimationConfigs.tomatoEnemyTextureSize));
 }

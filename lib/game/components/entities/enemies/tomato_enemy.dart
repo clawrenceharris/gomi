@@ -10,6 +10,10 @@ import 'package:gomi/game/components/entities/player.dart';
 class TomatoEnemy extends Enemy {
   final double enemyHeight = 32;
   late final double _jumpForce;
+  late final SpriteAnimation groundAnimation;
+  late final SpriteAnimation risingAnimation;
+  late final SpriteAnimation apexAnimation;
+  late final SpriteAnimation fallingAnimation;
 
   @override
   double get jumpForce => _jumpForce;
@@ -27,15 +31,27 @@ class TomatoEnemy extends Enemy {
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
     attackTime = 10;
+    debugMode = true;
     return super.onLoad();
   }
 
   @override
   void loadAllAnimations() {
-    idleAnimation = AnimationConfigs.tomatoEnemy.idle();
-    attackAnimation = AnimationConfigs.tomatoEnemy.attacking();
-    current = GomiEntityState.attacking;
-    super.loadAllAnimations();
+    groundAnimation = AnimationConfigs.tomatoEnemy.ground();
+    risingAnimation = AnimationConfigs.tomatoEnemy.rising();
+    apexAnimation = AnimationConfigs.tomatoEnemy.apex();
+    fallingAnimation = AnimationConfigs.tomatoEnemy.falling();
+
+    animations = {
+      GomiEntityState.idle: groundAnimation,
+      GomiEntityState.attacking: groundAnimation,
+      GomiEntityState.ground: groundAnimation,
+      GomiEntityState.rising: risingAnimation,
+      GomiEntityState.apex: apexAnimation,
+      GomiEntityState.falling: fallingAnimation,
+    };
+
+    current = GomiEntityState.idle;
   }
 
   @override
@@ -81,6 +97,29 @@ class TomatoEnemy extends Enemy {
   void update(double dt) {
     super.update(dt);
     applyPhysics(dt);
+    customStates();
     _attack(dt);
+  }
+
+  void customStates() {
+    if (isGrounded == true) {
+      current = GomiEntityState.ground;
+      return;
+    }
+
+    if (!isGrounded && velocity.y <= -1) {
+      current = GomiEntityState.rising;
+      return;
+    }
+
+    if (!isGrounded && velocity.y == 0) {
+      current = GomiEntityState.apex;
+      return;
+    }
+
+    if (!isGrounded && velocity.y >= 1) {
+      current = GomiEntityState.falling;
+      return;
+    }
   }
 }
