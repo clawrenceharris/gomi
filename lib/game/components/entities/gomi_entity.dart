@@ -5,7 +5,7 @@ import 'package:gomi/game/gomi_level.dart';
 class GomiEntity extends SpriteAnimationGroupComponent<GomiEntityState>
     with HasWorldReference<GomiLevel> {
   GomiEntity({super.size, super.position, super.anchor});
-  final double speed = 0;
+  late final double speed;
   int direction = 0;
 
   bool gotHit = false;
@@ -18,12 +18,11 @@ class GomiEntity extends SpriteAnimationGroupComponent<GomiEntityState>
   final double bounceForce = 200;
   double lastJumpTimestamp = 0.0;
   final double jumpForce = 200;
-  final double maxVelocity = 200;
+  final double maxVelocity = 300;
   Vector2 velocity = Vector2.zero();
 
   void applyPhysics(double dt) {
     world.checkHorizontalCollisions(this, world.visiblePlatforms);
-
     applyGravity(dt);
     world.checkVerticalCollisions(this, world.visiblePlatforms);
   }
