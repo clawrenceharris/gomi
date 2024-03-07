@@ -21,9 +21,9 @@ import 'package:gomi/game/components/entities/collectibles/seed.dart';
 import 'package:gomi/game/components/entities/enemies/bulb_enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
+import 'package:gomi/game/game_screen.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/utils.dart';
-import 'package:gomi/game/game_screen.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import 'package:gomi/player_stats/player_score.dart';
@@ -152,7 +152,6 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   }
 
   void _restartLevel() async {
-    print("Restarting");
     playerScore.reset();
     playerHealth.reset();
     player.respawn();
