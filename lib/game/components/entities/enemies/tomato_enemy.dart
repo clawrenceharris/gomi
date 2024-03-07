@@ -10,7 +10,6 @@ import 'package:gomi/game/components/entities/player.dart';
 class TomatoEnemy extends Enemy {
   final double enemyHeight = 32;
   late final double _jumpForce;
-  @override
   late final SpriteAnimation groundAnimation;
   late final SpriteAnimation risingAnimation;
   late final SpriteAnimation apexAnimation;
@@ -32,6 +31,7 @@ class TomatoEnemy extends Enemy {
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
     attackTime = 10;
+    debugMode = true;
     return super.onLoad();
   }
 
