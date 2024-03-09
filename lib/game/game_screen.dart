@@ -1,6 +1,5 @@
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/game/gomi_game.dart';
-
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/game/hud/hud.dart';
@@ -8,6 +7,7 @@ import 'package:gomi/game/widgets/game_win_dialog.dart';
 import 'package:gomi/level_selection/levels.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
+import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
 import 'package:provider/provider.dart';
 
@@ -26,10 +26,13 @@ class GameScreen extends StatelessWidget {
     final playerHealth = context.read<PlayerHealth>();
     final playerScore = context.read<PlayerScore>();
     final playerProgress = context.read<PlayerProgress>();
+    final PlayerPowerup playerPowerup = context.read<PlayerPowerup>();
+
     return Scaffold(
       body: GameWidget<Gomi>(
         key: const Key('play session'),
         game: Gomi(
+          playerPowerup: playerPowerup,
           level: level,
           playerScore: playerScore,
           playerProgress: playerProgress,

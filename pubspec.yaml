@@ -69,16 +69,16 @@ flutter:
     - assets/music/
     - assets/images/gomi/
     - assets/images/instructions/
-
+    - assets/images/powerups/
     - assets/images/tutorials/
     - assets/images/hud/
+    - assets/images/icons/
     - assets/images/scenery/
     - assets/images/gomi/green_gomi/
     - assets/images/gomi/red_gomi/
     - assets/images/gomi/blue_gomi/
     - assets/images/gomi/black_gomi/
     - assets/images/enemies/light_bulb/
-    - assets/images/enemies/tomato/
     - assets/images/enemies/tomato/
     - assets/images/enemies/syringe/
     - assets/images/enemies/water_bottle/

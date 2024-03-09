@@ -9,6 +9,7 @@ import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/player_stats/player_health.dart';
+import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
 
 enum GomiColor {
@@ -27,6 +28,7 @@ class Player extends GomiEntity
       {required this.color,
       required this.playerHealth,
       required this.playerScore,
+      required this.playerPowerup,
       super.position})
       : super(anchor: Anchor.topCenter) {
     initialPosition = Vector2(position.x, position.y);
@@ -41,6 +43,7 @@ class Player extends GomiEntity
   late final ValueNotifier<bool> seedCollected;
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
+  final PlayerPowerup playerPowerup;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
 
@@ -105,7 +108,7 @@ class Player extends GomiEntity
 
   void _onScoreIncrease() {
     AnimatedScoreText text = AnimatedScoreText(
-        text: playerScore.pointsAdded.toString(), position: position);
+        text: playerScore.points.toString(), position: position);
 
     game.world.add(text);
   }

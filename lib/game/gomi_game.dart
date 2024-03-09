@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
+import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
@@ -16,10 +17,12 @@ class Gomi extends FlameGame<GomiLevel>
     required PlayerProgress playerProgress,
     required PlayerHealth playerHealth,
     required PlayerScore playerScore,
+    required PlayerPowerup playerPowerup,
     required this.audioController,
   }) : super(
           world: GomiLevel(
               level: level,
+              playerPowerup: playerPowerup,
               playerScore: playerScore,
               playerProgress: playerProgress,
               playerHealth: playerHealth),
