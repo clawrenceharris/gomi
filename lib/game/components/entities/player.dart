@@ -5,24 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
+import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
-
-enum GomiEntityState {
-  idle,
-  walking,
-  jumping,
-  falling,
-  hit,
-  disappearing,
-  appearing,
-  attacking,
-  ground,
-  rising,
-  apex,
-}
 
 enum GomiColor {
   black("black"),
@@ -59,8 +46,8 @@ class Player extends GomiEntity
 
   @override
   FutureOr<void> onLoad() {
-    _loadAllAnimations();
-    playerScore.score.addListener(onScoreIncrease);
+    _loadAnimations();
+    playerScore.score.addListener(_onScoreIncrease);
     add(RectangleHitbox());
     seedCollected = ValueNotifier(false);
     // Prevents player from going out of bounds of level.
@@ -72,7 +59,7 @@ class Player extends GomiEntity
 
   @override
   void update(double dt) {
-    _updatePlayerState();
+    _updateState();
     applyPhysics(dt);
     if (!seedCollected.value) {
       _updateMovement(dt);
@@ -89,10 +76,10 @@ class Player extends GomiEntity
     velocity = Vector2.zero();
     current = GomiEntityState.idle;
     changeColor(GomiColor.black);
-    _loadAllAnimations();
+    _loadAnimations();
   }
 
-  void _loadAllAnimations() {
+  void _loadAnimations() {
     SpriteAnimation idleAnimation = AnimationConfigs.gomi.idle(color.color);
     SpriteAnimation walkingAnimation =
         AnimationConfigs.gomi.walking(color.color);
@@ -113,11 +100,10 @@ class Player extends GomiEntity
       GomiEntityState.hit: hitAnimation,
     };
 
-    // Set current animation
     current = GomiEntityState.idle;
   }
 
-  void onScoreIncrease() {
+  void _onScoreIncrease() {
     AnimatedScoreText text = AnimatedScoreText(
         text: playerScore.pointsAdded.toString(), position: position);
 
@@ -126,7 +112,7 @@ class Player extends GomiEntity
 
   void changeColor(GomiColor color) {
     this.color = color;
-    _loadAllAnimations();
+    _loadAnimations();
   }
 
   void bounce() {
@@ -135,7 +121,7 @@ class Player extends GomiEntity
     velocity.y = -bounceForce;
   }
 
-  void _updatePlayerState() {
+  void _updateState() {
     GomiEntityState playerState = GomiEntityState.idle;
     if (velocity.x != 0) {
       playerState = GomiEntityState.walking;

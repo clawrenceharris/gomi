@@ -5,6 +5,7 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
+import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class TomatoEnemy extends Enemy {
@@ -45,7 +46,7 @@ class TomatoEnemy extends Enemy {
     animations = {
       GomiEntityState.idle: groundAnimation,
       GomiEntityState.attacking: groundAnimation,
-      GomiEntityState.ground: groundAnimation,
+      GomiEntityState.grounded: groundAnimation,
       GomiEntityState.rising: risingAnimation,
       GomiEntityState.apex: apexAnimation,
       GomiEntityState.falling: fallingAnimation,
@@ -97,13 +98,13 @@ class TomatoEnemy extends Enemy {
   void update(double dt) {
     super.update(dt);
     applyPhysics(dt);
-    customStates();
+    _updateState();
     _attack(dt);
   }
 
-  void customStates() {
+  void _updateState() {
     if (isGrounded == true) {
-      current = GomiEntityState.ground;
+      current = GomiEntityState.grounded;
       return;
     }
 

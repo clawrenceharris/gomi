@@ -23,12 +23,9 @@ class SoundButton extends StatelessWidget {
 
                     // Add your button's action here
                   },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.purple,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      // Set the border radius
-                    ),
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    // Set the border radius
                   ),
                   child: Image.asset("assets/images/hud/sound_button.png"));
         });
