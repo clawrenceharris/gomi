@@ -1,6 +1,7 @@
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/player_stats/player_health.dart';
+import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
 import 'package:provider/provider.dart';
 import 'router.dart';
@@ -32,6 +33,7 @@ class MyGame extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => PlayerProgress()),
           Provider(create: (context) => PlayerHealth()),
           Provider(create: (context) => PlayerScore()),
+          Provider(create: (context) => PlayerPowerup()),
 
           Provider(create: (context) => SettingsController()),
           // Set up audio.

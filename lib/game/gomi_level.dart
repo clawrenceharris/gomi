@@ -26,6 +26,7 @@ import 'package:gomi/game/gomi_game.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
+import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
 import '../level_selection/levels.dart';
 import 'package:flame/components.dart';
@@ -45,6 +46,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
 
   ///used to keep track of the player's overall score and coins colleced for a single level
   final PlayerScore playerScore;
+
+  ///Used to keep track of the player's available and active powerups
+  final PlayerPowerup playerPowerup;
 
   late final Rectangle levelBounds;
 
@@ -67,6 +71,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
       {required this.playerHealth,
       required this.level,
       required this.playerProgress,
+      required this.playerPowerup,
       required this.playerScore});
   Vector2 get size => (parent as FlameGame).size;
   Iterable<Enemy> get activeEnemies =>
@@ -194,6 +199,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
     final obj = layer.objects[0];
 
     player = Player(
+        playerPowerup: playerPowerup,
         playerScore: playerScore,
         playerHealth: playerHealth,
         color: GomiColor.black,
