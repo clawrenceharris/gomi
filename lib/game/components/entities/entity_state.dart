@@ -7,7 +7,7 @@ enum GomiEntityState {
   disappearing,
   appearing,
   attacking,
-  ground,
+  grounded,
   rising,
   apex,
 }

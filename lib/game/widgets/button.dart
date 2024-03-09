@@ -4,11 +4,10 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:provider/provider.dart';
 
-class ButtonModel {}
-
 class Button extends StatelessWidget {
-  const Button({required this.text, required this.onPressed, super.key});
-  final String text;
+  const Button({this.text, required this.onPressed, this.child, super.key});
+  final String? text;
+  final Widget? child;
   final void Function() onPressed;
   @override
   Widget build(BuildContext context) {
@@ -33,15 +32,16 @@ class Button extends StatelessWidget {
             ),
 
             // Text widget on top of the image
-            Text(
-              text,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: 'Pixel',
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child ??
+                Text(
+                  text ?? "",
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: 'Pixel',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
           ],
         ));
   }

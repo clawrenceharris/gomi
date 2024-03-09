@@ -5,6 +5,7 @@ import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/hud/controls.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/pause_button.dart';
+import 'package:gomi/game/widgets/powerups_menu_dialog.dart';
 import 'package:gomi/game/widgets/sound_button.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_score.dart';
@@ -100,6 +101,23 @@ class Hud extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const PowerupsMenuDialog();
+                          });
+                    },
+                    child: Image.asset(
+                      "assets/images/hud/power_up_button.png",
+                      width: 40,
+                      height: 40,
+                    ),
                   )
                 ]));
           }),

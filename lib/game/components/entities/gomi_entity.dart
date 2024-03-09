@@ -1,6 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:gomi/game/components/entities/entity_state.dart';
-import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_level.dart';
 
 class GomiEntity extends SpriteAnimationGroupComponent<GomiEntityState>

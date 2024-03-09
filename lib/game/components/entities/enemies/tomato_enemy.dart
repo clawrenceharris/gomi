@@ -46,7 +46,7 @@ class TomatoEnemy extends Enemy {
     animations = {
       GomiEntityState.idle: groundAnimation,
       GomiEntityState.attacking: groundAnimation,
-      GomiEntityState.ground: groundAnimation,
+      GomiEntityState.grounded: groundAnimation,
       GomiEntityState.rising: risingAnimation,
       GomiEntityState.apex: apexAnimation,
       GomiEntityState.falling: fallingAnimation,
@@ -104,7 +104,7 @@ class TomatoEnemy extends Enemy {
 
   void _updateState() {
     if (isGrounded == true) {
-      current = GomiEntityState.ground;
+      current = GomiEntityState.grounded;
       return;
     }
 
