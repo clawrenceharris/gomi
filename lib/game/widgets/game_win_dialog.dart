@@ -1,3 +1,5 @@
+import 'dart:js';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/level_selection/levels.dart';
@@ -65,7 +67,7 @@ class GameWinDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            if (level.number >= gameLevels.length) ...[
+            if (level.number >= gameLevels.length && Platform.isAndroid) ...[
               AddToGoogleWalletButton(
                 pass: _gomiHeroBadge,
                 onSuccess: () => _showSnackBar(context, "Success!"),
@@ -107,42 +109,38 @@ final String _gomiHeroBadge = """
             "id": "$_issuerId.$_passId",
             "classId": "$_issuerId.$_passClass",
             "genericType": "GENERIC_TYPE_UNSPECIFIED",
-            "hexBackgroundColor": "#4285f4",
+            "hexBackgroundColor": "#3a453a",
             "logo": {
               "sourceUri": {
-                "uri": "https://raw.githubusercontent.com/clawrenceharris/gomi/main/assets/images/gomi/red_gomi/jump.png"
+                "uri": "https://i.imgur.com/nwWyDgt.png"
               }
             },
             "cardTitle": {
               "defaultValue": {
                 "language": "en",
-                "value": "Gomi Hero Badge"
+                "value": "Gomi Badge"
               }
             },
             "subheader": {
               "defaultValue": {
                 "language": "en",
-                "value": "Badge"
+                "value": 'Congratulations!  That was no easy task, and Gomi can finally relax.  What happened to the litter critters, you ask?  Well, some say they hear whispers coming from recycled products, and garden fertilizer...    "Reduce... reuse... recycle... "'
               }
             },
             "header": {
               "defaultValue": {
                 "language": "en",
-                "value": "Completed the Gomi Hero adventure."
+                "value": "The End of a (re)Cycle"
               }
-            },
-            "barcode": {
-              "type": "QR_CODE",
-              "value": "https://engage.us.greenpeace.org/onlineactions/vuUwRlbt4EOpxyVOp2kKYQ2?utm_source=gs&utm_medium=ads&utm_content=FD_GS_FR_FY22_PolarBear_1x_BrdSL&utm_campaign=Inc__220609_FD_GSFRPAC2BrandAJZZZZZZAACZ&sourceid=1014004&ms=FD_GS_FR_FY22_PolarBear_1x_BrdSL&gad_source=1&gclid=CjwKCAiA6KWvBhAREiwAFPZM7gRtYaWhSu9YQuLs0WJ7Wna2ma8QsvIrTI8EpZPLG-mgAayAFjmgbRoCSuUQAvD_BwE"
             },
             "heroImage": {
               "sourceUri": {
-                "uri": "https://raw.githubusercontent.com/clawrenceharris/gomi/main/assets/images/gomi/red_gomi/jump.png"
+                "uri": "https://i.imgur.com/K96ujwo.png"
               }
             },
             "textModulesData": [
               {
-                "header": "Game Achievement",
+                "header": "Gomi Award",
                 "body": "Completed Gomi Hero",
                 "id": "complete"
               }
