@@ -14,12 +14,12 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioController = context.watch<AudioController>();
     final settingsController = context.watch<SettingsController>();
-    settingsController.toggleAudioOn();
 
     return GestureDetector(
         onTapUp: (details) {
           audioController.playSfx(SfxType.buttonTap);
           GoRouter.of(context).go('/play');
+          settingsController.toggleAudioOn();
         },
         child: Scaffold(
             backgroundColor: Colors.lightBlue,
