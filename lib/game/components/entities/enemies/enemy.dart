@@ -1,14 +1,30 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/components/entities/physics_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'dart:async';
 
 import 'package:gomi/game/gomi_game.dart';
+import 'package:gomi/game/gomi_level.dart';
 
-abstract class Enemy extends GomiEntity
-    with HasGameRef<Gomi>, CollisionCallbacks {
+enum EnemyState {
+  idle,
+  falling,
+  hit,
+  attacking,
+  grounded,
+  rising,
+  apex,
+}
+
+abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
+    with
+        HasGameRef<Gomi>,
+        HasWorldReference<GomiLevel>,
+        GomiEntity,
+        PhysicsEntity,
+        CollisionCallbacks {
   Enemy({super.position, super.size, super.anchor}) {
     initialPosition = Vector2(position.x, position.y);
   }
@@ -28,15 +44,15 @@ abstract class Enemy extends GomiEntity
   }
 
   void respawn() {
-    current = GomiEntityState.attacking;
+    current = EnemyState.attacking;
     position = Vector2(initialPosition.x, initialPosition.y);
   }
 
   void loadAllAnimations() {
     //list of all animations
     animations = {
-      GomiEntityState.idle: idleAnimation,
-      GomiEntityState.attacking: attackAnimation
+      EnemyState.idle: idleAnimation,
+      EnemyState.attacking: attackAnimation
     };
   }
 
@@ -46,7 +62,9 @@ abstract class Enemy extends GomiEntity
     super.update(dt);
   }
 
-  //returns whether the world.player is above the enemy and stomped on it
+  void attack(double dt);
+
+  //returns whether the player is above the enemy and stomped on it
   bool isStomped() {
     return world.player.velocity.y > 0 &&
         world.player.y + world.player.height > position.y;
@@ -55,7 +73,7 @@ abstract class Enemy extends GomiEntity
   bool playerIsCorrectColor();
   void hit() {
     gotHit = true;
-    current = GomiEntityState.hit;
+    current = EnemyState.hit;
     world.player.bounce();
     world.player.playerScore.addScore(points);
     playHitSfx();

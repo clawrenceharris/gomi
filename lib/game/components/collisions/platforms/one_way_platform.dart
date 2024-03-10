@@ -1,21 +1,21 @@
 import 'package:gomi/game/components/collisions/platforms/platform.dart';
-import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/components/entities/physics_entity.dart';
 
 class OneWayPlatform extends Platform {
   OneWayPlatform({super.position, super.size});
 
   @override
-  void resolveCollisionFromBottom(GomiEntity player) {
+  void resolveCollisionFromBottom(PhysicsEntity other) {
     // do nothing
   }
 
   @override
-  void resolveCollisionFromRight(GomiEntity player) {
+  void resolveCollisionFromRight(PhysicsEntity other) {
     // do nothing
   }
 
   @override
-  void resolveCollisionFromLeft(GomiEntity player) {
+  void resolveCollisionFromLeft(PhysicsEntity other) {
     // do nothing
   }
 }

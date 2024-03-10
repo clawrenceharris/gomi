@@ -7,7 +7,6 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
-import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class BulbEnemy extends Enemy {
@@ -37,7 +36,8 @@ class BulbEnemy extends Enemy {
     return world.player.color == GomiColor.black;
   }
 
-  void _attack(double dt) {
+  @override
+  void attack(double dt) {
     _elapsedTime += dt;
     if (_elapsedTime >= rand.nextInt(3) + 3) {
       world.add(Zap(
@@ -62,7 +62,7 @@ class BulbEnemy extends Enemy {
 
   @override
   void update(double dt) {
-    _attack(dt);
+    attack(dt);
 
     super.update(dt);
   }
@@ -71,7 +71,7 @@ class BulbEnemy extends Enemy {
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.bulbEnemy.idle();
     attackAnimation = AnimationConfigs.bulbEnemy.attacking();
-    current = GomiEntityState.attacking;
+    current = EnemyState.attacking;
     super.loadAllAnimations();
   }
 }

@@ -5,7 +5,6 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
-import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class SyringeEnemy extends Enemy {
@@ -36,7 +35,7 @@ class SyringeEnemy extends Enemy {
   @override
   void update(double dt) {
     _updateState();
-    _attack(dt);
+    attack(dt);
     super.update(dt);
   }
 
@@ -44,7 +43,7 @@ class SyringeEnemy extends Enemy {
   void loadAllAnimations() {
     idleAnimation = AnimationConfigs.syringeEnemy.idle();
     attackAnimation = AnimationConfigs.syringeEnemy.attacking();
-    current = GomiEntityState.attacking;
+    current = EnemyState.attacking;
     super.loadAllAnimations();
   }
 
@@ -72,7 +71,8 @@ class SyringeEnemy extends Enemy {
     game.audioController.playSfx(SfxType.biohazardEnemy);
   }
 
-  void _attack(double dt) {
+  @override
+  void attack(double dt) {
     velocity.x = 0;
     double offset = (scale.x > 0) ? 0 : -width;
 
@@ -93,8 +93,7 @@ class SyringeEnemy extends Enemy {
   }
 
   void _updateState() {
-    current =
-        (velocity.x != 0) ? GomiEntityState.attacking : GomiEntityState.idle;
+    current = (velocity.x != 0) ? EnemyState.attacking : EnemyState.idle;
 
     if (moveDirection > 0 && scale.x > 0 || moveDirection < 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();

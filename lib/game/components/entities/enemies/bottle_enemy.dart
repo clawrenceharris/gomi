@@ -5,7 +5,6 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
-import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class BottleEnemy extends Enemy {
@@ -28,7 +27,7 @@ class BottleEnemy extends Enemy {
     idleAnimation = AnimationConfigs.bottleEnemy.idle();
 
     attackAnimation = AnimationConfigs.bottleEnemy.attacking();
-    current = GomiEntityState.attacking;
+    current = EnemyState.attacking;
     super.loadAllAnimations();
   }
 
@@ -48,11 +47,13 @@ class BottleEnemy extends Enemy {
 
   @override
   void update(double dt) {
-    _attack(dt);
+    attack(dt);
+    applyPhysics(dt, world);
     super.update(dt);
   }
 
-  void _attack(double dt) {
+  @override
+  void attack(double dt) {
     if (position.x >= rangePos) {
       direction = -1;
     } else if (position.x <= rangeNeg) {
