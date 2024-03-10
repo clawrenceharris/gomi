@@ -1,53 +1,35 @@
-import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
-import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/powerups/powerup.dart';
 
 class Grabber extends Powerup {
   Grabber({super.position});
-  late final _coins = 3;
 
   @override
-  int get coins => _coins;
-
-  late final _name = "The Litter Grabber";
+  int get coins => 20;
 
   @override
-  String get name => _name;
-
-  late final _description =
-      "Grab Litter Critters from a distance.\nPress space to activate";
+  String get name => "The Litter Grabber";
 
   @override
-  String get description => _description;
-
-  late final _image = "assets/images/powerups/grabber.png";
+  String get description => "Grab Litter Critters from a distance.";
 
   @override
-  String get image => _image;
-  double elapsedTime = 0.0;
-  double activeTime = 0.5;
+  String get image => "powerups/grabber.png";
 
   @override
-  FutureOr<void> onLoad() async {
-    // Load the image
-    var image = await Flame.images.load("powerups/grabber.png");
+  bool get collisionsEnabled => false;
 
-    // Create the sprite with the loaded image
-    sprite = Sprite(image);
-
-    // Set the size of the sprite if needed
-    return super.onLoad();
-  }
+  @override
+  double get duration => 0.8;
 
   @override
   void update(double dt) {
     elapsedTime += dt;
 
-    if (elapsedTime >= activeTime) {
+    if (elapsedTime >= duration) {
       elapsedTime = 0.0;
       removeFromParent();
     }

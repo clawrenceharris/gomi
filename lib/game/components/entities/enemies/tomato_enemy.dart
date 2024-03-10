@@ -115,7 +115,6 @@ class TomatoEnemy extends Enemy {
 
     if (!isGrounded && velocity.y < 1 && velocity.y > -1) {
       current = EnemyState.apex;
-
       return;
     }
 

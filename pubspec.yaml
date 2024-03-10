@@ -41,6 +41,7 @@ dependencies:
   flame_behaviors: ^1.1.0
   logging: ^1.2.0
   add_to_google_wallet: ^0.0.3
+  uuid: ^4.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

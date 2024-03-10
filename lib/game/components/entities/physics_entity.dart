@@ -8,6 +8,7 @@ mixin PhysicsEntity on PositionComponent {
   bool isGrounded = false;
   final double maxVelocity = 300;
   int direction = 0;
+  late final double speed;
 
   double jumpCooldown = 1.5;
   final double bounceForce = 200;

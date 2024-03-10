@@ -27,14 +27,14 @@ class _PowerupWidgetState extends State<PowerupWidget> {
         Transform.scale(
           scale: 3,
           child: Image.asset(
-            widget.powerup.image,
+            "assets/images/${widget.powerup.image}",
           ),
         ),
         const SizedBox(
           height: 20,
         ),
         Text(
-          widget.powerup.description,
+          "${widget.powerup.description}\nPress space to activate.",
           textAlign: TextAlign.center,
           style: const TextStyle(
               fontFamily: 'Pixel', fontSize: 12, color: Colors.white),
