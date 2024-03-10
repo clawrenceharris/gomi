@@ -1,36 +1,58 @@
-import 'dart:async';
-
+import 'dart:math';
 import 'package:flame/collisions.dart';
-
+import 'package:flame/components.dart';
 import 'package:gomi/game/components/powerups/powerup.dart';
 
 class Spike extends Powerup {
   Spike({super.position});
-  late final _coins = 30;
 
   @override
-  int get coins => _coins;
-
-  late final _name = "The Spike Surge";
+  int get coins => 30;
 
   @override
-  String get name => _name;
-
-  late final _description =
-      "Fend off Litter Critters by tossing\nspikes in the air.\nPress space to activate";
+  String get name => "The Spike Surge";
 
   @override
-  String get description => _description;
-
-  late final _image = "assets/images/powerups/spike.png";
-
-  @override
-  String get image => _image;
+  String get description =>
+      "Fend off Litter Critters by tossing\nspikes in the air.";
 
   @override
-  FutureOr<void> onLoad() async {
-    add(RectangleHitbox(collisionType: CollisionType.passive));
+  String get image => "powerups/spike.png";
+  @override
+  double get duration => 1.3;
+  @override
+  double get speed => 90;
+  @override
+  double get jumpForce => 360;
+  @override
+  RectangleHitbox get hitbox => RectangleHitbox(
+      position: Vector2(position.x + width - 10, position.y),
+      size: Vector2(10, height));
 
-    return super.onLoad();
+  @override
+  void update(double dt) {
+    applyPhysics(dt, world);
+    _updateVelocity();
+    _updateMovement(dt);
+    super.update(dt);
+  }
+
+  void _updateVelocity() {
+    velocity.x = speed * direction;
+  }
+
+  void _updateMovement(double dt) {
+    direction = world.player.scale.x < 0 ? -1 : 1;
+
+    position.x += velocity.x * dt;
+  }
+
+  @override
+  void activate() {
+    position = world.player.position;
+    velocity.y = -jumpForce;
+
+    angle = pi / 2;
+    super.activate();
   }
 }

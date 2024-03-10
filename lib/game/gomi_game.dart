@@ -56,9 +56,6 @@ class Gomi extends FlameGame<GomiLevel>
     if (keysPressed.contains(LogicalKeyboardKey.space)) {
       if (playerPowerup.powerup != null) {
         world.add(playerPowerup.powerup!);
-        playerPowerup.powerup?.position = Vector2(
-            player.position.x - playerPowerup.powerup!.width,
-            player.position.y + player.height / 2);
         playerPowerup.powerup?.activate();
       }
     }

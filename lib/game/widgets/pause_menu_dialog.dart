@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gomi/game/utils.dart';
+import 'package:gomi/utils.dart';
 import 'package:gomi/game/widgets/button.dart';
 import 'package:gomi/router.dart';
 
