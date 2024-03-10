@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/level_selection/levels.dart';
+import 'package:gomi/utils.dart';
 import './button.dart';
 import 'package:add_to_google_wallet/widgets/add_to_google_wallet_button.dart';
 import 'package:uuid/uuid.dart';
@@ -66,7 +66,7 @@ class GameWinDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
             ],
-            if (level.number >= gameLevels.length && Platform.isAndroid) ...[
+            if (level.number >= gameLevels.length && isAndroid()) ...[
               AddToGoogleWalletButton(
                 pass: _gomiHeroBadge,
                 onSuccess: () => _showSnackBar(context, "Success!"),
