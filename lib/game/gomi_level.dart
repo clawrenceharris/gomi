@@ -344,8 +344,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
         player: player);
     //target that will be used to follow the player at a given offset x and y
     game.add(playerCameraAnchor);
-
-    game.camera.follow(playerCameraAnchor, maxSpeed: 2000, snap: true);
+    int maxInt32 = 2147483647;
+    game.camera
+        .follow(playerCameraAnchor, maxSpeed: maxInt32.toDouble(), snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }
