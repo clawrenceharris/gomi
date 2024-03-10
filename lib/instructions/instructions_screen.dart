@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/game/widgets/button.dart';
 import 'package:gomi/instructions/instructions_text.dart';
+import 'package:gomi/utils.dart';
 
 class InstructionsScreen extends StatefulWidget {
   const InstructionsScreen({super.key});
@@ -45,9 +44,7 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
       Center(
         child: Container(
           width: 700,
-          height: Platform.isMacOS || Platform.isWindows || Platform.isLinux
-              ? 400
-              : 300,
+          height: !isMobile() ? 400 : 300,
           decoration: const BoxDecoration(
             color: Colors.transparent,
             image: DecorationImage(
