@@ -43,7 +43,7 @@ class Player extends GomiEntity
   late final ValueNotifier<bool> seedCollected;
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
-  final PlayerPowerup playerPowerup;
+  final PlayerPowerups playerPowerup;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
 

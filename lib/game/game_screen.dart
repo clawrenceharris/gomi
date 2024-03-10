@@ -26,7 +26,7 @@ class GameScreen extends StatelessWidget {
     final playerHealth = context.read<PlayerHealth>();
     final playerScore = context.read<PlayerScore>();
     final playerProgress = context.read<PlayerProgress>();
-    final PlayerPowerup playerPowerup = context.read<PlayerPowerup>();
+    final PlayerPowerups playerPowerup = context.read<PlayerPowerups>();
 
     return Scaffold(
       body: GameWidget<Gomi>(

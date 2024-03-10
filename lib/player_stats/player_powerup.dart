@@ -1,10 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:gomi/game/components/powerup.dart';
+import 'package:gomi/game/components/powerups/grabber.dart';
+import 'package:gomi/game/components/powerups/powerup.dart';
+import 'package:gomi/game/components/powerups/spike.dart';
 
-class PlayerPowerup {
-  final ValueNotifier _powerup = ValueNotifier(Powerup.none);
-  ValueNotifier get powerup => _powerup;
+class PlayerPowerups {
+  final ValueNotifier<Powerup?> _powerupNotifier =
+      ValueNotifier<Powerup?>(null);
+  ValueNotifier<Powerup?> get powerupNotifier => _powerupNotifier;
+  Powerup? get powerup => _powerupNotifier.value;
+  static List<Powerup> get allPowerups => [Grabber(), Spike()];
   final ValueNotifier<List<Powerup>> _powerups =
       ValueNotifier<List<Powerup>>([]);
 
@@ -13,12 +18,12 @@ class PlayerPowerup {
   }
 
   bool isEquipped(Powerup powerup) {
-    return _powerup.value == powerup;
+    return _powerupNotifier.value == powerup;
   }
 
   ///sets the currently active powerup
   void equipPowerup(Powerup powerup) {
-    _powerup.value = powerup;
+    _powerupNotifier.value = powerup;
   }
 
   ///adds a power up to the available powerups list
@@ -27,10 +32,6 @@ class PlayerPowerup {
   }
 
   void reset() {
-    powerup.value = Powerup.none;
-  }
-
-  void unequipPowerup(Powerup powerup) {
-    _powerup.value = Powerup.none;
+    powerupNotifier.value = null;
   }
 }

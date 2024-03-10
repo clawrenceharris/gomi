@@ -33,7 +33,7 @@ class MyGame extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => PlayerProgress()),
           Provider(create: (context) => PlayerHealth()),
           Provider(create: (context) => PlayerScore()),
-          Provider(create: (context) => PlayerPowerup()),
+          Provider(create: (context) => PlayerPowerups()),
 
           Provider(create: (context) => SettingsController()),
           // Set up audio.

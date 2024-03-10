@@ -12,6 +12,7 @@ class PlayerScore {
   final int bonusMultiplier = 50;
   int _points = 0;
   int get points => _points;
+
   void addCoin(int points) {
     _points = points;
     _coins.value += 1;
@@ -21,6 +22,11 @@ class PlayerScore {
     if (coins.value == 10) {
       score.value *= bonusMultiplier;
     }
+  }
+
+  void removeCoins(int amount) {
+    _coins.value -= amount;
+    totalCoins.value -= amount;
   }
 
   void addScore(int points) {

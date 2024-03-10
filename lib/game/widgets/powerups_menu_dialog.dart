@@ -2,9 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
-import 'package:gomi/game/components/powerup.dart';
+import 'package:gomi/game/components/powerups/powerup.dart';
 import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/powerup_widget.dart';
+import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
 import 'package:provider/provider.dart';
 
@@ -20,8 +21,7 @@ class _PowerupsMenuDialog extends State<PowerupsMenuDialog>
   late PageController _pageViewController;
   late TabController _tabController;
   int _currentPageIndex = 0;
-  List<dynamic> powerups =
-      Powerup.values.where((element) => element != Powerup.none).toList();
+  List<Powerup> powerups = PlayerPowerups.allPowerups;
   @override
   void initState() {
     super.initState();
