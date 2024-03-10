@@ -154,7 +154,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       //dont hit if we are currently being hit
       return;
     }
-
+    playerHealth.decrease();
     gotHit = true;
 
     await Future.delayed(const Duration(seconds: 1));

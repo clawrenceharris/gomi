@@ -19,7 +19,7 @@ class TomatoEnemy extends Enemy {
   double get jumpForce => _jumpForce;
 
   double _elapsedTime = 0.0;
-  final double bounceCoolDown = 1;
+  final double bounceCoolDown = 1.5;
   TomatoEnemy({
     required double jumpForce,
     super.position,
