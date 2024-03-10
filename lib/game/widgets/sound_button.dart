@@ -17,9 +17,7 @@ class SoundButton extends StatelessWidget {
               TextButton(
                   onPressed: () {
                     audioController.playSfx(SfxType.buttonTap);
-
-                    settingsController.toggleSoundsOn();
-                    settingsController.toggleMusicOn();
+                    settingsController.toggleAudioOn();
 
                     // Add your button's action here
                   },
