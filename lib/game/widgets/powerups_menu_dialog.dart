@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/game/components/powerups/powerup.dart';
-import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/powerup_widget.dart';
 import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
+import 'package:gomi/utils.dart';
 import 'package:provider/provider.dart';
 
 class PowerupsMenuDialog extends StatefulWidget {

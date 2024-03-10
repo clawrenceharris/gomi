@@ -5,9 +5,9 @@ import 'package:flame/parallax.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/game/components/parallax_background.dart';
-import 'package:gomi/game/utils.dart';
 import 'package:gomi/level_selection/level_button.dart';
 import 'package:gomi/player_progress/player_progress.dart';
+import 'package:gomi/utils.dart';
 
 class GomiWorldMap extends FlameGame<Map> {
   final PlayerProgress playerProgress;

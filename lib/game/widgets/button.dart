@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
-import 'package:gomi/game/utils.dart';
+import 'package:gomi/utils.dart';
 import 'package:provider/provider.dart';
 
 class Button extends StatelessWidget {

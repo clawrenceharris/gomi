@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gomi/audio/audio_controller.dart';
 import 'package:gomi/audio/sounds.dart';
-import 'package:gomi/game/utils.dart';
 import 'package:gomi/game/widgets/animated_text.dart';
 import 'package:gomi/settings/settings.dart';
+import 'package:gomi/utils.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatelessWidget {
