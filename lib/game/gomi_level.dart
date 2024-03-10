@@ -23,7 +23,7 @@ import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/components/player_camera_anchor.dart';
 import 'package:gomi/game/game_screen.dart';
 import 'package:gomi/game/gomi_game.dart';
-import 'package:gomi/game/utils.dart';
+import 'package:gomi/utils.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_progress/player_progress.dart';
 import 'package:gomi/player_stats/player_powerup.dart';
@@ -344,8 +344,9 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
         player: player);
     //target that will be used to follow the player at a given offset x and y
     game.add(playerCameraAnchor);
-
-    game.camera.follow(playerCameraAnchor, maxSpeed: 2000, snap: true);
+    int maxInt32 = 2147483647;
+    game.camera
+        .follow(playerCameraAnchor, maxSpeed: maxInt32.toDouble(), snap: true);
     game.camera.setBounds(levelBounds);
     game.camera.backdrop.add(cameraParallax);
   }
