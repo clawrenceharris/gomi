@@ -11,7 +11,7 @@ class Grabber extends Powerup {
   int get coins => 20;
 
   @override
-  String get name => "The Litter Grabber";
+  String get name => "The Cleanup Claw";
 
   @override
   String get description => "Grab Litter Critters from a distance.";
