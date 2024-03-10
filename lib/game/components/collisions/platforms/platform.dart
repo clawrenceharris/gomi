@@ -1,7 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/painting.dart';
-import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/components/entities/physics_entity.dart';
 
 class Platform extends PositionComponent with CollisionCallbacks {
   late final Rect rect;
@@ -13,28 +13,28 @@ class Platform extends PositionComponent with CollisionCallbacks {
     add(RectangleHitbox());
   }
 
-  void resolveCollisionFromRight(GomiEntity other) {
+  void resolveCollisionFromRight(PhysicsEntity other) {
     if (other.velocity.x < 0) {
       other.velocity.x = 0;
       other.position.x = position.x + width + other.width / 2;
     }
   }
 
-  void resolveCollisionFromLeft(GomiEntity other) {
+  void resolveCollisionFromLeft(PhysicsEntity other) {
     if (other.velocity.x > 0) {
       other.velocity.x = 0;
       other.position.x = position.x - other.width / 2;
     }
   }
 
-  void resolveCollisionFromBottom(GomiEntity other) {
+  void resolveCollisionFromBottom(PhysicsEntity other) {
     if (other.velocity.y < 0) {
       other.velocity.y = 0;
       other.position.y = position.y + height;
     }
   }
 
-  void resolveCollisionFromTop(GomiEntity other) {
+  void resolveCollisionFromTop(PhysicsEntity other) {
     if (other.velocity.y > 0) {
       other.velocity.y = 0;
       other.position.y = position.y - other.height;

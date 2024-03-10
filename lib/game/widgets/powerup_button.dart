@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gomi/game/components/powerup.dart';
+import 'package:gomi/game/components/powerups/powerup.dart';
 import 'package:gomi/game/widgets/button.dart';
 import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
@@ -16,7 +16,7 @@ class PowerupButton extends StatefulWidget {
 class _PowerupButton extends State<PowerupButton> {
   @override
   Widget build(BuildContext context) {
-    final PlayerPowerup playerPowerup = context.watch<PlayerPowerup>();
+    final PlayerPowerups playerPowerup = context.watch<PlayerPowerups>();
     final PlayerScore playerScore = context.watch<PlayerScore>();
 
     late Widget child = Row(
@@ -53,19 +53,19 @@ class _PowerupButton extends State<PowerupButton> {
           if (playerPowerup.hasPowerup(widget.powerup) &&
               !playerPowerup.isEquipped(widget.powerup)) {
             playerPowerup.equipPowerup(widget.powerup);
-            // Update the button text
-          } else if (!playerPowerup.hasPowerup(widget.powerup)) {
+          }
+          //if we have not bought the power up
+          else if (!playerPowerup.hasPowerup(widget.powerup)) {
             if (widget.powerup.coins > playerScore.totalCoins.value) return;
 
             // Add the powerup to the available powerups
             playerPowerup.addPowerup(widget.powerup);
 
-            playerScore.totalCoins.value -= widget.powerup.coins;
+            playerScore.removeCoins(widget.powerup.coins);
           } else if (playerPowerup.hasPowerup(widget.powerup) &&
               playerPowerup.isEquipped(widget.powerup)) {
             // Unequip the powerup
-            playerPowerup.unequipPowerup(widget.powerup);
-            // Update the button text
+            playerPowerup.reset();
           }
         });
       },

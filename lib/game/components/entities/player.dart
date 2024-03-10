@@ -5,9 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/animated_score_text.dart';
-import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
+import 'package:gomi/game/components/entities/physics_entity.dart';
 import 'package:gomi/game/gomi_game.dart';
+import 'package:gomi/game/gomi_level.dart';
 import 'package:gomi/player_stats/player_health.dart';
 import 'package:gomi/player_stats/player_powerup.dart';
 import 'package:gomi/player_stats/player_score.dart';
@@ -22,8 +23,16 @@ enum GomiColor {
   final String color;
 }
 
-class Player extends GomiEntity
-    with HasGameRef<Gomi>, KeyboardHandler, CollisionCallbacks {
+enum PlayerState { walking, jumping, idle, hit }
+
+class Player extends SpriteAnimationGroupComponent<PlayerState>
+    with
+        GomiEntity,
+        PhysicsEntity,
+        HasGameRef<Gomi>,
+        HasWorldReference<GomiLevel>,
+        KeyboardHandler,
+        CollisionCallbacks {
   Player(
       {required this.color,
       required this.playerHealth,
@@ -43,7 +52,7 @@ class Player extends GomiEntity
   late final ValueNotifier<bool> seedCollected;
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
-  final PlayerPowerup playerPowerup;
+  final PlayerPowerups playerPowerup;
   late final Vector2 _minClamp;
   late final Vector2 _maxClamp;
 
@@ -63,7 +72,7 @@ class Player extends GomiEntity
   @override
   void update(double dt) {
     _updateState();
-    applyPhysics(dt);
+    applyPhysics(dt, world);
     if (!seedCollected.value) {
       _updateMovement(dt);
     } else {
@@ -77,7 +86,7 @@ class Player extends GomiEntity
     position = Vector2(initialPosition.x, initialPosition.y);
     direction = 0;
     velocity = Vector2.zero();
-    current = GomiEntityState.idle;
+    current = PlayerState.idle;
     changeColor(GomiColor.black);
     _loadAnimations();
   }
@@ -88,22 +97,18 @@ class Player extends GomiEntity
         AnimationConfigs.gomi.walking(color.color);
     SpriteAnimation jumpingAnimation =
         AnimationConfigs.gomi.jumping(color.color);
-    SpriteAnimation disappearingAnimation =
-        AnimationConfigs.gomi.disappearing();
-    SpriteAnimation appearingAnimation = AnimationConfigs.gomi.appearing();
+
     SpriteAnimation hitAnimation = AnimationConfigs.gomi.hit(color.color);
 
     // List of all animations
     animations = {
-      GomiEntityState.idle: idleAnimation,
-      GomiEntityState.walking: walkingAnimation,
-      GomiEntityState.jumping: jumpingAnimation,
-      GomiEntityState.disappearing: disappearingAnimation,
-      GomiEntityState.appearing: appearingAnimation,
-      GomiEntityState.hit: hitAnimation,
+      PlayerState.idle: idleAnimation,
+      PlayerState.walking: walkingAnimation,
+      PlayerState.jumping: jumpingAnimation,
+      PlayerState.hit: hitAnimation,
     };
 
-    current = GomiEntityState.idle;
+    current = PlayerState.idle;
   }
 
   void _onScoreIncrease() {
@@ -125,16 +130,16 @@ class Player extends GomiEntity
   }
 
   void _updateState() {
-    GomiEntityState playerState = GomiEntityState.idle;
+    PlayerState playerState = PlayerState.idle;
     if (velocity.x != 0) {
-      playerState = GomiEntityState.walking;
+      playerState = PlayerState.walking;
     }
     if (velocity.y < 0 && !isGrounded) {
-      playerState = GomiEntityState.jumping;
+      playerState = PlayerState.jumping;
     }
 
     if (gotHit) {
-      playerState = GomiEntityState.hit;
+      playerState = PlayerState.hit;
     }
 
     if (scale.x < 0 && velocity.x > 0 || scale.x > 0 && velocity.x < 0) {
@@ -149,12 +154,12 @@ class Player extends GomiEntity
       //dont hit if we are currently being hit
       return;
     }
+
     gotHit = true;
-    playerHealth.decrease();
 
     await Future.delayed(const Duration(seconds: 1));
 
-    current = GomiEntityState.idle;
+    current = PlayerState.idle;
     gotHit = false;
   }
 

@@ -5,7 +5,6 @@ import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
-import 'package:gomi/game/components/entities/entity_state.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
 class TomatoEnemy extends Enemy {
@@ -44,15 +43,15 @@ class TomatoEnemy extends Enemy {
     fallingAnimation = AnimationConfigs.tomatoEnemy.falling();
 
     animations = {
-      GomiEntityState.idle: groundAnimation,
-      GomiEntityState.attacking: groundAnimation,
-      GomiEntityState.grounded: groundAnimation,
-      GomiEntityState.rising: risingAnimation,
-      GomiEntityState.apex: apexAnimation,
-      GomiEntityState.falling: fallingAnimation,
+      EnemyState.idle: groundAnimation,
+      EnemyState.attacking: groundAnimation,
+      EnemyState.grounded: groundAnimation,
+      EnemyState.rising: risingAnimation,
+      EnemyState.apex: apexAnimation,
+      EnemyState.falling: fallingAnimation,
     };
 
-    current = GomiEntityState.idle;
+    current = EnemyState.idle;
   }
 
   @override
@@ -73,7 +72,8 @@ class TomatoEnemy extends Enemy {
     super.onCollision(intersectionPoints, other);
   }
 
-  void _attack(dt) {
+  @override
+  void attack(double dt) {
     _elapsedTime += dt;
 
     if (isGrounded && _elapsedTime >= bounceCoolDown) {
@@ -97,29 +97,30 @@ class TomatoEnemy extends Enemy {
   @override
   void update(double dt) {
     super.update(dt);
-    applyPhysics(dt);
+    applyPhysics(dt, world);
     _updateState();
-    _attack(dt);
+    attack(dt);
   }
 
   void _updateState() {
     if (isGrounded == true) {
-      current = GomiEntityState.grounded;
+      current = EnemyState.grounded;
       return;
     }
 
     if (!isGrounded && velocity.y <= -1) {
-      current = GomiEntityState.rising;
+      current = EnemyState.rising;
       return;
     }
 
-    if (!isGrounded && velocity.y == 0) {
-      current = GomiEntityState.apex;
+    if (!isGrounded && velocity.y < 1 && velocity.y > -1) {
+      current = EnemyState.apex;
+
       return;
     }
 
     if (!isGrounded && velocity.y >= 1) {
-      current = GomiEntityState.falling;
+      current = EnemyState.falling;
       return;
     }
   }

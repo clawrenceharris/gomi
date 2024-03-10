@@ -48,7 +48,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   final PlayerScore playerScore;
 
   ///Used to keep track of the player's available and active powerups
-  final PlayerPowerup playerPowerup;
+  final PlayerPowerups playerPowerup;
 
   late final Rectangle levelBounds;
 
@@ -85,6 +85,10 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   int stars = 0;
   @override
   Future<void> onLoad() async {
+    playerPowerup.reset();
+    playerScore.reset();
+    playerHealth.reset();
+
     //load the tiled level
     tiledLevel = await TiledComponent.load(
         level.pathname, Vector2.all(Globals.tileSize));
@@ -159,6 +163,7 @@ class GomiLevel extends World with HasGameRef<Gomi>, CollisionAware {
   void _restartLevel() async {
     playerScore.reset();
     playerHealth.reset();
+    playerPowerup.reset();
     player.respawn();
     for (Collectible collectible in collectibles) {
       if (!contains(collectible)) {

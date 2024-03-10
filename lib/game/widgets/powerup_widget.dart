@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gomi/game/components/powerup.dart';
+import 'package:gomi/game/components/powerups/powerup.dart';
 import 'package:gomi/game/widgets/powerup_button.dart';
 
 class PowerupWidget extends StatefulWidget {
