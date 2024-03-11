@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
-import 'package:flame/components.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
@@ -17,8 +16,7 @@ class BottleEnemy extends Enemy {
   @override
   double get speed => _speed;
 
-  BottleEnemy({required this.offNeg, required this.offPos, super.position})
-      : super(anchor: Anchor.topLeft) {
+  BottleEnemy({required this.offNeg, required this.offPos, super.position}) {
     direction = 1;
   }
 
@@ -48,7 +46,6 @@ class BottleEnemy extends Enemy {
   @override
   void update(double dt) {
     attack(dt);
-    applyPhysics(dt, world);
     super.update(dt);
   }
 

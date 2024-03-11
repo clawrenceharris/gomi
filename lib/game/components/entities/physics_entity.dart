@@ -1,6 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:gomi/game/components/collisions/platforms/platform.dart';
-import 'package:gomi/game/components/entities/player.dart';
 import 'package:gomi/game/gomi_level.dart';
 
 mixin PhysicsEntity on PositionComponent {
@@ -9,25 +7,16 @@ mixin PhysicsEntity on PositionComponent {
   final double maxVelocity = 300;
   int direction = 0;
   late final double speed;
-
   double jumpCooldown = 1.5;
-  final double bounceForce = 200;
-  final double jumpForce = 200;
+  final double bounceForce = 0;
+  final double jumpForce = 0;
   Vector2 velocity = Vector2.zero();
-  final bool collisionsEnabled = true;
   double lastJumpTimestamp = 0.0;
 
   void applyPhysics(double dt, GomiLevel world) {
-    Iterable<Platform> platforms =
-        this is Player ? world.visiblePlatforms : world.platforms;
-
-    if (collisionsEnabled) {
-      world.checkHorizontalCollisions(this, platforms);
-      applyGravity(dt);
-      world.checkVerticalCollisions(this, platforms);
-    } else {
-      applyGravity(dt);
-    }
+    world.checkHorizontalCollisions(this, world.visiblePlatforms);
+    applyGravity(dt);
+    world.checkVerticalCollisions(this, world.visiblePlatforms);
   }
 
   void applyGravity(double dt) {

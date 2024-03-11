@@ -42,14 +42,17 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       : super(anchor: Anchor.topCenter) {
     initialPosition = Vector2(position.x, position.y);
   }
-
+  @override
+  double get jumpForce => 200;
+  @override
+  double get bounceForce => 200;
   GomiColor color;
   int _jumpCount = 0;
   final double _speed = 120;
   @override
   double get speed => _speed;
   bool hasJumped = false;
-  late final ValueNotifier<bool> seedCollected;
+  final ValueNotifier<bool> seedCollected = ValueNotifier<bool>(false);
   final PlayerHealth playerHealth;
   final PlayerScore playerScore;
   final PlayerPowerups playerPowerup;
@@ -61,7 +64,6 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     _loadAnimations();
     playerScore.score.addListener(_onScoreIncrease);
     add(RectangleHitbox());
-    seedCollected = ValueNotifier(false);
     // Prevents player from going out of bounds of level.
     // Since anchor is top center, split size in half for calculation.
     _minClamp = game.world.levelBounds.topLeft;
@@ -89,6 +91,10 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     current = PlayerState.idle;
     changeColor(GomiColor.black);
     _loadAnimations();
+
+    if (scale.x < 0) {
+      flipHorizontallyAroundCenter();
+    }
   }
 
   void _loadAnimations() {
@@ -177,17 +183,14 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
     if (isGrounded) {
       // Player is grounded, perform a regular jump
       velocity.y = -jumpForce;
-      position.y += velocity.y * dt;
       _jumpCount = 1;
       game.audioController.playSfx(SfxType.jump);
-
       isGrounded = false;
     } else if (_jumpCount < 2) {
       // Perform a double jump
       game.audioController.playSfx(SfxType.doubleJump);
 
       velocity.y = -jumpForce;
-      position.y += velocity.y * dt;
 
       // Set jump count to 2 to indicate a double jump has been used
       _jumpCount = 2;

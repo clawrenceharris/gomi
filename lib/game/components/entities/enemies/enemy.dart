@@ -1,5 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/gomi_entity.dart';
 import 'package:gomi/game/components/entities/physics_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
@@ -25,7 +26,8 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
         GomiEntity,
         PhysicsEntity,
         CollisionCallbacks {
-  Enemy({super.position, super.size, super.anchor}) {
+  Enemy({super.position, super.size}) {
+    anchor = Anchor.topCenter;
     initialPosition = Vector2(position.x, position.y);
   }
   late final SpriteAnimation idleAnimation;
@@ -95,6 +97,9 @@ abstract class Enemy extends SpriteAnimationGroupComponent<EnemyState>
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       collideWithPlayer();
+    } else if (other is Platform &&
+        world.checkCollisionTopCenter(this, other)) {
+      other.resolveCollisionFromTop(this);
     }
     super.onCollision(intersectionPoints, other);
   }

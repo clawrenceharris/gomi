@@ -3,6 +3,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
+import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/collectibles/Collectible.dart';
 import 'package:gomi/game/components/entities/physics_entity.dart';
 import 'package:gomi/game/components/entities/player.dart';
@@ -27,6 +28,14 @@ class GomiClone extends Collectible with PhysicsEntity, HasGameRef<Gomi> {
   void update(double dt) {
     applyPhysics(dt, world);
     super.update(dt);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Platform && world.checkCollisionTopCenter(this, other)) {
+      other.resolveCollisionFromTop(this);
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   @override

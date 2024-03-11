@@ -20,10 +20,10 @@ class Grabber extends Powerup {
   String get image => "powerups/grabber.png";
 
   @override
-  bool get collisionsEnabled => false;
+  double get duration => 0.8;
 
   @override
-  double get duration => 0.8;
+  int get points => 200;
 
   @override
   void update(double dt) {

@@ -6,6 +6,7 @@ import 'package:flame/effects.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
 import 'package:gomi/constants/globals.dart';
+import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
@@ -108,6 +109,8 @@ class Zap extends SpriteAnimationComponent with CollisionCallbacks {
       Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       other.hit();
+    } else if (other is Platform) {
+      removeFromParent();
     }
     super.onCollisionStart(intersectionPoints, other);
   }

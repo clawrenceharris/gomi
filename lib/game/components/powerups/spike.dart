@@ -30,6 +30,9 @@ class Spike extends Powerup {
       size: Vector2(10, height));
 
   @override
+  int get points => 300;
+
+  @override
   void update(double dt) {
     applyPhysics(dt, world);
     _updateVelocity();

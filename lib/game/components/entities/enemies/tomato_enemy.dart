@@ -3,7 +3,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:gomi/audio/sounds.dart';
 import 'package:gomi/constants/animation_configs.dart';
-import 'package:gomi/game/components/collisions/platforms/platform.dart';
 import 'package:gomi/game/components/entities/enemies/enemy.dart';
 import 'package:gomi/game/components/entities/player.dart';
 
@@ -31,7 +30,6 @@ class TomatoEnemy extends Enemy {
   FutureOr<void> onLoad() {
     add(RectangleHitbox(collisionType: CollisionType.passive));
     attackTime = 10;
-    debugMode = true;
     return super.onLoad();
   }
 
@@ -60,19 +58,6 @@ class TomatoEnemy extends Enemy {
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Platform) {
-      if (world.checkCollisionTopCenter(this, other)) {
-        position.y = other.y - height;
-        velocity.y = 0;
-        isGrounded = true;
-      }
-    }
-
-    super.onCollision(intersectionPoints, other);
-  }
-
-  @override
   void attack(double dt) {
     _elapsedTime += dt;
 
@@ -97,7 +82,7 @@ class TomatoEnemy extends Enemy {
   @override
   void update(double dt) {
     super.update(dt);
-    applyPhysics(dt, world);
+    applyGravity(dt);
     _updateState();
     attack(dt);
   }

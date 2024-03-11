@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
@@ -14,6 +13,7 @@ abstract class Powerup extends SpriteComponent
   late final String name;
   late final String description;
   late final String image;
+  late final int points;
   final RectangleHitbox hitbox = RectangleHitbox();
   late final double duration;
   double elapsedTime = 0.0;
@@ -28,12 +28,13 @@ abstract class Powerup extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Enemy) {
-      handleEnemyCollision(other);
+      _handleEnemyCollision(other);
     }
     super.onCollision(intersectionPoints, other);
   }
 
-  void handleEnemyCollision(PositionComponent other) {
+  void _handleEnemyCollision(PositionComponent other) {
+    world.playerScore.addScore(points);
     other.removeFromParent();
   }
 
